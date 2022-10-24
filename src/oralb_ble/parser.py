@@ -11,13 +11,10 @@ import logging
 import struct
 from dataclasses import dataclass
 from enum import Enum, auto
-from typing import Any
 
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
-
-# from sensor_state_data import SensorLibrary
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -85,7 +82,7 @@ STATES = {
 PRESSURE = {114: "normal", 118: "button pressed", 178: "high"}
 
 
-ORALB_MANUFACTURER = {0x00DC}
+ORALB_MANUFACTURER = 0x00DC
 
 
 class OralBBluetoothDeviceData(BluetoothData):
@@ -97,11 +94,11 @@ class OralBBluetoothDeviceData(BluetoothData):
         manufacturer_data = service_info.manufacturer_data
         local_name = service_info.name
         address = service_info.address
-        self.set_device_manufacturer("OralB")
         if ORALB_MANUFACTURER not in manufacturer_data:
             return None
 
         mfr_data = manufacturer_data[ORALB_MANUFACTURER]
+        self.set_device_manufacturer("OralB")
 
         self._process_mfr_data(address, local_name, mfr_data)
 
@@ -125,12 +122,6 @@ class OralBBluetoothDeviceData(BluetoothData):
             sector_timer,
             no_of_sectors,
         ) = UNPACK_BBHBBBB(data[3:11])
-
-        result: dict[str, Any] = {}
-        if state == 3:
-            result.update({"toothbrush": 1})
-        else:
-            result.update({"toothbrush": 0})
 
         device_bytes = data[4:7]
         if device_bytes == b"\x062k":
@@ -156,15 +147,13 @@ class OralBBluetoothDeviceData(BluetoothData):
         else:
             tb_sector = "sector " + str(sector)
 
-        result.update(
-            {
-                "toothbrush state": tb_state,
-                "pressure": tb_pressure,
-                "counter": counter,
-                "mode": tb_mode,
-                "sector": tb_sector,
-                "sector timer": sector_timer,
-                "number of sectors": no_of_sectors,
-            }
+        self.update_sensor("counter", None, counter, None, "Counter")
+        self.update_sensor("sector", None, tb_sector, None, "Sector")
+        self.update_sensor(
+            "number_of_sectors", None, no_of_sectors, None, "Number of sectors"
         )
-        _LOGGER.debug("OralB sensor data: %s", result)
+        self.update_sensor("sector_timer", None, sector_timer, None, "Sector Timer")
+        self.update_sensor("toothbrush_state", None, tb_state, None, "Toothbrush State")
+        self.update_sensor("pressure", None, tb_pressure, None, "Pressure")
+        self.update_sensor("mode", None, tb_mode, None, "Mode")
+        self.update_binary_sensor("brushing", bool(state == 3), None, "Brushing")
