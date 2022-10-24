@@ -64,6 +64,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "bluetooth-data-tools"
+version = "0.1.2"
+description = "Tools for converting bluetooth data and packets"
+category = "main"
+optional = false
+python-versions = ">=3.9,<4.0"
+
+[package.extras]
+docs = ["Sphinx (>=5.0,<6.0)", "myst-parser (>=0.18,<0.19)", "sphinx-rtd-theme (>=1.0,<2.0)"]
+
+[[package]]
 name = "bluetooth-sensor-state-data"
 version = "1.6.0"
 description = "Models for storing and converting Bluetooth Sensor State Data"
@@ -630,7 +641,7 @@ docs = ["myst-parser", "Sphinx", "sphinx-rtd-theme"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "39d1e64501753a77a34ef6dcd886073f9416339132bed7cc5b2add81254cb90b"
+content-hash = "2d710ba548e48a7343fa55924467cb2be175f950101fad1e68fa94e6867caf13"
 
 [metadata.files]
 alabaster = [
@@ -665,6 +676,10 @@ bleak-winrt = [
     {file = "bleak_winrt-1.2.0-cp38-cp38-win_amd64.whl", hash = "sha256:810c00726653a962256b7acd8edf81ab9e4a3c66e936a342ce4aec7dbd3a7263"},
     {file = "bleak_winrt-1.2.0-cp39-cp39-win32.whl", hash = "sha256:dd740047a08925bde54bec357391fcee595d7b8ca0c74c87170a5cbc3f97aa0a"},
     {file = "bleak_winrt-1.2.0-cp39-cp39-win_amd64.whl", hash = "sha256:63130c11acfe75c504a79c01f9919e87f009f5e742bfc7b7a5c2a9c72bf591a7"},
+]
+bluetooth-data-tools = [
+    {file = "bluetooth-data-tools-0.1.2.tar.gz", hash = "sha256:58eb956e05d3a92b805af6374d10bf32f0b606c24bf47bb34578edc92aa71aa1"},
+    {file = "bluetooth_data_tools-0.1.2-py3-none-any.whl", hash = "sha256:72cfd910d6231bb2c43c24e0013265a0fee63c99af9755fed8ed0d7f12d21f61"},
 ]
 bluetooth-sensor-state-data = [
     {file = "bluetooth-sensor-state-data-1.6.0.tar.gz", hash = "sha256:ebd973a0859fd4b3c2204cd9451bbcdc6b01cd792924e9759549476f03cd8762"},
