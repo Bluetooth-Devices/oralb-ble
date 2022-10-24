@@ -6,16 +6,18 @@ https://github.com/Ernst79/bleparser/blob/c42ae922e1abed2720c7fac993777e1bd59c0c
 MIT License applies.
 """
 from __future__ import annotations
-from dataclasses import dataclass
-from enum import Enum, auto
 
 import logging
 import struct
+from dataclasses import dataclass
+from enum import Enum, auto
+from typing import Any
 
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
-from sensor_state_data import SensorLibrary
+
+# from sensor_state_data import SensorLibrary
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -96,7 +98,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         local_name = service_info.name
         address = service_info.address
         self.set_device_manufacturer("OralB")
-        if ORALB_MANUFACTURER not in mfr_data:
+        if ORALB_MANUFACTURER not in manufacturer_data:
             return None
 
         mfr_data = manufacturer_data[ORALB_MANUFACTURER]
@@ -112,7 +114,6 @@ class OralBBluetoothDeviceData(BluetoothData):
         """Parser for OralB sensors."""
         _LOGGER.debug("Parsing OralB sensor: %s", data)
         msg_length = len(data)
-        firmware = "Oral-B"
         if msg_length != 11:
             return
         (
@@ -125,7 +126,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             no_of_sectors,
         ) = UNPACK_BBHBBBB(data[3:11])
 
-        result = {}
+        result: dict[str, Any] = {}
         if state == 3:
             result.update({"toothbrush": 1})
         else:
