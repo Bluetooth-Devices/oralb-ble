@@ -1,7 +1,7 @@
-"""Parser for Govee BLE advertisements.
+"""Parser for OralB BLE advertisements.
 
 This file is shamelessly copied from the following repository:
-https://github.com/Ernst79/bleparser/blob/c42ae922e1abed2720c7fac993777e1bd59c0c93/package/bleparser/govee.py
+https://github.com/Ernst79/bleparser/blob/c42ae922e1abed2720c7fac993777e1bd59c0c93/package/bleparser/oralb.py
 
 MIT License applies.
 """
@@ -17,12 +17,12 @@ from sensor_state_data import (
     Units,
 )
 
-from .parser import GoveeBluetoothDeviceData
+from .parser import OralBBluetoothDeviceData
 
 __version__ = "0.19.0"
 
 __all__ = [
-    "GoveeBluetoothDeviceData",
+    "OralBBluetoothDeviceData",
     "SensorDescription",
     "SensorDeviceInfo",
     "DeviceClass",
