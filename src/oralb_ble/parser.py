@@ -32,13 +32,13 @@ class Models(Enum):
 @dataclass
 class ModelDescription:
 
-    name: str
+    device_type: str
     modes: dict[int, str]
 
 
 DEVICE_TYPES = {
     Models.IOSerial7: ModelDescription(
-        name="IO Serial 7",
+        device_type="IO Serial 7",
         modes={
             0: "daily clean",
             1: "sensitive",
@@ -49,7 +49,7 @@ DEVICE_TYPES = {
         },
     ),
     Models.SmartSeries7000: ModelDescription(
-        name="Smart Series 7000",
+        device_type="Smart Series 7000",
         modes={
             0: "off",
             1: "daily clean",
@@ -96,14 +96,6 @@ class OralBBluetoothDeviceData(BluetoothData):
         local_name = service_info.name
         address = service_info.address
         self.set_device_manufacturer("OralB")
-
-        if local_name.startswith("OralB_"):
-            self.set_device_name(service_info.name[6:].replace("_", " "))
-
-        if local_name.startswith("GV"):
-            self.set_device_name(service_info.name[2:].replace("_", " "))
-
-        self.set_precision(2)
         if ORALB_MANUFACTURER not in mfr_data:
             return None
 
@@ -121,7 +113,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         _LOGGER.debug("Parsing OralB sensor: %s", data)
         msg_length = len(data)
         firmware = "Oral-B"
-        if msg_length != 15:
+        if msg_length != 11:
             return
         (
             state,
@@ -131,7 +123,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             sector,
             sector_timer,
             no_of_sectors,
-        ) = UNPACK_BBHBBBB(data[7:15])
+        ) = UNPACK_BBHBBBB(data[3:11])
 
         result = {}
         if state == 3:
@@ -147,6 +139,11 @@ class OralBBluetoothDeviceData(BluetoothData):
 
         model_info = DEVICE_TYPES[model]
         modes = model_info.modes
+        self.set_device_type(model_info.device_type)
+        name = f"{model_info.device_type} {short_address(address)}"
+        self.set_device_name(name)
+        self.set_title(name)
+
         tb_state = STATES.get(state, "unknown state " + str(state))
         tb_mode = modes.get(mode, "unknown mode " + str(mode))
         tb_pressure = PRESSURE.get(pressure, "unknown pressure " + str(pressure))
@@ -169,3 +166,4 @@ class OralBBluetoothDeviceData(BluetoothData):
                 "number of sectors": no_of_sectors,
             }
         )
+        _LOGGER.debug("OralB sensor data: %s", result)
