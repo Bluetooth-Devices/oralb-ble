@@ -36,14 +36,10 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.7"
-          - "3.8"
           - "3.9"
           - "3.10"
         os:
           - ubuntu-latest
-          - windows-latest
-          - macOS-latest
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -51,7 +47,7 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: snok/install-poetry@v1.3.1
+      - uses: snok/install-poetry@v1
       - name: Install Dependencies
         run: poetry install
       - name: Test with Pytest
@@ -82,7 +78,7 @@ jobs:
       # - Create GitHub release
       # - Publish to PyPI
       - name: Python Semantic Release
-        uses: relekang/python-semantic-release@v7.27.1
+        uses: relekang/python-semantic-release@v7.29.6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pypi_token: ${{ secrets.PYPI_TOKEN }}
