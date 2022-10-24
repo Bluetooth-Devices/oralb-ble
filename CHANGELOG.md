@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2022-10-24)
+### Feature
+* Add signal_strength sensor ([#4](https://github.com/Bluetooth-Devices/oralb-ble/issues/4)) ([`418a1a4`](https://github.com/Bluetooth-Devices/oralb-ble/commit/418a1a4f951e4f26bc8dce2c75a46366e158eb00))
+
 ## v0.2.0 (2022-10-24)
 ### Feature
 * Add naming enum ([#3](https://github.com/Bluetooth-Devices/oralb-ble/issues/3)) ([`b8b7bf4`](https://github.com/Bluetooth-Devices/oralb-ble/commit/b8b7bf445d72128121cddf77fc8c4fad2f4bc918))
