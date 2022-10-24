@@ -21,7 +21,7 @@ from sensor_state_data import (
 
 from .parser import OralBBinarySensor, OralBBluetoothDeviceData, OralBSensor
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 __all__ = [
     "OralBSensor",

@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.0 (2022-10-24)
+### Feature
+* Add naming enum ([#3](https://github.com/Bluetooth-Devices/oralb-ble/issues/3)) ([`b8b7bf4`](https://github.com/Bluetooth-Devices/oralb-ble/commit/b8b7bf445d72128121cddf77fc8c4fad2f4bc918))
+
 ## v0.1.1 (2022-10-24)
 ### Fix
 * Exports ([#2](https://github.com/Bluetooth-Devices/oralb-ble/issues/2)) ([`ea4faf0`](https://github.com/Bluetooth-Devices/oralb-ble/commit/ea4faf098171b8f1fa1f6c6ceaae25c1739785db))
