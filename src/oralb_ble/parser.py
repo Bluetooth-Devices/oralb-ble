@@ -32,6 +32,7 @@ class OralBSensor(StrEnum):
     TOOTHBRUSH_STATE = "toothbrush_state"
     PRESSURE = "pressure"
     MODE = "mode"
+    SIGNAL_STRENGTH = "signal_strength"
 
 
 class OralBBinarySensor(StrEnum):
