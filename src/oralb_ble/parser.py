@@ -15,11 +15,27 @@ from enum import Enum, auto
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
+from sensor_state_data.enum import StrEnum
 
 _LOGGER = logging.getLogger(__name__)
 
 
 UNPACK_BBHBBBB = struct.Struct(">BBHBBBB").unpack
+
+
+class OralBSensor(StrEnum):
+
+    COUNTER = "counter"
+    SECTOR = "sector"
+    NUMBER_OF_SECTORS = "number_of_sectors"
+    SECTOR_TIMER = "sector_timer"
+    TOOTHBRUSH_STATE = "toothbrush_state"
+    PRESSURE = "pressure"
+    MODE = "mode"
+
+
+class OralBBinarySensor(StrEnum):
+    BRUSHING = "brushing"
 
 
 class Models(Enum):
@@ -147,13 +163,23 @@ class OralBBluetoothDeviceData(BluetoothData):
         else:
             tb_sector = "sector " + str(sector)
 
-        self.update_sensor("counter", None, counter, None, "Counter")
-        self.update_sensor("sector", None, tb_sector, None, "Sector")
+        self.update_sensor(OralBSensor.COUNTER, None, counter, None, "Counter")
+        self.update_sensor(OralBSensor.SECTOR, None, tb_sector, None, "Sector")
         self.update_sensor(
-            "number_of_sectors", None, no_of_sectors, None, "Number of sectors"
+            OralBSensor.NUMBER_OF_SECTORS,
+            None,
+            no_of_sectors,
+            None,
+            "Number of sectors",
         )
-        self.update_sensor("sector_timer", None, sector_timer, None, "Sector Timer")
-        self.update_sensor("toothbrush_state", None, tb_state, None, "Toothbrush State")
-        self.update_sensor("pressure", None, tb_pressure, None, "Pressure")
-        self.update_sensor("mode", None, tb_mode, None, "Mode")
-        self.update_binary_sensor("brushing", bool(state == 3), None, "Brushing")
+        self.update_sensor(
+            OralBSensor.SECTOR_TIMER, None, sector_timer, None, "Sector Timer"
+        )
+        self.update_sensor(
+            OralBSensor.TOOTHBRUSH_STATE, None, tb_state, None, "Toothbrush State"
+        )
+        self.update_sensor(OralBSensor.PRESSURE, None, tb_pressure, None, "Pressure")
+        self.update_sensor(OralBSensor.MODE, None, tb_mode, None, "Mode")
+        self.update_binary_sensor(
+            OralBBinarySensor.BRUSHING, bool(state == 3), None, "Brushing"
+        )
