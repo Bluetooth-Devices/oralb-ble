@@ -89,8 +89,8 @@ def test_dataset_1():
                 device_class=SensorDeviceClass.SIGNAL_STRENGTH,
                 native_unit_of_measurement=Units.SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
             ),
-            DeviceKey(key="counter", device_id=None): SensorDescription(
-                device_key=DeviceKey(key="counter", device_id=None),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
@@ -131,9 +131,9 @@ def test_dataset_1():
                 name="Signal " "Strength",
                 native_value=-63,
             ),
-            DeviceKey(key="counter", device_id=None): SensorValue(
-                device_key=DeviceKey(key="counter", device_id=None),
-                name="Counter",
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
                 native_value=0,
             ),
             DeviceKey(key="sector", device_id=None): SensorValue(
@@ -219,8 +219,8 @@ def test_dataset_2():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
-            DeviceKey(key="counter", device_id=None): SensorDescription(
-                device_key=DeviceKey(key="counter", device_id=None),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
@@ -261,9 +261,9 @@ def test_dataset_2():
                 name="Mode",
                 native_value="daily " "clean",
             ),
-            DeviceKey(key="counter", device_id=None): SensorValue(
-                device_key=DeviceKey(key="counter", device_id=None),
-                name="Counter",
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
                 native_value=0,
             ),
             DeviceKey(key="pressure", device_id=None): SensorValue(
@@ -344,8 +344,8 @@ def test_dataset_3():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
-            DeviceKey(key="counter", device_id=None): SensorDescription(
-                device_key=DeviceKey(key="counter", device_id=None),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
@@ -386,9 +386,9 @@ def test_dataset_3():
                 name="Mode",
                 native_value="daily " "clean",
             ),
-            DeviceKey(key="counter", device_id=None): SensorValue(
-                device_key=DeviceKey(key="counter", device_id=None),
-                name="Counter",
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
                 native_value=1,
             ),
             DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
@@ -454,8 +454,8 @@ def test_dataset_4():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
-            DeviceKey(key="counter", device_id=None): SensorDescription(
-                device_key=DeviceKey(key="counter", device_id=None),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
@@ -496,9 +496,9 @@ def test_dataset_4():
                 name="Pressure",
                 native_value="unknown " "pressure " "32",
             ),
-            DeviceKey(key="counter", device_id=None): SensorValue(
-                device_key=DeviceKey(key="counter", device_id=None),
-                name="Counter",
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
                 native_value=1,
             ),
             DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
@@ -579,8 +579,8 @@ def test_io_series_7():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
-            DeviceKey(key="counter", device_id=None): SensorDescription(
-                device_key=DeviceKey(key="counter", device_id=None),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
@@ -621,9 +621,9 @@ def test_io_series_7():
                 name="Pressure",
                 native_value="unknown " "pressure " "32",
             ),
-            DeviceKey(key="counter", device_id=None): SensorValue(
-                device_key=DeviceKey(key="counter", device_id=None),
-                name="Counter",
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
                 native_value=1,
             ),
         },
