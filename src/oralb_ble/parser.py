@@ -20,12 +20,12 @@ from sensor_state_data.enum import StrEnum
 _LOGGER = logging.getLogger(__name__)
 
 
-UNPACK_BBHBBBB = struct.Struct(">BBHBBBB").unpack
+UNPACK_BBBBBBBB = struct.Struct(">BBBBBBBB").unpack
 
 
 class OralBSensor(StrEnum):
 
-    COUNTER = "counter"
+    TIME = "time"
     SECTOR = "sector"
     NUMBER_OF_SECTORS = "number_of_sectors"
     SECTOR_TIMER = "sector_timer"
@@ -130,15 +130,13 @@ class OralBBluetoothDeviceData(BluetoothData):
         msg_length = len(data)
         if msg_length != 11:
             return
-        (
-            state,
-            pressure,
-            counter,
-            mode,
-            sector,
-            sector_timer,
-            no_of_sectors,
-        ) = UNPACK_BBHBBBB(data[3:11])
+        state = data[3]
+        pressure = data[4]
+        time = data[5] * 60 + data[6]
+        mode = data[7]
+        sector = data[8]
+        sector_timer = data[9]
+        no_of_sectors = data[10]
 
         device_bytes = data[0:3]
         if device_bytes == b"\x062k":
@@ -164,7 +162,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         else:
             tb_sector = "sector " + str(sector)
 
-        self.update_sensor(str(OralBSensor.COUNTER), None, counter, None, "Counter")
+        self.update_sensor(str(OralBSensor.TIME), None, time, None, "Time")
         self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
         self.update_sensor(
             str(OralBSensor.NUMBER_OF_SECTORS),
