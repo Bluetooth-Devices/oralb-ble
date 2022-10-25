@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.1 (2022-10-25)
+### Fix
+* Make strings ([#5](https://github.com/Bluetooth-Devices/oralb-ble/issues/5)) ([`c4dda18`](https://github.com/Bluetooth-Devices/oralb-ble/commit/c4dda1887a08b5a97aefa6ca1b21b14d5933725a))
+
 ## v0.3.0 (2022-10-24)
 ### Feature
 * Add signal_strength sensor ([#4](https://github.com/Bluetooth-Devices/oralb-ble/issues/4)) ([`418a1a4`](https://github.com/Bluetooth-Devices/oralb-ble/commit/418a1a4f951e4f26bc8dce2c75a46366e158eb00))
