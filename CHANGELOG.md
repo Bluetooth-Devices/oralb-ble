@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.0 (2022-10-25)
+### Feature
+* Drop counter and replace with time ([#7](https://github.com/Bluetooth-Devices/oralb-ble/issues/7)) ([`b84045c`](https://github.com/Bluetooth-Devices/oralb-ble/commit/b84045c068435443770700387bf435c0d34f0f7a))
+
 ## v0.4.0 (2022-10-25)
 ### Feature
 * Add support for IO Series 7 ([#6](https://github.com/Bluetooth-Devices/oralb-ble/issues/6)) ([`cc4d965`](https://github.com/Bluetooth-Devices/oralb-ble/commit/cc4d965ba5beff4d04ce3f9cdb0e32547c150160))
