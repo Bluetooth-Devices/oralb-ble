@@ -41,7 +41,7 @@ class OralBBinarySensor(StrEnum):
 
 class Models(Enum):
 
-    IOSerial7 = auto()
+    IOSeries7 = auto()
     SmartSeries7000 = auto()
 
 
@@ -53,8 +53,8 @@ class ModelDescription:
 
 
 DEVICE_TYPES = {
-    Models.IOSerial7: ModelDescription(
-        device_type="IO Serial 7",
+    Models.IOSeries7: ModelDescription(
+        device_type="IO Series 7",
         modes={
             0: "daily clean",
             1: "sensitive",
@@ -140,9 +140,9 @@ class OralBBluetoothDeviceData(BluetoothData):
             no_of_sectors,
         ) = UNPACK_BBHBBBB(data[3:11])
 
-        device_bytes = data[4:7]
+        device_bytes = data[0:3]
         if device_bytes == b"\x062k":
-            model = Models.IOSerial7
+            model = Models.IOSeries7
         else:
             model = Models.SmartSeries7000
 
