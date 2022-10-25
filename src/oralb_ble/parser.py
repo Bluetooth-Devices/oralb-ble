@@ -164,23 +164,25 @@ class OralBBluetoothDeviceData(BluetoothData):
         else:
             tb_sector = "sector " + str(sector)
 
-        self.update_sensor(OralBSensor.COUNTER, None, counter, None, "Counter")
-        self.update_sensor(OralBSensor.SECTOR, None, tb_sector, None, "Sector")
+        self.update_sensor(str(OralBSensor.COUNTER), None, counter, None, "Counter")
+        self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
         self.update_sensor(
-            OralBSensor.NUMBER_OF_SECTORS,
+            str(OralBSensor.NUMBER_OF_SECTORS),
             None,
             no_of_sectors,
             None,
             "Number of sectors",
         )
         self.update_sensor(
-            OralBSensor.SECTOR_TIMER, None, sector_timer, None, "Sector Timer"
+            str(OralBSensor.SECTOR_TIMER), None, sector_timer, None, "Sector Timer"
         )
         self.update_sensor(
-            OralBSensor.TOOTHBRUSH_STATE, None, tb_state, None, "Toothbrush State"
+            str(OralBSensor.TOOTHBRUSH_STATE), None, tb_state, None, "Toothbrush State"
         )
-        self.update_sensor(OralBSensor.PRESSURE, None, tb_pressure, None, "Pressure")
-        self.update_sensor(OralBSensor.MODE, None, tb_mode, None, "Mode")
+        self.update_sensor(
+            str(OralBSensor.PRESSURE), None, tb_pressure, None, "Pressure"
+        )
+        self.update_sensor(str(OralBSensor.MODE), None, tb_mode, None, "Mode")
         self.update_binary_sensor(
-            OralBBinarySensor.BRUSHING, bool(state == 3), None, "Brushing"
+            str(OralBBinarySensor.BRUSHING), bool(state == 3), None, "Brushing"
         )
