@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2022-10-25)
+### Feature
+* Add support for IO Series 7 ([#6](https://github.com/Bluetooth-Devices/oralb-ble/issues/6)) ([`cc4d965`](https://github.com/Bluetooth-Devices/oralb-ble/commit/cc4d965ba5beff4d04ce3f9cdb0e32547c150160))
+
 ## v0.3.1 (2022-10-25)
 ### Fix
 * Make strings ([#5](https://github.com/Bluetooth-Devices/oralb-ble/issues/5)) ([`c4dda18`](https://github.com/Bluetooth-Devices/oralb-ble/commit/c4dda1887a08b5a97aefa6ca1b21b14d5933725a))
