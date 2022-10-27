@@ -8,7 +8,6 @@ MIT License applies.
 from __future__ import annotations
 
 import logging
-import struct
 from dataclasses import dataclass
 from enum import Enum, auto
 
@@ -18,9 +17,6 @@ from home_assistant_bluetooth import BluetoothServiceInfo
 from sensor_state_data.enum import StrEnum
 
 _LOGGER = logging.getLogger(__name__)
-
-
-UNPACK_BBBBBBBB = struct.Struct(">BBBBBBBB").unpack
 
 
 class OralBSensor(StrEnum):
