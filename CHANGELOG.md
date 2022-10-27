@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.0 (2022-10-27)
+### Feature
+* Refactor to improve code coverage ([#10](https://github.com/Bluetooth-Devices/oralb-ble/issues/10)) ([`5e8889e`](https://github.com/Bluetooth-Devices/oralb-ble/commit/5e8889ece3f45d1ade6bca6b76d66042e8b550ef))
+
 ## v0.7.0 (2022-10-27)
 ### Feature
 * Add support for 9000 series ([#9](https://github.com/Bluetooth-Devices/oralb-ble/issues/9)) ([`1331e9d`](https://github.com/Bluetooth-Devices/oralb-ble/commit/1331e9dad8b290de93861d20a629e93925dcbca3))
