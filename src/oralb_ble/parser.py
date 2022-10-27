@@ -127,7 +127,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             return None
 
         mfr_data = manufacturer_data[ORALB_MANUFACTURER]
-        self.set_device_manufacturer("OralB")
+        self.set_device_manufacturer("Oral-B")
 
         self._process_mfr_data(address, local_name, mfr_data)
 

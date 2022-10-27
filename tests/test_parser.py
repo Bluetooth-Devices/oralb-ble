@@ -87,7 +87,7 @@ def test_dataset_1():
             None: SensorDeviceInfo(
                 name="Smart Series 7000 48BE",
                 model="Smart Series 7000",
-                manufacturer="OralB",
+                manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
             )
@@ -202,7 +202,7 @@ def test_dataset_2():
             None: SensorDeviceInfo(
                 name="Smart Series 7000 48BE",
                 model="Smart Series 7000",
-                manufacturer="OralB",
+                manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
             )
@@ -317,7 +317,7 @@ def test_dataset_3():
             None: SensorDeviceInfo(
                 name="Smart Series 7000 48BE",
                 model="Smart Series 7000",
-                manufacturer="OralB",
+                manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
             )
@@ -432,7 +432,7 @@ def test_dataset_4():
             None: SensorDeviceInfo(
                 name="Smart Series 7000 48BE",
                 model="Smart Series 7000",
-                manufacturer="OralB",
+                manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
             )
@@ -547,7 +547,7 @@ def test_io_series_7():
             None: SensorDeviceInfo(
                 name="IO Series 7 48BE",
                 model="IO Series 7",
-                manufacturer="OralB",
+                manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
             )
@@ -662,7 +662,7 @@ def test_io_series_4():
             None: SensorDeviceInfo(
                 name="IO Series 4 48BE",
                 model="IO Series 4",
-                manufacturer="OralB",
+                manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
             )
