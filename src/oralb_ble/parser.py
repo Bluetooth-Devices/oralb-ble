@@ -42,6 +42,7 @@ class OralBBinarySensor(StrEnum):
 class Models(Enum):
 
     IOSeries7 = auto()
+    IOSeries4 = auto()
     SmartSeries7000 = auto()
 
 
@@ -55,6 +56,17 @@ class ModelDescription:
 DEVICE_TYPES = {
     Models.IOSeries7: ModelDescription(
         device_type="IO Series 7",
+        modes={
+            0: "daily clean",
+            1: "sensitive",
+            2: "gum care",
+            3: "whiten",
+            4: "intense",
+            8: "settings",
+        },
+    ),
+    Models.IOSeries4: ModelDescription(
+        device_type="IO Series 4",
         modes={
             0: "daily clean",
             1: "sensitive",
@@ -115,7 +127,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             return None
 
         mfr_data = manufacturer_data[ORALB_MANUFACTURER]
-        self.set_device_manufacturer("OralB")
+        self.set_device_manufacturer("Oral-B")
 
         self._process_mfr_data(address, local_name, mfr_data)
 
@@ -141,6 +153,8 @@ class OralBBluetoothDeviceData(BluetoothData):
         device_bytes = data[0:3]
         if device_bytes == b"\x062k":
             model = Models.IOSeries7
+        elif device_bytes == b"\x074\x0c":
+            model = Models.IOSeries4
         else:
             model = Models.SmartSeries7000
 
