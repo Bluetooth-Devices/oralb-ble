@@ -146,6 +146,8 @@ class OralBBluetoothDeviceData(BluetoothData):
         msg_length = len(data)
         if msg_length != 11:
             return
+
+        device_bytes = data[0:3]
         state = data[3]
         pressure = data[4]
         time = data[5] * 60 + data[6]
@@ -154,7 +156,6 @@ class OralBBluetoothDeviceData(BluetoothData):
         sector_timer = data[9]
         no_of_sectors = data[10]
 
-        device_bytes = data[0:3]
         model = BYTES_TO_MODEL.get(device_bytes, Models.SmartSeries7000)
         model_info = DEVICE_TYPES[model]
         modes = model_info.modes
