@@ -136,23 +136,12 @@ class OralBBluetoothDeviceData(BluetoothData):
         """Update from BLE advertisement data."""
         _LOGGER.debug("Parsing OralB BLE advertisement data: %s", service_info)
         manufacturer_data = service_info.manufacturer_data
-        local_name = service_info.name
         address = service_info.address
         if ORALB_MANUFACTURER not in manufacturer_data:
             return None
 
-        mfr_data = manufacturer_data[ORALB_MANUFACTURER]
+        data = manufacturer_data[ORALB_MANUFACTURER]
         self.set_device_manufacturer("Oral-B")
-
-        self._process_mfr_data(address, local_name, mfr_data)
-
-    def _process_mfr_data(
-        self,
-        address: str,
-        local_name: str,
-        data: bytes,
-    ) -> None:
-        """Parser for OralB sensors."""
         _LOGGER.debug("Parsing Oral-B sensor: %s", data)
         msg_length = len(data)
         if msg_length != 11:
