@@ -118,6 +118,17 @@ PRESSURE = {114: "normal", 118: "button pressed", 178: "high"}
 ORALB_MANUFACTURER = 0x00DC
 
 
+BYTES_TO_MODEL = {
+    b"\x062k": Models.IOSeries7,
+    b"\x074\x0c": Models.IOSeries4,
+    b"\x03!\x0c": Models.SmartSeries9000,
+}
+SECTOR_MAP = {
+    254: "last sector",
+    255: "no sector",
+}
+
+
 class OralBBluetoothDeviceData(BluetoothData):
     """Data for OralB BLE sensors."""
 
@@ -155,15 +166,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         no_of_sectors = data[10]
 
         device_bytes = data[0:3]
-        if device_bytes == b"\x062k":
-            model = Models.IOSeries7
-        elif device_bytes == b"\x074\x0c":
-            model = Models.IOSeries4
-        elif device_bytes == b"\x03!\x0c":
-            model = Models.SmartSeries9000
-        else:
-            model = Models.SmartSeries7000
-
+        model = BYTES_TO_MODEL.get(device_bytes, Models.SmartSeries7000)
         model_info = DEVICE_TYPES[model]
         modes = model_info.modes
         self.set_device_type(model_info.device_type)
@@ -171,16 +174,10 @@ class OralBBluetoothDeviceData(BluetoothData):
         self.set_device_name(name)
         self.set_title(name)
 
-        tb_state = STATES.get(state, "unknown state " + str(state))
-        tb_mode = modes.get(mode, "unknown mode " + str(mode))
-        tb_pressure = PRESSURE.get(pressure, "unknown pressure " + str(pressure))
-
-        if sector == 254:
-            tb_sector = "last sector"
-        elif sector == 255:
-            tb_sector = "no sector"
-        else:
-            tb_sector = "sector " + str(sector)
+        tb_state = STATES.get(state, f"unknown state {state}")
+        tb_mode = modes.get(mode, f"unknown mode {mode}")
+        tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
+        tb_sector = SECTOR_MAP.get(sector, f"sector {sector}")
 
         self.update_sensor(str(OralBSensor.TIME), None, time, None, "Time")
         self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
