@@ -44,6 +44,7 @@ class Models(Enum):
     IOSeries7 = auto()
     IOSeries4 = auto()
     SmartSeries7000 = auto()
+    SmartSeries9000 = auto()
 
 
 @dataclass
@@ -53,42 +54,44 @@ class ModelDescription:
     modes: dict[int, str]
 
 
+SMART_SERIES_MODES = {
+    0: "off",
+    1: "daily clean",
+    2: "sensitive",
+    3: "massage",
+    4: "whitening",
+    5: "deep clean",
+    6: "tongue cleaning",
+    7: "turbo",
+    255: "unknown",
+}
+
+IO_SERIES_MODES = {
+    0: "daily clean",
+    1: "sensitive",
+    2: "gum care",
+    3: "whiten",
+    4: "intense",
+    8: "settings",
+}
+
+
 DEVICE_TYPES = {
     Models.IOSeries7: ModelDescription(
         device_type="IO Series 7",
-        modes={
-            0: "daily clean",
-            1: "sensitive",
-            2: "gum care",
-            3: "whiten",
-            4: "intense",
-            8: "settings",
-        },
+        modes=IO_SERIES_MODES,
     ),
     Models.IOSeries4: ModelDescription(
         device_type="IO Series 4",
-        modes={
-            0: "daily clean",
-            1: "sensitive",
-            2: "gum care",
-            3: "whiten",
-            4: "intense",
-            8: "settings",
-        },
+        modes=IO_SERIES_MODES,
     ),
     Models.SmartSeries7000: ModelDescription(
         device_type="Smart Series 7000",
-        modes={
-            0: "off",
-            1: "daily clean",
-            2: "sensitive",
-            3: "massage",
-            4: "whitening",
-            5: "deep clean",
-            6: "tongue cleaning",
-            7: "turbo",
-            255: "unknown",
-        },
+        modes=SMART_SERIES_MODES,
+    ),
+    Models.SmartSeries9000: ModelDescription(
+        device_type="Smart Series 9000",
+        modes=SMART_SERIES_MODES,
     ),
 }
 
@@ -102,6 +105,7 @@ STATES = {
     5: "setup",
     6: "flight menu",
     8: "selection menu",
+    9: "off",
     113: "final test",
     114: "pcb test",
     115: "sleeping",
@@ -138,7 +142,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         data: bytes,
     ) -> None:
         """Parser for OralB sensors."""
-        _LOGGER.debug("Parsing OralB sensor: %s", data)
+        _LOGGER.debug("Parsing Oral-B sensor: %s", data)
         msg_length = len(data)
         if msg_length != 11:
             return
@@ -155,6 +159,8 @@ class OralBBluetoothDeviceData(BluetoothData):
             model = Models.IOSeries7
         elif device_bytes == b"\x074\x0c":
             model = Models.IOSeries4
+        elif device_bytes == b"\x03!\x0c":
+            model = Models.SmartSeries9000
         else:
             model = Models.SmartSeries7000
 
