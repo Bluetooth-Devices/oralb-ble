@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.9.0 (2022-10-28)
+### Feature
+* Additional mappings for io series models ([#11](https://github.com/Bluetooth-Devices/oralb-ble/issues/11)) ([`32690dc`](https://github.com/Bluetooth-Devices/oralb-ble/commit/32690dc1c90e5344edd9e0f8c82828ebb787bc28))
+
 ## v0.8.0 (2022-10-27)
 ### Feature
 * Refactor to improve code coverage ([#10](https://github.com/Bluetooth-Devices/oralb-ble/issues/10)) ([`5e8889e`](https://github.com/Bluetooth-Devices/oralb-ble/commit/5e8889ece3f45d1ade6bca6b76d66042e8b550ef))
