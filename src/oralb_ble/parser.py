@@ -37,7 +37,7 @@ class OralBBinarySensor(StrEnum):
 
 class Models(Enum):
 
-    IOSeries7 = auto()
+    IOSeries78 = auto()
     IOSeries4 = auto()
     SmartSeries7000 = auto()
     SmartSeries9000 = auto()
@@ -68,13 +68,14 @@ IO_SERIES_MODES = {
     2: "gum care",
     3: "whiten",
     4: "intense",
+    5: "super sensitive",
     8: "settings",
 }
 
 
 DEVICE_TYPES = {
-    Models.IOSeries7: ModelDescription(
-        device_type="IO Series 7",
+    Models.IOSeries78: ModelDescription(
+        device_type="IO Series 7/8",
         modes=IO_SERIES_MODES,
     ),
     Models.IOSeries4: ModelDescription(
@@ -108,14 +109,22 @@ STATES = {
     116: "transport",
 }
 
-PRESSURE = {114: "normal", 118: "button pressed", 178: "high"}
+PRESSURE = {
+    114: "normal",
+    82: "normal",
+    56: "button pressed",
+    118: "button pressed",
+    178: "high",
+    146: "high",
+    240: "high",
+}
 
 
 ORALB_MANUFACTURER = 0x00DC
 
 
 BYTES_TO_MODEL = {
-    b"\x062k": Models.IOSeries7,
+    b"\x062k": Models.IOSeries78,
     b"\x074\x0c": Models.IOSeries4,
     b"\x03!\x0c": Models.SmartSeries9000,
 }
