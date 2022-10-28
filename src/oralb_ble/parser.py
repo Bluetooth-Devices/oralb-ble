@@ -112,8 +112,8 @@ STATES = {
 PRESSURE = {
     114: "normal",
     82: "normal",
-    90: "power button pushed",
-    86: "button pushed",
+    90: "power button pressed",
+    86: "button pressed",
     56: "power button pressed",
     118: "button pressed",
     178: "high",

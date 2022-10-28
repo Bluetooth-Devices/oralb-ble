@@ -551,11 +551,11 @@ def test_io_series_7():
     service_info = ORALB_IO_SERIES_7
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 7 48BE",
+        title="IO Series 7/8 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 7 48BE",
-                model="IO Series 7",
+                name="IO Series 7/8 48BE",
+                model="IO Series 7/8",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -757,7 +757,7 @@ def test_io_series_4():
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
                 name="Pressure",
-                native_value="unknown " "pressure " "56",
+                native_value="power button pressed",
             ),
         },
         binary_entity_descriptions={
