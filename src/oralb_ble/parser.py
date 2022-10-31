@@ -37,6 +37,7 @@ class OralBBinarySensor(StrEnum):
 
 class Models(Enum):
 
+    IOSeries9 = auto()
     IOSeries78 = auto()
     IOSeries4 = auto()
     SmartSeries7000 = auto()
@@ -76,6 +77,10 @@ IO_SERIES_MODES = {
 DEVICE_TYPES = {
     Models.IOSeries78: ModelDescription(
         device_type="IO Series 7/8",
+        modes=IO_SERIES_MODES,
+    ),
+    Models.IOSeries9: ModelDescription(
+        device_type="IO Series 9",
         modes=IO_SERIES_MODES,
     ),
     Models.IOSeries4: ModelDescription(
@@ -129,6 +134,7 @@ BYTES_TO_MODEL = {
     b"\x062k": Models.IOSeries78,
     b"\x074\x0c": Models.IOSeries4,
     b"\x03!\x0c": Models.SmartSeries9000,
+    b"\x061\x16": Models.IOSeries9,
 }
 SECTOR_MAP = {
     254: "last sector",
