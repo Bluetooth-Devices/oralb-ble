@@ -40,6 +40,7 @@ class Models(Enum):
     IOSeries9 = auto()
     IOSeries78 = auto()
     IOSeries4 = auto()
+    SmartSeries4000 = auto()
     SmartSeries7000 = auto()
     SmartSeries9000 = auto()
 
@@ -62,6 +63,10 @@ SMART_SERIES_MODES = {
     7: "turbo",
     255: "unknown",
 }
+
+
+SMART_SERIES_4000_MODES = SMART_SERIES_MODES | {2: "off"}
+
 
 IO_SERIES_MODES = {
     0: "daily clean",
@@ -86,6 +91,10 @@ DEVICE_TYPES = {
     Models.IOSeries4: ModelDescription(
         device_type="IO Series 4",
         modes=IO_SERIES_MODES,
+    ),
+    Models.SmartSeries4000: ModelDescription(
+        device_type="Smart Series 4000",
+        modes=SMART_SERIES_4000_MODES,
     ),
     Models.SmartSeries7000: ModelDescription(
         device_type="Smart Series 7000",
@@ -117,6 +126,7 @@ STATES = {
 PRESSURE = {
     114: "normal",
     82: "normal",
+    48: "normal",
     90: "power button pressed",
     86: "button pressed",
     56: "power button pressed",
@@ -133,6 +143,7 @@ ORALB_MANUFACTURER = 0x00DC
 BYTES_TO_MODEL = {
     b"\x062k": Models.IOSeries78,
     b"\x074\x0c": Models.IOSeries4,
+    b"\x03V\x04": Models.SmartSeries4000,
     b"\x03!\x0c": Models.SmartSeries9000,
     b"\x061\x16": Models.IOSeries9,
 }
