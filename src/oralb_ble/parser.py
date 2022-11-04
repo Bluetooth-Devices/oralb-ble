@@ -37,6 +37,7 @@ class OralBBinarySensor(StrEnum):
 
 class Models(Enum):
 
+    TriumphV2 = auto()
     IOSeries9 = auto()
     IOSeries78 = auto()
     IOSeries4 = auto()
@@ -80,6 +81,7 @@ IO_SERIES_MODES = {
 
 
 DEVICE_TYPES = {
+    Models.TriumphV2: ModelDescription("Triumph V2", SMART_SERIES_MODES),
     Models.IOSeries78: ModelDescription(
         device_type="IO Series 7/8",
         modes=IO_SERIES_MODES,
@@ -124,6 +126,7 @@ STATES = {
 }
 
 PRESSURE = {
+    0: "normal",
     114: "normal",
     82: "normal",
     48: "normal",
@@ -133,6 +136,7 @@ PRESSURE = {
     118: "button pressed",
     178: "high",
     146: "high",
+    192: "high",
     240: "high",
 }
 
@@ -146,6 +150,7 @@ BYTES_TO_MODEL = {
     b"\x03V\x04": Models.SmartSeries4000,
     b"\x03!\x0c": Models.SmartSeries9000,
     b"\x061\x16": Models.IOSeries9,
+    b"\x02\x02\x06": Models.TriumphV2,
 }
 SECTOR_MAP = {
     254: "last sector",
