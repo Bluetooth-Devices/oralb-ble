@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.10.2 (2022-11-04)
+### Fix
+* Add missing mapping for pressure 0 and 192 ([#15](https://github.com/Bluetooth-Devices/oralb-ble/issues/15)) ([`ef33150`](https://github.com/Bluetooth-Devices/oralb-ble/commit/ef331507284aa147b8365c21f7f0a99fc7f624b2))
+
 ## v0.10.1 (2022-11-03)
 ### Fix
 * Pressure 48 not being mapped on 9000/4000 series ([#13](https://github.com/Bluetooth-Devices/oralb-ble/issues/13)) ([`71d95aa`](https://github.com/Bluetooth-Devices/oralb-ble/commit/71d95aa1ad1009f27afd02d5d1687a659f167197))
