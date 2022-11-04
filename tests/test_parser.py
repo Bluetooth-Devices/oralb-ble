@@ -98,15 +98,6 @@ ORALB_4000_SERIES = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-ORALB_4000_SERIES = BluetoothServiceInfo(
-    address="78:DB:2F:C2:48:BE",
-    rssi=-63,
-    name="9000",
-    manufacturer_data={220: b"\x03V\x04\x030\x00\x00\x01\x01\x00\x04"},
-    service_uuids=[],
-    service_data={},
-    source="local",
-)
 
 ORALB_TRIUMPH_V2 = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
