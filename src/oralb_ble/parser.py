@@ -127,17 +127,19 @@ STATES = {
 
 PRESSURE = {
     0: "normal",
-    114: "normal",
-    82: "normal",
     48: "normal",
+    50: "normal",
+    82: "normal",
     90: "power button pressed",
     86: "button pressed",
     56: "power button pressed",
+    114: "normal",
     118: "button pressed",
     178: "high",
     146: "high",
     192: "high",
     240: "high",
+    242: "high",
 }
 
 
