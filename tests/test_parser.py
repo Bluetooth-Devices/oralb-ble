@@ -214,7 +214,7 @@ def test_dataset_1():
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
                 name="Pressure",
-                native_value="unknown " "pressure " "32",
+                native_value="normal",
             ),
             DeviceKey(key="mode", device_id=None): SensorValue(
                 device_key=DeviceKey(key="mode", device_id=None),
@@ -549,7 +549,7 @@ def test_dataset_4():
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
                 name="Pressure",
-                native_value="unknown " "pressure " "32",
+                native_value="normal",
             ),
             DeviceKey(key="time", device_id=None): SensorValue(
                 device_key=DeviceKey(key="time", device_id=None),
@@ -674,7 +674,7 @@ def test_io_series_7():
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
                 name="Pressure",
-                native_value="unknown " "pressure " "32",
+                native_value="normal",
             ),
             DeviceKey(key="time", device_id=None): SensorValue(
                 device_key=DeviceKey(key="time", device_id=None),
@@ -1244,7 +1244,7 @@ def test_triumph_v2():
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
                 name="Pressure",
-                native_value="unknown " "pressure " "32",
+                native_value="normal",
             ),
             DeviceKey(key="time", device_id=None): SensorValue(
                 device_key=DeviceKey(key="time", device_id=None),
