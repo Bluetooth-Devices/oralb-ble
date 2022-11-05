@@ -127,6 +127,7 @@ STATES = {
 
 PRESSURE = {
     0: "normal",
+    32: "normal",
     48: "normal",
     50: "normal",
     82: "normal",
