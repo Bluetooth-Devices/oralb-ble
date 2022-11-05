@@ -37,6 +37,7 @@ class OralBBinarySensor(StrEnum):
 
 class Models(Enum):
 
+    Pro6000 = auto()
     TriumphV2 = auto()
     IOSeries9 = auto()
     IOSeries78 = auto()
@@ -81,6 +82,7 @@ IO_SERIES_MODES = {
 
 
 DEVICE_TYPES = {
+    Models.Pro6000: ModelDescription("Pro 6000", SMART_SERIES_MODES),
     Models.TriumphV2: ModelDescription("Triumph V2", SMART_SERIES_MODES),
     Models.IOSeries78: ModelDescription(
         device_type="IO Series 7/8",
@@ -154,6 +156,7 @@ BYTES_TO_MODEL = {
     b"\x03!\x0c": Models.SmartSeries9000,
     b"\x061\x16": Models.IOSeries9,
     b"\x02\x02\x06": Models.TriumphV2,
+    b"\x01\x02\x05": Models.Pro6000,
 }
 SECTOR_MAP = {
     254: "last sector",
@@ -176,7 +179,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         self.set_device_manufacturer("Oral-B")
         _LOGGER.debug("Parsing Oral-B sensor: %s", data)
         msg_length = len(data)
-        if msg_length != 11:
+        if msg_length not in (9, 11):
             return
 
         device_bytes = data[0:3]
@@ -185,8 +188,11 @@ class OralBBluetoothDeviceData(BluetoothData):
         time = data[5] * 60 + data[6]
         mode = data[7]
         sector = data[8]
-        sector_timer = data[9]
-        no_of_sectors = data[10]
+        sector_timer = None
+        no_of_sectors = None
+        if msg_length >= 11:
+            sector_timer = data[9]
+            no_of_sectors = data[10]
 
         model = BYTES_TO_MODEL.get(device_bytes, Models.SmartSeries7000)
         model_info = DEVICE_TYPES[model]
@@ -203,16 +209,18 @@ class OralBBluetoothDeviceData(BluetoothData):
 
         self.update_sensor(str(OralBSensor.TIME), None, time, None, "Time")
         self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
-        self.update_sensor(
-            str(OralBSensor.NUMBER_OF_SECTORS),
-            None,
-            no_of_sectors,
-            None,
-            "Number of sectors",
-        )
-        self.update_sensor(
-            str(OralBSensor.SECTOR_TIMER), None, sector_timer, None, "Sector Timer"
-        )
+        if no_of_sectors is not None:
+            self.update_sensor(
+                str(OralBSensor.NUMBER_OF_SECTORS),
+                None,
+                no_of_sectors,
+                None,
+                "Number of sectors",
+            )
+        if sector_timer is not None:
+            self.update_sensor(
+                str(OralBSensor.SECTOR_TIMER), None, sector_timer, None, "Sector Timer"
+            )
         self.update_sensor(
             str(OralBSensor.TOOTHBRUSH_STATE), None, tb_state, None, "Toothbrush State"
         )
