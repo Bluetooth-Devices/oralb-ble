@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.11.1 (2022-11-05)
+### Fix
+* Add pressure mappings for 32 ([#14](https://github.com/Bluetooth-Devices/oralb-ble/issues/14)) ([`b992a62`](https://github.com/Bluetooth-Devices/oralb-ble/commit/b992a625508b3f970cfe4ca855201431d005effe))
+
 ## v0.11.0 (2022-11-05)
 ### Feature
 * Add more pressure mappings from a 6000 ([#17](https://github.com/Bluetooth-Devices/oralb-ble/issues/17)) ([`b1c5e31`](https://github.com/Bluetooth-Devices/oralb-ble/commit/b1c5e31bf045a0c23e0135055b5c3ed103e92d36))
