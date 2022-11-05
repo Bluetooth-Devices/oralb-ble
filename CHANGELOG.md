@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.13.0 (2022-11-05)
+### Feature
+* Add tests for smart series 6000 ([#19](https://github.com/Bluetooth-Devices/oralb-ble/issues/19)) ([`93ccc7c`](https://github.com/Bluetooth-Devices/oralb-ble/commit/93ccc7c569b00b6bb41468abe540dcda0f5e6e86))
+
 ## v0.12.0 (2022-11-05)
 ### Feature
 * Add mapping for older 9 byte models ([#18](https://github.com/Bluetooth-Devices/oralb-ble/issues/18)) ([`95338aa`](https://github.com/Bluetooth-Devices/oralb-ble/commit/95338aa6d54e5668cb9f7605e44d662d3c05a212))
