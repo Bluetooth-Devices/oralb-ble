@@ -45,6 +45,7 @@ class Models(Enum):
     SmartSeries4000 = auto()
     SmartSeries6000 = auto()
     SmartSeries7000 = auto()
+    SmartSeries8000 = auto()
     SmartSeries9000 = auto()
 
 
@@ -109,6 +110,10 @@ DEVICE_TYPES = {
         device_type="Smart Series 7000",
         modes=SMART_SERIES_MODES,
     ),
+    Models.SmartSeries8000: ModelDescription(
+        device_type="Smart Series 8000",
+        modes=SMART_SERIES_MODES,
+    ),
     Models.SmartSeries9000: ModelDescription(
         device_type="Smart Series 9000",
         modes=SMART_SERIES_MODES,
@@ -159,6 +164,7 @@ BYTES_TO_MODEL = {
     b"\x074\x0c": Models.IOSeries4,
     b"\x03V\x04": Models.SmartSeries4000,
     b"\x04'\r": Models.SmartSeries6000,
+    b'\x03"\x0c': Models.SmartSeries8000,
     b"\x03!\x0c": Models.SmartSeries9000,
     b"\x061\x16": Models.IOSeries9,
     b"\x02\x02\x06": Models.TriumphV2,
