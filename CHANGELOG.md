@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.14.0 (2022-11-06)
+### Feature
+* Add support for Genius/Smart Series 8000 ([#21](https://github.com/Bluetooth-Devices/oralb-ble/issues/21)) ([`fe17ea4`](https://github.com/Bluetooth-Devices/oralb-ble/commit/fe17ea451a5e6ad10ea75a611495a4636fa1bfab))
+
 ## v0.13.0 (2022-11-05)
 ### Feature
 * Add tests for smart series 6000 ([#19](https://github.com/Bluetooth-Devices/oralb-ble/issues/19)) ([`93ccc7c`](https://github.com/Bluetooth-Devices/oralb-ble/commit/93ccc7c569b00b6bb41468abe540dcda0f5e6e86))
