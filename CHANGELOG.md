@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.14.1 (2022-11-09)
+### Fix
+* Add missing mapping for IO Series 8 ([#25](https://github.com/Bluetooth-Devices/oralb-ble/issues/25)) ([`20722d2`](https://github.com/Bluetooth-Devices/oralb-ble/commit/20722d22d8dc7ab1879e8ec8bbfa686047efeb80))
+
 ## v0.14.0 (2022-11-06)
 ### Feature
 * Add support for Genius/Smart Series 8000 ([#21](https://github.com/Bluetooth-Devices/oralb-ble/issues/21)) ([`fe17ea4`](https://github.com/Bluetooth-Devices/oralb-ble/commit/fe17ea451a5e6ad10ea75a611495a4636fa1bfab))
