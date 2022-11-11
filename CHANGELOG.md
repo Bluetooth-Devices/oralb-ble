@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.14.2 (2022-11-11)
+### Fix
+* Detction of Oral-B Genius 9000 black model ([#26](https://github.com/Bluetooth-Devices/oralb-ble/issues/26)) ([`6a114c5`](https://github.com/Bluetooth-Devices/oralb-ble/commit/6a114c55911b9ce332ad5e053e159e0f3b15e1f1))
+
 ## v0.14.1 (2022-11-09)
 ### Fix
 * Add missing mapping for IO Series 8 ([#25](https://github.com/Bluetooth-Devices/oralb-ble/issues/25)) ([`20722d2`](https://github.com/Bluetooth-Devices/oralb-ble/commit/20722d22d8dc7ab1879e8ec8bbfa686047efeb80))
