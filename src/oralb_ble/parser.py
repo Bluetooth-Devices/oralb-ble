@@ -170,6 +170,7 @@ BYTES_TO_MODEL = {
     b"\x03V\x04": Models.SmartSeries4000,
     b"\x04'\r": Models.SmartSeries6000,
     b'\x03"\x0c': Models.SmartSeries8000,
+    b"\x03!\x0b": Models.SmartSeries9000,
     b"\x03!\x0c": Models.SmartSeries9000,
     b"\x061\x19": Models.IOSeries8,
     b"\x061\x16": Models.IOSeries9,
