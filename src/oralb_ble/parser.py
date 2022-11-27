@@ -70,7 +70,7 @@ SMART_SERIES_MODES = {
 }
 
 
-SMART_SERIES_6000_MODES = SMART_SERIES_4000_MODES = SMART_SERIES_MODES | {2: "off"}
+SMART_SERIES_6000_MODES = SMART_SERIES_MODES | {2: "off"}
 
 
 IO_SERIES_MODES = {
@@ -105,7 +105,7 @@ DEVICE_TYPES = {
     ),
     Models.SmartSeries4000: ModelDescription(
         device_type="Smart Series 4000",
-        modes=SMART_SERIES_4000_MODES,
+        modes=SMART_SERIES_MODES,
     ),
     Models.SmartSeries6000: ModelDescription(
         device_type="Smart Series 6000",
