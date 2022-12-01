@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.14.3 (2022-12-01)
+### Fix
+* Ci ([#28](https://github.com/Bluetooth-Devices/oralb-ble/issues/28)) ([`9fd1c4e`](https://github.com/Bluetooth-Devices/oralb-ble/commit/9fd1c4ee7fc3afadb31f3beb5b1b94bb8bc9c624))
+
 ## v0.14.2 (2022-11-11)
 ### Fix
 * Detction of Oral-B Genius 9000 black model ([#26](https://github.com/Bluetooth-Devices/oralb-ble/issues/26)) ([`6a114c5`](https://github.com/Bluetooth-Devices/oralb-ble/commit/6a114c55911b9ce332ad5e053e159e0f3b15e1f1))
