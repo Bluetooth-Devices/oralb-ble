@@ -80,6 +80,7 @@ IO_SERIES_MODES = {
     3: "whiten",
     4: "intense",
     5: "super sensitive",
+    6: "tongue cleaning",
     8: "settings",
 }
 
