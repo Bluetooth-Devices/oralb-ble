@@ -53,6 +53,15 @@ ORALB_DATA_4 = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
+ORALB_IO_SERIES_6 = BluetoothServiceInfo(
+    name="78:DB:2F:C2:48:BE",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062k\x02r\x00\x00\x01\x01\x00\x04"},
+    service_uuids=[],
+    service_data={},
+    source="local",
+)
 ORALB_IO_SERIES_7 = BluetoothServiceInfo(
     name="78:DB:2F:C2:48:BE",
     address="78:DB:2F:C2:48:BE",
@@ -111,7 +120,7 @@ ORALB_IO_SERIES_9 = BluetoothServiceInfo(
 ORALB_4000_SERIES = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
-    name="9000",
+    name="4000",
     manufacturer_data={220: b"\x03V\x04\x030\x00\x00\x01\x01\x00\x04"},
     service_uuids=[],
     service_data={},
@@ -185,6 +194,43 @@ GENIUS_8000_HIGH_PRESSURE = BluetoothServiceInfo(
     rssi=-63,
     name="GENIUS8000",
     manufacturer_data={220: b'\x03"\x0c\x03\xc0\x010\x07\x04<\x04'},
+    service_uuids=[],
+    service_data={},
+    source="local",
+)
+
+ORALB_IO_SERIES_6_DAILY_CLEAN = BluetoothServiceInfo(
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x02r\x00\x00\x00\x01\x00\x04"},
+    service_uuids=[],
+    service_data={},
+    source="local",
+)
+ORALB_IO_SERIES_6_SENSITIVE = BluetoothServiceInfo(
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x02r\x00\x00\x01\x01\x00\x04"},
+    service_uuids=[],
+    service_data={},
+    source="local",
+)
+ORALB_IO_SERIES_6_GUM_CARE = BluetoothServiceInfo(
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x02r\x00\x00\x02\x01\x00\x04"},
+    service_uuids=[],
+    service_data={},
+    source="local",
+)
+ORALB_IO_SERIES_6_WHITEN = BluetoothServiceInfo(
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x02r\x00\x00\x03\x01\x00\x04"},
     service_uuids=[],
     service_data={},
     source="local",
@@ -655,16 +701,591 @@ def test_dataset_4():
     )
 
 
+def test_io_series_6():
+    parser = OralBBluetoothDeviceData()
+    service_info = ORALB_IO_SERIES_6
+    result = parser.update(service_info)
+    assert result == SensorUpdate(
+        title="IO Series 6/7 48BE",
+        devices={
+            None: SensorDeviceInfo(
+                name="IO Series 6/7 48BE",
+                model="IO Series 6/7",
+                manufacturer="Oral-B",
+                sw_version=None,
+                hw_version=None,
+            )
+        },
+        entity_descriptions={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+                native_unit_of_measurement=Units.SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="mode", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="mode", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+        },
+        entity_values={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                name="Number " "of " "sectors",
+                native_value=4,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                name="Sector " "Timer",
+                native_value=0,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorValue(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                name="Signal " "Strength",
+                native_value=-63,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector", device_id=None),
+                name="Sector",
+                native_value="sector " "1",
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                name="Toothbrush " "State",
+                native_value="idle",
+            ),
+            DeviceKey(key="mode", device_id=None): SensorValue(
+                device_key=DeviceKey(key="mode", device_id=None),
+                name="Mode",
+                native_value="sensitive",
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorValue(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                name="Pressure",
+                native_value="normal",
+            ),
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
+                native_value=0,
+            ),
+        },
+        binary_entity_descriptions={
+            DeviceKey(key="brushing", device_id=None): BinarySensorDescription(
+                device_key=DeviceKey(key="brushing", device_id=None), device_class=None
+            )
+        },
+        binary_entity_values={
+            DeviceKey(key="brushing", device_id=None): BinarySensorValue(
+                device_key=DeviceKey(key="brushing", device_id=None),
+                name="Brushing",
+                native_value=False,
+            )
+        },
+        events={},
+    )
+
+
+def test_io_series_6_daily_clean_mode():
+    parser = OralBBluetoothDeviceData()
+    service_info = ORALB_IO_SERIES_6_DAILY_CLEAN
+    result = parser.update(service_info)
+    assert result == SensorUpdate(
+        title="IO Series 6/7 48BE",
+        devices={
+            None: SensorDeviceInfo(
+                name="IO Series 6/7 48BE",
+                model="IO Series 6/7",
+                manufacturer="Oral-B",
+                sw_version=None,
+                hw_version=None,
+            )
+        },
+        entity_descriptions={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+                native_unit_of_measurement=Units.SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="mode", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="mode", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+        },
+        entity_values={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                name="Number " "of " "sectors",
+                native_value=4,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                name="Sector " "Timer",
+                native_value=0,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorValue(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                name="Signal " "Strength",
+                native_value=-63,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector", device_id=None),
+                name="Sector",
+                native_value="sector " "1",
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                name="Toothbrush " "State",
+                native_value="idle",
+            ),
+            DeviceKey(key="mode", device_id=None): SensorValue(
+                device_key=DeviceKey(key="mode", device_id=None),
+                name="Mode",
+                native_value="daily clean",
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorValue(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                name="Pressure",
+                native_value="normal",
+            ),
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
+                native_value=0,
+            ),
+        },
+        binary_entity_descriptions={
+            DeviceKey(key="brushing", device_id=None): BinarySensorDescription(
+                device_key=DeviceKey(key="brushing", device_id=None), device_class=None
+            )
+        },
+        binary_entity_values={
+            DeviceKey(key="brushing", device_id=None): BinarySensorValue(
+                device_key=DeviceKey(key="brushing", device_id=None),
+                name="Brushing",
+                native_value=False,
+            )
+        },
+        events={},
+    )
+
+
+def test_io_series_6_sensitive_mode():
+    parser = OralBBluetoothDeviceData()
+    service_info = ORALB_IO_SERIES_6_SENSITIVE
+    result = parser.update(service_info)
+    assert result == SensorUpdate(
+        title="IO Series 6/7 48BE",
+        devices={
+            None: SensorDeviceInfo(
+                name="IO Series 6/7 48BE",
+                model="IO Series 6/7",
+                manufacturer="Oral-B",
+                sw_version=None,
+                hw_version=None,
+            )
+        },
+        entity_descriptions={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+                native_unit_of_measurement=Units.SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="mode", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="mode", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+        },
+        entity_values={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                name="Number " "of " "sectors",
+                native_value=4,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                name="Sector " "Timer",
+                native_value=0,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorValue(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                name="Signal " "Strength",
+                native_value=-63,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector", device_id=None),
+                name="Sector",
+                native_value="sector " "1",
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                name="Toothbrush " "State",
+                native_value="idle",
+            ),
+            DeviceKey(key="mode", device_id=None): SensorValue(
+                device_key=DeviceKey(key="mode", device_id=None),
+                name="Mode",
+                native_value="sensitive",
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorValue(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                name="Pressure",
+                native_value="normal",
+            ),
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
+                native_value=0,
+            ),
+        },
+        binary_entity_descriptions={
+            DeviceKey(key="brushing", device_id=None): BinarySensorDescription(
+                device_key=DeviceKey(key="brushing", device_id=None), device_class=None
+            )
+        },
+        binary_entity_values={
+            DeviceKey(key="brushing", device_id=None): BinarySensorValue(
+                device_key=DeviceKey(key="brushing", device_id=None),
+                name="Brushing",
+                native_value=False,
+            )
+        },
+        events={},
+    )
+
+
+def test_io_series_6_gum_care_mode():
+    parser = OralBBluetoothDeviceData()
+    service_info = ORALB_IO_SERIES_6_GUM_CARE
+    result = parser.update(service_info)
+    assert result == SensorUpdate(
+        title="IO Series 6/7 48BE",
+        devices={
+            None: SensorDeviceInfo(
+                name="IO Series 6/7 48BE",
+                model="IO Series 6/7",
+                manufacturer="Oral-B",
+                sw_version=None,
+                hw_version=None,
+            )
+        },
+        entity_descriptions={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+                native_unit_of_measurement=Units.SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="mode", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="mode", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+        },
+        entity_values={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                name="Number " "of " "sectors",
+                native_value=4,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                name="Sector " "Timer",
+                native_value=0,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorValue(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                name="Signal " "Strength",
+                native_value=-63,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector", device_id=None),
+                name="Sector",
+                native_value="sector " "1",
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                name="Toothbrush " "State",
+                native_value="idle",
+            ),
+            DeviceKey(key="mode", device_id=None): SensorValue(
+                device_key=DeviceKey(key="mode", device_id=None),
+                name="Mode",
+                native_value="gum care",
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorValue(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                name="Pressure",
+                native_value="normal",
+            ),
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
+                native_value=0,
+            ),
+        },
+        binary_entity_descriptions={
+            DeviceKey(key="brushing", device_id=None): BinarySensorDescription(
+                device_key=DeviceKey(key="brushing", device_id=None), device_class=None
+            )
+        },
+        binary_entity_values={
+            DeviceKey(key="brushing", device_id=None): BinarySensorValue(
+                device_key=DeviceKey(key="brushing", device_id=None),
+                name="Brushing",
+                native_value=False,
+            )
+        },
+        events={},
+    )
+
+
+def test_io_series_6_whiten_mode():
+    parser = OralBBluetoothDeviceData()
+    service_info = ORALB_IO_SERIES_6_WHITEN
+    result = parser.update(service_info)
+    assert result == SensorUpdate(
+        title="IO Series 6/7 48BE",
+        devices={
+            None: SensorDeviceInfo(
+                name="IO Series 6/7 48BE",
+                model="IO Series 6/7",
+                manufacturer="Oral-B",
+                sw_version=None,
+                hw_version=None,
+            )
+        },
+        entity_descriptions={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+                native_unit_of_measurement=Units.SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="sector", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="mode", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="mode", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+            DeviceKey(key="time", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="time", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
+        },
+        entity_values={
+            DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
+                device_key=DeviceKey(key="number_of_sectors", device_id=None),
+                name="Number " "of " "sectors",
+                native_value=4,
+            ),
+            DeviceKey(key="sector_timer", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector_timer", device_id=None),
+                name="Sector " "Timer",
+                native_value=0,
+            ),
+            DeviceKey(key="signal_strength", device_id=None): SensorValue(
+                device_key=DeviceKey(key="signal_strength", device_id=None),
+                name="Signal " "Strength",
+                native_value=-63,
+            ),
+            DeviceKey(key="sector", device_id=None): SensorValue(
+                device_key=DeviceKey(key="sector", device_id=None),
+                name="Sector",
+                native_value="sector " "1",
+            ),
+            DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
+                device_key=DeviceKey(key="toothbrush_state", device_id=None),
+                name="Toothbrush " "State",
+                native_value="idle",
+            ),
+            DeviceKey(key="mode", device_id=None): SensorValue(
+                device_key=DeviceKey(key="mode", device_id=None),
+                name="Mode",
+                native_value="whiten",
+            ),
+            DeviceKey(key="pressure", device_id=None): SensorValue(
+                device_key=DeviceKey(key="pressure", device_id=None),
+                name="Pressure",
+                native_value="normal",
+            ),
+            DeviceKey(key="time", device_id=None): SensorValue(
+                device_key=DeviceKey(key="time", device_id=None),
+                name="Time",
+                native_value=0,
+            ),
+        },
+        binary_entity_descriptions={
+            DeviceKey(key="brushing", device_id=None): BinarySensorDescription(
+                device_key=DeviceKey(key="brushing", device_id=None), device_class=None
+            )
+        },
+        binary_entity_values={
+            DeviceKey(key="brushing", device_id=None): BinarySensorValue(
+                device_key=DeviceKey(key="brushing", device_id=None),
+                name="Brushing",
+                native_value=False,
+            )
+        },
+        events={},
+    )
+
+
 def test_io_series_7():
     parser = OralBBluetoothDeviceData()
     service_info = ORALB_IO_SERIES_7
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 7/8 48BE",
+        title="IO Series 6/7 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 7/8 48BE",
-                model="IO Series 7/8",
+                name="IO Series 6/7 48BE",
+                model="IO Series 6/7",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
