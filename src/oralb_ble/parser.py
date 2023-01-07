@@ -41,7 +41,7 @@ class Models(Enum):
     TriumphV2 = auto()
     IOSeries8 = auto()
     IOSeries9 = auto()
-    IOSeries78 = auto()
+    IOSeries67 = auto()
     IOSeries4 = auto()
     SmartSeries4000 = auto()
     SmartSeries6000 = auto()
@@ -87,8 +87,8 @@ IO_SERIES_MODES = {
 DEVICE_TYPES = {
     Models.Pro6000: ModelDescription("Pro 6000", SMART_SERIES_MODES),
     Models.TriumphV2: ModelDescription("Triumph V2", SMART_SERIES_MODES),
-    Models.IOSeries78: ModelDescription(
-        device_type="IO Series 7/8",
+    Models.IOSeries67: ModelDescription(
+        device_type="IO Series 6/7",
         modes=IO_SERIES_MODES,
     ),
     Models.IOSeries8: ModelDescription(
@@ -165,7 +165,7 @@ ORALB_MANUFACTURER = 0x00DC
 
 
 BYTES_TO_MODEL = {
-    b"\x062k": Models.IOSeries78,
+    b"\x062k": Models.IOSeries67,
     b"\x074\x0c": Models.IOSeries4,
     b"\x03V\x04": Models.SmartSeries4000,
     b"\x04'\r": Models.SmartSeries6000,
