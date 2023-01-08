@@ -182,8 +182,23 @@ BYTES_TO_MODEL = {
 }
 
 SECTOR_MAP = {
-    254: "last sector",
-    255: "no sector",
+    1: "sector 1",
+    9: "sector 1",
+    2: "sector 2",
+    10: "sector 2",
+    3: "sector 3",
+    11: "sector 3",
+    19: "sector 3",
+    27: "sector 3",
+    7: "sector 4",
+    15: "sector 4",
+    31: "sector 4",
+    39: "sector 4",
+    41: "success",
+    42: "success",
+    43: "success",
+    47: "success",
+    55: "success",
 }
 
 
@@ -228,10 +243,16 @@ class OralBBluetoothDeviceData(BluetoothData):
         tb_state = STATES.get(state, f"unknown state {state}")
         tb_mode = modes.get(mode, f"unknown mode {mode}")
         tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
-        tb_sector = SECTOR_MAP.get(sector, f"sector {sector}")
+        tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
 
         self.update_sensor(str(OralBSensor.TIME), None, time, None, "Time")
-        self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
+        if time == 0 and (state == 2 or state == 8):
+            """When starting up, sector is not accurate."""
+            self.update_sensor(
+                str(OralBSensor.SECTOR), None, "no sector", None, "Sector"
+            )
+        else:
+            self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
         if no_of_sectors is not None:
             self.update_sensor(
                 str(OralBSensor.NUMBER_OF_SECTORS),

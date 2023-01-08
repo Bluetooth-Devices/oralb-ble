@@ -312,7 +312,7 @@ def test_dataset_1():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="number_of_sectors", device_id=None): SensorValue(
                 device_key=DeviceKey(key="number_of_sectors", device_id=None),
@@ -777,7 +777,7 @@ def test_io_series_6():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -892,7 +892,7 @@ def test_io_series_6_daily_clean_mode():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1007,7 +1007,7 @@ def test_io_series_6_sensitive_mode():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1122,7 +1122,7 @@ def test_io_series_6_gum_care_mode():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1237,7 +1237,7 @@ def test_io_series_6_whiten_mode():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1712,7 +1712,7 @@ def test_9000_black_series():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1802,7 +1802,7 @@ def test_io_series_9():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "2",
+                native_value="no " "sector",
             ),
             DeviceKey(key="time", device_id=None): SensorValue(
                 device_key=DeviceKey(key="time", device_id=None),
@@ -2047,7 +2047,7 @@ def test_triumph_v2():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "15",
+                native_value="no " "sector",
             ),
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
@@ -2732,7 +2732,7 @@ def test_genius_8000():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "15",
+                native_value="no " "sector",
             ),
         },
         binary_entity_descriptions={
@@ -2837,7 +2837,7 @@ def test_genius_8000_high_pressure():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "4",
+                native_value="unknown sector code " "4",
             ),
             DeviceKey(key="time", device_id=None): SensorValue(
                 device_key=DeviceKey(key="time", device_id=None),
@@ -2947,7 +2947,7 @@ def test_io_series_8():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "7",
+                native_value="no " "sector",
             ),
             DeviceKey(key="time", device_id=None): SensorValue(
                 device_key=DeviceKey(key="time", device_id=None),
