@@ -1741,11 +1741,11 @@ def test_io_series_9():
     service_info = ORALB_IO_SERIES_9
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 9 48BE",
+        title="IO Series 8/9 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 9 48BE",
-                model="IO Series 9",
+                name="IO Series 8/9 48BE",
+                model="IO Series 8/9",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2871,11 +2871,11 @@ def test_io_series_8():
     service_info = ORALB_IO_SERIES_8
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 8 48BE",
+        title="IO Series 8/9 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 8 48BE",
-                model="IO Series 8",
+                name="IO Series 8/9 48BE",
+                model="IO Series 8/9",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
