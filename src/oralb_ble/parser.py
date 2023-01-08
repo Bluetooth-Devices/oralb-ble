@@ -126,7 +126,6 @@ DEVICE_TYPES = {
     ),
 }
 
-
 STATES = {
     0: "unknown",
     1: "initializing",
@@ -154,8 +153,11 @@ PRESSURE = {
     56: "power button pressed",
     114: "normal",
     118: "button pressed",
+    122: "power button pressed",
     178: "high",
     146: "high",
+    182: "button pressed",
+    186: "power button pressed",
     192: "high",
     240: "high",
     242: "high",
@@ -178,6 +180,7 @@ BYTES_TO_MODEL = {
     b"\x02\x02\x06": Models.TriumphV2,
     b"\x01\x02\x05": Models.Pro6000,
 }
+
 SECTOR_MAP = {
     254: "last sector",
     255: "no sector",
