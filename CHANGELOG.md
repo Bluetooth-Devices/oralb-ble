@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.16.1 (2023-01-08)
+### Fix
+* Added pressure and sector codes while connected to app ([#31](https://github.com/Bluetooth-Devices/oralb-ble/issues/31)) ([`9cff663`](https://github.com/Bluetooth-Devices/oralb-ble/commit/9cff663ee77b5b739b4f6eabc519aa21be7b92c6))
+
 ## v0.16.0 (2023-01-08)
 ### Feature
 * Rework sectors, fix pressures, and fix misidentification of IO 9 as 8 ([#30](https://github.com/Bluetooth-Devices/oralb-ble/issues/30)) ([`7000169`](https://github.com/Bluetooth-Devices/oralb-ble/commit/70001694d8f8c2a99ca560566eff875c722dd0d3))
