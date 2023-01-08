@@ -2837,7 +2837,7 @@ def test_genius_8000_high_pressure():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="unknown sector code " "4",
+                native_value="sector " "4",
             ),
             DeviceKey(key="time", device_id=None): SensorValue(
                 device_key=DeviceKey(key="time", device_id=None),
