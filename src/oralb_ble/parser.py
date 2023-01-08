@@ -252,7 +252,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
 
         self.update_sensor(str(OralBSensor.TIME), None, time, None, "Time")
-        if time == 0 and (tb_state != "running"):
+        if time == 0 and tb_state != "running":
             """When starting up, sector is not accurate."""
             self.update_sensor(
                 str(OralBSensor.SECTOR), None, "no sector", None, "Sector"
