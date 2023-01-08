@@ -39,10 +39,11 @@ class Models(Enum):
 
     Pro6000 = auto()
     TriumphV2 = auto()
+    IOSeries4 = auto()
+    IOSeries67 = auto()
     IOSeries8 = auto()
     IOSeries9 = auto()
-    IOSeries67 = auto()
-    IOSeries4 = auto()
+    IOSeries89 = auto()
     SmartSeries4000 = auto()
     SmartSeries6000 = auto()
     SmartSeries7000 = auto()
@@ -82,12 +83,17 @@ IO_SERIES_MODES = {
     5: "super sensitive",
     6: "tongue cleaning",
     8: "settings",
+    9: "off",
 }
 
 
 DEVICE_TYPES = {
     Models.Pro6000: ModelDescription("Pro 6000", SMART_SERIES_MODES),
     Models.TriumphV2: ModelDescription("Triumph V2", SMART_SERIES_MODES),
+    Models.IOSeries4: ModelDescription(
+        device_type="IO Series 4",
+        modes=IO_SERIES_MODES,
+    ),
     Models.IOSeries67: ModelDescription(
         device_type="IO Series 6/7",
         modes=IO_SERIES_MODES,
@@ -100,8 +106,8 @@ DEVICE_TYPES = {
         device_type="IO Series 9",
         modes=IO_SERIES_MODES,
     ),
-    Models.IOSeries4: ModelDescription(
-        device_type="IO Series 4",
+    Models.IOSeries89: ModelDescription(
+        device_type="IO Series 8/9",
         modes=IO_SERIES_MODES,
     ),
     Models.SmartSeries4000: ModelDescription(
@@ -125,7 +131,6 @@ DEVICE_TYPES = {
         modes=SMART_SERIES_MODES,
     ),
 }
-
 
 STATES = {
     0: "unknown",
@@ -154,8 +159,11 @@ PRESSURE = {
     56: "power button pressed",
     114: "normal",
     118: "button pressed",
+    122: "power button pressed",
     178: "high",
     146: "high",
+    182: "button pressed",
+    186: "power button pressed",
     192: "high",
     240: "high",
     242: "high",
@@ -173,14 +181,30 @@ BYTES_TO_MODEL = {
     b'\x03"\x0c': Models.SmartSeries8000,
     b"\x03!\x0b": Models.SmartSeries9000,
     b"\x03!\x0c": Models.SmartSeries9000,
-    b"\x061\x19": Models.IOSeries8,
-    b"\x061\x16": Models.IOSeries9,
+    b"\x061\x19": Models.IOSeries89,
+    b"\x061\x16": Models.IOSeries89,
     b"\x02\x02\x06": Models.TriumphV2,
     b"\x01\x02\x05": Models.Pro6000,
 }
+
 SECTOR_MAP = {
-    254: "last sector",
-    255: "no sector",
+    1: "sector 1",
+    9: "sector 1",
+    2: "sector 2",
+    10: "sector 2",
+    3: "sector 3",
+    11: "sector 3",
+    19: "sector 3",
+    27: "sector 3",
+    7: "sector 4",
+    15: "sector 4",
+    31: "sector 4",
+    39: "sector 4",
+    41: "success",
+    42: "success",
+    43: "success",
+    47: "success",
+    55: "success",
 }
 
 
@@ -225,10 +249,16 @@ class OralBBluetoothDeviceData(BluetoothData):
         tb_state = STATES.get(state, f"unknown state {state}")
         tb_mode = modes.get(mode, f"unknown mode {mode}")
         tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
-        tb_sector = SECTOR_MAP.get(sector, f"sector {sector}")
+        tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
 
         self.update_sensor(str(OralBSensor.TIME), None, time, None, "Time")
-        self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
+        if time == 0 and tb_state != "running":
+            # When starting up, sector is not accurate.
+            self.update_sensor(
+                str(OralBSensor.SECTOR), None, "no sector", None, "Sector"
+            )
+        else:
+            self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
         if no_of_sectors is not None:
             self.update_sensor(
                 str(OralBSensor.NUMBER_OF_SECTORS),
