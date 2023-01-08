@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.16.0 (2023-01-08)
+### Feature
+* Rework sectors, fix pressures, and fix misidentification of IO 9 as 8 ([#30](https://github.com/Bluetooth-Devices/oralb-ble/issues/30)) ([`7000169`](https://github.com/Bluetooth-Devices/oralb-ble/commit/70001694d8f8c2a99ca560566eff875c722dd0d3))
+
 ## v0.15.0 (2023-01-07)
 ### Feature
 * Add support for IO Series 6 and Tongue Cleaning Mode ([#29](https://github.com/Bluetooth-Devices/oralb-ble/issues/29)) ([`a1426b5`](https://github.com/Bluetooth-Devices/oralb-ble/commit/a1426b5b9bdb456caa838bd971b6f73c9756ccfd))
