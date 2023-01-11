@@ -11,10 +11,15 @@ import logging
 from dataclasses import dataclass
 from enum import Enum, auto
 
+from bleak import BleakClient, BLEDevice
+from bleak_retry_connector import establish_connection
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
+from sensor_state_data import SensorUpdate
 from sensor_state_data.enum import StrEnum
+
+from src.oralb_ble import CHARACTERISTIC_BATTERY, CHARACTERISTIC_PRESSURE
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,6 +34,7 @@ class OralBSensor(StrEnum):
     PRESSURE = "pressure"
     MODE = "mode"
     SIGNAL_STRENGTH = "signal_strength"
+    BATTERY_PERCENT = "battery_percent"
 
 
 class OralBBinarySensor(StrEnum):
@@ -174,6 +180,7 @@ PRESSURE = {
     242: "high",
 }
 
+ACTIVE_CONNECTION_PRESSURE = {0: "low", 1: "normal", 2: "high"}
 
 ORALB_MANUFACTURER = 0x00DC
 
@@ -224,7 +231,6 @@ class OralBBluetoothDeviceData(BluetoothData):
         address = service_info.address
         if ORALB_MANUFACTURER not in manufacturer_data:
             return None
-
         data = manufacturer_data[ORALB_MANUFACTURER]
         self.set_device_manufacturer("Oral-B")
         _LOGGER.debug("Parsing Oral-B sensor: %s", data)
@@ -287,3 +293,26 @@ class OralBBluetoothDeviceData(BluetoothData):
         self.update_binary_sensor(
             str(OralBBinarySensor.BRUSHING), bool(state == 3), None, "Brushing"
         )
+
+    async def async_poll(self, ble_device: BLEDevice) -> SensorUpdate:
+        """
+        Poll the device to retrieve any values we can't get from passive listening.
+        """
+        client = await establish_connection(BleakClient, ble_device, ble_device.address)
+        try:
+            battery_char = client.services.get_characteristic(CHARACTERISTIC_BATTERY)
+            battery_payload = await client.read_gatt_char(battery_char)
+            pressure_char = client.services.get_characteristic(CHARACTERISTIC_PRESSURE)
+            pressure_payload = await client.read_gatt_char(pressure_char)
+        finally:
+            await client.disconnect()
+        tb_pressure = PRESSURE.get(
+            pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
+        )
+        self.update_sensor(
+            str(OralBSensor.PRESSURE), None, tb_pressure, None, "Pressure"
+        )
+        self.update_sensor(
+            str(OralBSensor.BATTERY_PERCENT), None, battery_payload[0], None, "Battery"
+        )
+        return self._finish_update()

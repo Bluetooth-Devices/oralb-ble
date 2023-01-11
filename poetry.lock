@@ -56,6 +56,14 @@ pyobjc-framework-CoreBluetooth = {version = ">=8.5.1,<9.0.0", markers = "platfor
 pyobjc-framework-libdispatch = {version = ">=8.5.1,<9.0.0", markers = "platform_system == \"Darwin\""}
 
 [[package]]
+name = "bleak-retry-connector"
+version = "2.13.0"
+description = "A connector for Bleak Clients that handles transient connection failures"
+category = "main"
+optional = false
+python-versions = ">=3.9,<4.0"
+
+[[package]]
 name = "bleak-winrt"
 version = "1.2.0"
 description = "Python WinRT bindings for Bleak"
