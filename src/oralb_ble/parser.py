@@ -11,8 +11,8 @@ import logging
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from bleak import BleakClient, BLEDevice
-from bleak_retry_connector import establish_connection
+from bleak import BLEDevice
+from bleak_retry_connector import establish_connection, BleakClientWithServiceCache
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
@@ -298,7 +298,9 @@ class OralBBluetoothDeviceData(BluetoothData):
         """
         Poll the device to retrieve any values we can't get from passive listening.
         """
-        client = await establish_connection(BleakClient, ble_device, ble_device.address)
+        client = await establish_connection(
+            BleakClientWithServiceCache, ble_device, ble_device.address
+        )
         try:
             battery_char = client.services.get_characteristic(CHARACTERISTIC_BATTERY)
             battery_payload = await client.read_gatt_char(battery_char)
