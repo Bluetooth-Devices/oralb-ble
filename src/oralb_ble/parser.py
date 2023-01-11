@@ -19,7 +19,7 @@ from home_assistant_bluetooth import BluetoothServiceInfo
 from sensor_state_data import SensorUpdate
 from sensor_state_data.enum import StrEnum
 
-from src.oralb_ble import CHARACTERISTIC_BATTERY, CHARACTERISTIC_PRESSURE
+from .const import CHARACTERISTIC_BATTERY, CHARACTERISTIC_PRESSURE
 
 _LOGGER = logging.getLogger(__name__)
 

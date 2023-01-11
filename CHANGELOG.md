@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17 (2023-01-11)
+### Feature
+* Add support for battery life using active ble connection ([#32](https://github.com/Bluetooth-Devices/oralb-ble/pull/32)) ([`d33a90b`](https://github.com/Bluetooth-Devices/oralb-ble/commit/d33a90b6d834d54d1679013a0b48d8f70b2befb9))
+
 ## v0.16.1 (2023-01-08)
 ### Fix
 * Added pressure and sector codes while connected to app ([#31](https://github.com/Bluetooth-Devices/oralb-ble/issues/31)) ([`9cff663`](https://github.com/Bluetooth-Devices/oralb-ble/commit/9cff663ee77b5b739b4f6eabc519aa21be7b92c6))
