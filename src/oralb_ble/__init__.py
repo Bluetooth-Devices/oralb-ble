@@ -19,7 +19,6 @@ from sensor_state_data import (
     Units,
 )
 
-from .const import CHARACTERISTIC_BATTERY, CHARACTERISTIC_MODEL, CHARACTERISTIC_PRESSURE
 from .parser import OralBBinarySensor, OralBBluetoothDeviceData, OralBSensor
 
 __version__ = "0.16.1"

@@ -12,11 +12,11 @@ from dataclasses import dataclass
 from enum import Enum, auto
 
 from bleak import BLEDevice
-from bleak_retry_connector import establish_connection, BleakClientWithServiceCache
+from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
-from sensor_state_data import SensorUpdate, Units, SensorDeviceClass
+from sensor_state_data import SensorDeviceClass, SensorUpdate, Units
 from sensor_state_data.enum import StrEnum
 
 from .const import CHARACTERISTIC_BATTERY, CHARACTERISTIC_PRESSURE
