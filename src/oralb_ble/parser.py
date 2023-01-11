@@ -16,7 +16,7 @@ from bleak_retry_connector import establish_connection, BleakClientWithServiceCa
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
-from sensor_state_data import SensorUpdate
+from sensor_state_data import SensorUpdate, Units, SensorDeviceClass
 from sensor_state_data.enum import StrEnum
 
 from .const import CHARACTERISTIC_BATTERY, CHARACTERISTIC_PRESSURE
@@ -315,6 +315,10 @@ class OralBBluetoothDeviceData(BluetoothData):
             str(OralBSensor.PRESSURE), None, tb_pressure, None, "Pressure"
         )
         self.update_sensor(
-            str(OralBSensor.BATTERY_PERCENT), None, battery_payload[0], None, "Battery"
+            str(OralBSensor.BATTERY_PERCENT),
+            Units.PERCENTAGE,
+            battery_payload[0],
+            SensorDeviceClass.BATTERY,
+            "Battery",
         )
         return self._finish_update()
