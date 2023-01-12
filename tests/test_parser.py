@@ -2985,7 +2985,7 @@ def test_io_series_8():
     )
 
 
-@mock.patch("src.oralb_ble.parser.establish_connection")
+@mock.patch("oralb_ble.parser.establish_connection")
 @pytest.mark.asyncio
 async def test_async_poll(mock_establish_connection):
     parser = OralBBluetoothDeviceData()
@@ -3006,14 +3006,20 @@ def test_poll_needed_no_advertisement():
     assert not parser.poll_needed(None, None)
 
 
+def test_poll_needed_no_time():
+    parser = OralBBluetoothDeviceData()
+    parser._seen_advertisement = True
+    assert parser.poll_needed(None, None)
+
+
 def test_poll_needed_brushing():
     parser = OralBBluetoothDeviceData()
     parser._seen_advertisement = True
     parser._brushing = True
-    assert parser.poll_needed(None, 59)
+    assert parser.poll_needed(None, 61)
 
 
-@mock.patch("src.oralb_ble.parser.time")
+@mock.patch("oralb_ble.parser.time")
 def test_poll_needed_brushing_recently(mocked_time):
     parser = OralBBluetoothDeviceData()
     parser._seen_advertisement = True

@@ -234,7 +234,7 @@ class OralBBluetoothDeviceData(BluetoothData):
     def __init__(self) -> None:
         super().__init__()
         # If this is True, then we have not seen an advertisement with a payload
-        self._seen_advertisement = True
+        self._seen_advertisement = False
         # If this is True, we are currently brushing or were brushing as of the last advertisement data
         self._brushing = False
         self._last_brush = 0.0
@@ -322,7 +322,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         device is working and online.
         """
         if not self._seen_advertisement:
-            # Never need to poll if we are pending
+            # Never need to poll if we haven't gotten advertisement data
             return False
         if (
             self._brushing
