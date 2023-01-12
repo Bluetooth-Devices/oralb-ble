@@ -10,6 +10,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from enum import Enum, auto
+import time
 
 from bleak import BLEDevice
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
@@ -19,7 +20,13 @@ from home_assistant_bluetooth import BluetoothServiceInfo
 from sensor_state_data import SensorDeviceClass, SensorUpdate, Units
 from sensor_state_data.enum import StrEnum
 
-from .const import CHARACTERISTIC_BATTERY, CHARACTERISTIC_PRESSURE
+from .const import (
+    CHARACTERISTIC_BATTERY,
+    CHARACTERISTIC_PRESSURE,
+    TIMEOUT_BRUSHING,
+    TIMEOUT_NOT_BRUSHING,
+    TIMEOUT_RECENTLY_BRUSHING,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -224,6 +231,14 @@ SECTOR_MAP = {
 class OralBBluetoothDeviceData(BluetoothData):
     """Data for OralB BLE sensors."""
 
+    def __init__(self):
+        super().__init__()
+        # If this is True, then we have not seen an advertisement with a payload
+        self.pending = True
+        # If this is True, we are currently brushing or were brushing as of the last advertisement data
+        self._brushing = False
+        self._last_brush = 0
+
     def _start_update(self, service_info: BluetoothServiceInfo) -> None:
         """Update from BLE advertisement data."""
         _LOGGER.debug("Parsing OralB BLE advertisement data: %s", service_info)
@@ -241,7 +256,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         device_bytes = data[0:3]
         state = data[3]
         pressure = data[4]
-        time = data[5] * 60 + data[6]
+        brush_time = data[5] * 60 + data[6]
         mode = data[7]
         sector = data[8]
         sector_timer = None
@@ -257,14 +272,14 @@ class OralBBluetoothDeviceData(BluetoothData):
         name = f"{model_info.device_type} {short_address(address)}"
         self.set_device_name(name)
         self.set_title(name)
-
+        self.pending = False
         tb_state = STATES.get(state, f"unknown state {state}")
         tb_mode = modes.get(mode, f"unknown mode {mode}")
         tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
         tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
 
-        self.update_sensor(str(OralBSensor.TIME), None, time, None, "Time")
-        if time == 0 and tb_state != "running":
+        self.update_sensor(str(OralBSensor.TIME), None, brush_time, None, "Time")
+        if brush_time == 0 and tb_state != "running":
             # When starting up, sector is not accurate.
             self.update_sensor(
                 str(OralBSensor.SECTOR), None, "no sector", None, "Sector"
@@ -293,6 +308,29 @@ class OralBBluetoothDeviceData(BluetoothData):
         self.update_binary_sensor(
             str(OralBBinarySensor.BRUSHING), bool(state == 3), None, "Brushing"
         )
+        if state == 3:
+            self._brushing = True
+            self._last_brush = time.time()
+        else:
+            self._brushing = False
+
+    def poll_needed(
+        self, service_info: BluetoothServiceInfo, last_poll: float | None
+    ) -> bool:
+        """
+        This is called every time we get a service_info for a device. It means the
+        device is working and online.
+        """
+        if self.pending:
+            # Never need to poll if we are pending
+            return False
+        if (
+            self._brushing
+            or time.time() - self._last_brush <= TIMEOUT_RECENTLY_BRUSHING
+        ):
+            return not last_poll or last_poll > TIMEOUT_BRUSHING
+        else:
+            return not last_poll or last_poll > TIMEOUT_NOT_BRUSHING
 
     async def async_poll(self, ble_device: BLEDevice) -> SensorUpdate:
         """

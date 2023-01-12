@@ -1,3 +1,7 @@
+TIMEOUT_BRUSHING = 60
+TIMEOUT_RECENTLY_BRUSHING = 120
+TIMEOUT_NOT_BRUSHING = 86400
+
 # Pulled from here:
 # https://github.com/wise86-android/OralBlue_python/blob/15e1a03bcb3350574d438e4593bcff59608a77a7/Protocol.md
 
