@@ -21,10 +21,10 @@ from sensor_state_data import SensorDeviceClass, SensorUpdate, Units
 from sensor_state_data.enum import StrEnum
 
 from .const import (
+    BRUSHING_UPDATE_INTERVAL_SECONDS,
     CHARACTERISTIC_BATTERY,
     CHARACTERISTIC_PRESSURE,
-    TIMEOUT_BRUSHING,
-    TIMEOUT_NOT_BRUSHING,
+    NOT_BRUSHING_UPDATE_INTERVAL_SECONDS,
     TIMEOUT_RECENTLY_BRUSHING,
 )
 
@@ -233,8 +233,6 @@ class OralBBluetoothDeviceData(BluetoothData):
 
     def __init__(self) -> None:
         super().__init__()
-        # If this is True, then we have not seen an advertisement with a payload
-        self._seen_advertisement = False
         # If this is True, we are currently brushing or were brushing as of the last advertisement data
         self._brushing = False
         self._last_brush = 0.0
@@ -272,7 +270,6 @@ class OralBBluetoothDeviceData(BluetoothData):
         name = f"{model_info.device_type} {short_address(address)}"
         self.set_device_name(name)
         self.set_title(name)
-        self._seen_advertisement = False
         tb_state = STATES.get(state, f"unknown state {state}")
         tb_mode = modes.get(mode, f"unknown mode {mode}")
         tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
@@ -321,16 +318,15 @@ class OralBBluetoothDeviceData(BluetoothData):
         This is called every time we get a service_info for a device. It means the
         device is working and online.
         """
-        if not self._seen_advertisement:
-            # Never need to poll if we haven't gotten advertisement data
-            return False
+        if last_poll is None:
+            return True
+        update_interval = NOT_BRUSHING_UPDATE_INTERVAL_SECONDS
         if (
             self._brushing
             or time.monotonic() - self._last_brush <= TIMEOUT_RECENTLY_BRUSHING
         ):
-            return not last_poll or last_poll > TIMEOUT_BRUSHING
-        else:
-            return not last_poll or last_poll > TIMEOUT_NOT_BRUSHING
+            update_interval = BRUSHING_UPDATE_INTERVAL_SECONDS
+        return last_poll > update_interval
 
     async def async_poll(self, ble_device: BLEDevice) -> SensorUpdate:
         """

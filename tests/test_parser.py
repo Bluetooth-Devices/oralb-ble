@@ -3001,20 +3001,13 @@ async def test_async_poll(mock_establish_connection):
     )
 
 
-def test_poll_needed_no_advertisement():
-    parser = OralBBluetoothDeviceData()
-    assert not parser.poll_needed(None, None)
-
-
 def test_poll_needed_no_time():
     parser = OralBBluetoothDeviceData()
-    parser._seen_advertisement = True
     assert parser.poll_needed(None, None)
 
 
 def test_poll_needed_brushing():
     parser = OralBBluetoothDeviceData()
-    parser._seen_advertisement = True
     parser._brushing = True
     assert parser.poll_needed(None, 61)
 
@@ -3022,7 +3015,6 @@ def test_poll_needed_brushing():
 @mock.patch("oralb_ble.parser.time")
 def test_poll_needed_brushing_recently(mocked_time):
     parser = OralBBluetoothDeviceData()
-    parser._seen_advertisement = True
     mocked_time.monotonic.return_value = 5
     parser._brushing = False
     parser._last_brush = 0
