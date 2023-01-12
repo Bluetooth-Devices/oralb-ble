@@ -234,7 +234,7 @@ class OralBBluetoothDeviceData(BluetoothData):
     def __init__(self):
         super().__init__()
         # If this is True, then we have not seen an advertisement with a payload
-        self.pending = True
+        self._seen_advertisement = True
         # If this is True, we are currently brushing or were brushing as of the last advertisement data
         self._brushing = False
         self._last_brush = 0
@@ -310,7 +310,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         )
         if state == 3:
             self._brushing = True
-            self._last_brush = time.time()
+            self._last_brush = time.monotonic()
         else:
             self._brushing = False
 
@@ -326,7 +326,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             return False
         if (
             self._brushing
-            or time.time() - self._last_brush <= TIMEOUT_RECENTLY_BRUSHING
+            or time.monotonic() - self._last_brush <= TIMEOUT_RECENTLY_BRUSHING
         ):
             return not last_poll or last_poll > TIMEOUT_BRUSHING
         else:
