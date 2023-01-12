@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.0 (2023-01-12)
+### Feature
+* Added init support for active connection to get battery ([#32](https://github.com/Bluetooth-Devices/oralb-ble/issues/32)) ([`efcf142`](https://github.com/Bluetooth-Devices/oralb-ble/commit/efcf1424b0e51e87844a539931d6cd26c4c6f32c))
+
 ## v0.16.1 (2023-01-08)
 ### Fix
 * Added pressure and sector codes while connected to app ([#31](https://github.com/Bluetooth-Devices/oralb-ble/issues/31)) ([`9cff663`](https://github.com/Bluetooth-Devices/oralb-ble/commit/9cff663ee77b5b739b4f6eabc519aa21be7b92c6))
