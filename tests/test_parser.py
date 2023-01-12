@@ -2996,7 +2996,7 @@ async def test_async_poll(mock_establish_connection):
     ]
     res = await parser.async_poll(device)
     assert (
-        res.entity_values.get(DeviceKey("battery")).native_value == 59
+        res.entity_values.get(DeviceKey("battery_percent")).native_value == 59
         and res.entity_values.get(DeviceKey("pressure")).native_value == "normal"
     )
 
