@@ -8,9 +8,9 @@ MIT License applies.
 from __future__ import annotations
 
 import logging
+import time
 from dataclasses import dataclass
 from enum import Enum, auto
-import time
 
 from bleak import BLEDevice
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
@@ -231,13 +231,13 @@ SECTOR_MAP = {
 class OralBBluetoothDeviceData(BluetoothData):
     """Data for OralB BLE sensors."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         # If this is True, then we have not seen an advertisement with a payload
         self._seen_advertisement = True
         # If this is True, we are currently brushing or were brushing as of the last advertisement data
         self._brushing = False
-        self._last_brush = 0
+        self._last_brush = 0.0
 
     def _start_update(self, service_info: BluetoothServiceInfo) -> None:
         """Update from BLE advertisement data."""
@@ -272,7 +272,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         name = f"{model_info.device_type} {short_address(address)}"
         self.set_device_name(name)
         self.set_title(name)
-        self.pending = False
+        self._seen_advertisement = False
         tb_state = STATES.get(state, f"unknown state {state}")
         tb_mode = modes.get(mode, f"unknown mode {mode}")
         tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
@@ -321,7 +321,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         This is called every time we get a service_info for a device. It means the
         device is working and online.
         """
-        if self.pending:
+        if not self._seen_advertisement:
             # Never need to poll if we are pending
             return False
         if (
@@ -346,7 +346,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             pressure_payload = await client.read_gatt_char(pressure_char)
         finally:
             await client.disconnect()
-        tb_pressure = PRESSURE.get(
+        tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
             pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
         )
         self.update_sensor(
