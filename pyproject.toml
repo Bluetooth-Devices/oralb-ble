@@ -34,7 +34,6 @@ bluetooth-data-tools = ">=0.1.2"
 bleak = ">=0.19.2"
 home-assistant-bluetooth = ">=1.6.0"
 bleak-retry-connector = ">=2.13.0"
-pytest-asyncio = "^0.20.3"
 mock = "^5.0.1"
 
 [tool.poetry.extras]
@@ -47,6 +46,9 @@ docs = [
 [tool.poetry.dev-dependencies]
 pytest = "^7.0"
 pytest-cov = "^3.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = "^0.20.2"
 
 [tool.semantic_release]
 branch = "main"
