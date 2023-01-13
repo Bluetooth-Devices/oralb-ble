@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.1 (2023-01-13)
+### Fix
+* Move mock and pytest-asyncio to dev deps ([#34](https://github.com/Bluetooth-Devices/oralb-ble/issues/34)) ([`acec5f6`](https://github.com/Bluetooth-Devices/oralb-ble/commit/acec5f64f1b978b57734884508da4bd909b548c0))
+
 ## v0.17.0 (2023-01-12)
 ### Feature
 * Added init support for active connection to get battery ([#32](https://github.com/Bluetooth-Devices/oralb-ble/issues/32)) ([`efcf142`](https://github.com/Bluetooth-Devices/oralb-ble/commit/efcf1424b0e51e87844a539931d6cd26c4c6f32c))
