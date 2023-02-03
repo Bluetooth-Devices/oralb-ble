@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.2 (2023-02-03)
+### Fix
+* Io4 identification for some models ([#38](https://github.com/Bluetooth-Devices/oralb-ble/issues/38)) ([`2eaaf2b`](https://github.com/Bluetooth-Devices/oralb-ble/commit/2eaaf2be23d5c8b4d8a8af4ea93d90c5eefd1b63))
+
 ## v0.17.1 (2023-01-13)
 ### Fix
 * Move mock and pytest-asyncio to dev deps ([#34](https://github.com/Bluetooth-Devices/oralb-ble/issues/34)) ([`acec5f6`](https://github.com/Bluetooth-Devices/oralb-ble/commit/acec5f64f1b978b57734884508da4bd909b548c0))
