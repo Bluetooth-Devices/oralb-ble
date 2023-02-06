@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.3 (2023-02-06)
+### Fix
+* Bump python-semantic-release ([#40](https://github.com/Bluetooth-Devices/oralb-ble/issues/40)) ([`0772a42`](https://github.com/Bluetooth-Devices/oralb-ble/commit/0772a4244788c5647645fe36a0a918d301da69cb))
+* Identification of Genius X and 10000 ([#39](https://github.com/Bluetooth-Devices/oralb-ble/issues/39)) ([`93ea567`](https://github.com/Bluetooth-Devices/oralb-ble/commit/93ea567b150cf084e76504b9fdc741ad7a7db880))
+
 ## v0.17.2 (2023-02-03)
 ### Fix
 * Io4 identification for some models ([#38](https://github.com/Bluetooth-Devices/oralb-ble/issues/38)) ([`2eaaf2b`](https://github.com/Bluetooth-Devices/oralb-ble/commit/2eaaf2be23d5c8b4d8a8af4ea93d90c5eefd1b63))
