@@ -1515,11 +1515,11 @@ def test_9000_series():
     service_info = ORALB_9000_SERIES
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 9000 48BE",
+        title="Smart Series 9000/10000 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 9000 48BE",
-                model="Smart Series 9000",
+                name="Smart Series 9000/10000 48BE",
+                model="Smart Series 9000/10000",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1630,11 +1630,11 @@ def test_9000_black_series():
     service_info = ORALB_9000_BLACK_SERIES
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 9000 48BE",
+        title="Smart Series 9000/10000 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 9000 48BE",
-                model="Smart Series 9000",
+                name="Smart Series 9000/10000 48BE",
+                model="Smart Series 9000/10000",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
