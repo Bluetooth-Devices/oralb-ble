@@ -62,6 +62,7 @@ class Models(Enum):
     SmartSeries7000 = auto()
     SmartSeries8000 = auto()
     SmartSeries9000 = auto()
+    GeniusX = auto()
 
 
 @dataclass
@@ -140,9 +141,10 @@ DEVICE_TYPES = {
         modes=SMART_SERIES_MODES,
     ),
     Models.SmartSeries9000: ModelDescription(
-        device_type="Smart Series 9000",
+        device_type="Smart Series 9000/10000",
         modes=SMART_SERIES_MODES,
     ),
+    Models.GeniusX: ModelDescription(device_type="Genius X", modes=SMART_SERIES_MODES),
 }
 
 STATES = {
@@ -205,6 +207,7 @@ BYTES_TO_MODEL = {
     b"\x061\x16": Models.IOSeries89,
     b"\x02\x02\x06": Models.TriumphV2,
     b"\x01\x02\x05": Models.Pro6000,
+    b"\x04q\x04": Models.GeniusX,
 }
 
 SECTOR_MAP = {
