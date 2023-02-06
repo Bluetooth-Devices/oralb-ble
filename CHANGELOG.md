@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.4 (2023-02-06)
+### Fix
+* Bump commitlint-github-action ([#41](https://github.com/Bluetooth-Devices/oralb-ble/issues/41)) ([`9940fab`](https://github.com/Bluetooth-Devices/oralb-ble/commit/9940fab11d3dccbdd19ba93b53b0b9ffc71a89cf))
+
 ## v0.17.3 (2023-02-06)
 ### Fix
 * Bump python-semantic-release ([#40](https://github.com/Bluetooth-Devices/oralb-ble/issues/40)) ([`0772a42`](https://github.com/Bluetooth-Devices/oralb-ble/commit/0772a4244788c5647645fe36a0a918d301da69cb))
