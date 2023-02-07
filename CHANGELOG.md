@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.5 (2023-02-07)
+### Fix
+* Change device bytes to len 2 ([#42](https://github.com/Bluetooth-Devices/oralb-ble/issues/42)) ([`006d94a`](https://github.com/Bluetooth-Devices/oralb-ble/commit/006d94a195e7f39b38185478377c7512e1dfa0a5))
+
 ## v0.17.4 (2023-02-06)
 ### Fix
 * Bump commitlint-github-action ([#41](https://github.com/Bluetooth-Devices/oralb-ble/issues/41)) ([`9940fab`](https://github.com/Bluetooth-Devices/oralb-ble/commit/9940fab11d3dccbdd19ba93b53b0b9ffc71a89cf))
