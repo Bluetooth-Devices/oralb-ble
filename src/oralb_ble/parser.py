@@ -195,19 +195,16 @@ ORALB_MANUFACTURER = 0x00DC
 
 
 BYTES_TO_MODEL = {
-    b"\x062k": Models.IOSeries67,
-    b"\x074\x0c": Models.IOSeries4,
-    b"\x074\x1a": Models.IOSeries4,
-    b"\x03V\x04": Models.SmartSeries4000,
-    b"\x04'\r": Models.SmartSeries6000,
-    b'\x03"\x0c': Models.SmartSeries8000,
-    b"\x03!\x0b": Models.SmartSeries9000,
-    b"\x03!\x0c": Models.SmartSeries9000,
-    b"\x061\x19": Models.IOSeries89,
-    b"\x061\x16": Models.IOSeries89,
-    b"\x02\x02\x06": Models.TriumphV2,
-    b"\x01\x02\x05": Models.Pro6000,
-    b"\x04q\x04": Models.GeniusX,
+    b"\x062": Models.IOSeries67,
+    b"\x074": Models.IOSeries4,
+    b"\x03V": Models.SmartSeries4000,
+    b"\x04'": Models.SmartSeries6000,
+    b'\x03"': Models.SmartSeries8000,
+    b"\x03!": Models.SmartSeries9000,
+    b"\x061": Models.IOSeries89,
+    b"\x02\x02": Models.TriumphV2,
+    b"\x01\x02": Models.Pro6000,
+    b"\x04q": Models.GeniusX,
 }
 
 SECTOR_MAP = {
@@ -255,7 +252,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         if msg_length not in (9, 11):
             return
 
-        device_bytes = data[0:3]
+        device_bytes = data[0:2]
         state = data[3]
         pressure = data[4]
         brush_time = data[5] * 60 + data[6]
