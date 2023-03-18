@@ -12,7 +12,7 @@ import time
 from dataclasses import dataclass
 from enum import Enum, auto
 
-from bleak import BLEDevice
+from bleak import BleakError, BLEDevice
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
@@ -333,6 +333,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         """
         Poll the device to retrieve any values we can't get from passive listening.
         """
+        _LOGGER.debug("Polling Oral-B device: %s", ble_device.address)
         client = await establish_connection(
             BleakClientWithServiceCache, ble_device, ble_device.address
         )
@@ -341,19 +342,23 @@ class OralBBluetoothDeviceData(BluetoothData):
             battery_payload = await client.read_gatt_char(battery_char)
             pressure_char = client.services.get_characteristic(CHARACTERISTIC_PRESSURE)
             pressure_payload = await client.read_gatt_char(pressure_char)
+            tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
+                pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
+            )
+            self.update_sensor(
+                str(OralBSensor.PRESSURE), None, tb_pressure, None, "Pressure"
+            )
+            self.update_sensor(
+                str(OralBSensor.BATTERY_PERCENT),
+                Units.PERCENTAGE,
+                battery_payload[0],
+                SensorDeviceClass.BATTERY,
+                "Battery",
+            )
+            _LOGGER.debug("Successfully read active gatt characters")
+        except BleakError as err:
+            _LOGGER.debug(f"Reading gatt characters failed with err: {err}")
         finally:
             await client.disconnect()
-        tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
-            pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
-        )
-        self.update_sensor(
-            str(OralBSensor.PRESSURE), None, tb_pressure, None, "Pressure"
-        )
-        self.update_sensor(
-            str(OralBSensor.BATTERY_PERCENT),
-            Units.PERCENTAGE,
-            battery_payload[0],
-            SensorDeviceClass.BATTERY,
-            "Battery",
-        )
+            _LOGGER.debug("Disconnected from active bluetooth client")
         return self._finish_update()
