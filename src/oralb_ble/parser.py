@@ -342,6 +342,9 @@ class OralBBluetoothDeviceData(BluetoothData):
             battery_payload = await client.read_gatt_char(battery_char)
             pressure_char = client.services.get_characteristic(CHARACTERISTIC_PRESSURE)
             pressure_payload = await client.read_gatt_char(pressure_char)
+        except BleakError as err:
+            _LOGGER.debug(f"Reading gatt characters failed with err: {err}")
+        else:
             tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
                 pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
             )
@@ -356,8 +359,6 @@ class OralBBluetoothDeviceData(BluetoothData):
                 "Battery",
             )
             _LOGGER.debug("Successfully read active gatt characters")
-        except BleakError as err:
-            _LOGGER.debug(f"Reading gatt characters failed with err: {err}")
         finally:
             await client.disconnect()
             _LOGGER.debug("Disconnected from active bluetooth client")
