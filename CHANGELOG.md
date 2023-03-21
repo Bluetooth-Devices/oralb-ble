@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.17.6 (2023-03-21)
+### Fix
+* Add retries to polling functionality ([#43](https://github.com/Bluetooth-Devices/oralb-ble/issues/43)) ([`90ab0fa`](https://github.com/Bluetooth-Devices/oralb-ble/commit/90ab0fa99c072bc668897b094c8b6892ebcc2284))
+
 ## v0.17.5 (2023-02-07)
 ### Fix
 * Change device bytes to len 2 ([#42](https://github.com/Bluetooth-Devices/oralb-ble/issues/42)) ([`006d94a`](https://github.com/Bluetooth-Devices/oralb-ble/commit/006d94a195e7f39b38185478377c7512e1dfa0a5))
