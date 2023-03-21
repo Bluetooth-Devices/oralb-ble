@@ -343,7 +343,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             pressure_char = client.services.get_characteristic(CHARACTERISTIC_PRESSURE)
             pressure_payload = await client.read_gatt_char(pressure_char)
         except BleakError as err:
-            _LOGGER.debug(f"Reading gatt characters failed with err: {err}")
+            _LOGGER.warning(f"Reading gatt characters failed with err: {err}")
         else:
             tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
                 pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
