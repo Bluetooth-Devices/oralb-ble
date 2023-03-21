@@ -13,7 +13,11 @@ from dataclasses import dataclass
 from enum import Enum, auto
 
 from bleak import BleakError, BLEDevice
-from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
+from bleak_retry_connector import (
+    BleakClientWithServiceCache,
+    establish_connection,
+    retry_bluetooth_connection_error,
+)
 from bluetooth_data_tools import short_address
 from bluetooth_sensor_state_data import BluetoothData
 from home_assistant_bluetooth import BluetoothServiceInfo
@@ -329,6 +333,28 @@ class OralBBluetoothDeviceData(BluetoothData):
             update_interval = BRUSHING_UPDATE_INTERVAL_SECONDS
         return last_poll > update_interval
 
+    @retry_bluetooth_connection_error()
+    async def _get_payload(self, client: BleakClientWithServiceCache) -> None:
+        """Get the payload from the brush using its gatt_characteristics."""
+        battery_char = client.services.get_characteristic(CHARACTERISTIC_BATTERY)
+        battery_payload = await client.read_gatt_char(battery_char)
+        pressure_char = client.services.get_characteristic(CHARACTERISTIC_PRESSURE)
+        pressure_payload = await client.read_gatt_char(pressure_char)
+        tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
+            pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
+        )
+        self.update_sensor(
+            str(OralBSensor.PRESSURE), None, tb_pressure, None, "Pressure"
+        )
+        self.update_sensor(
+            str(OralBSensor.BATTERY_PERCENT),
+            Units.PERCENTAGE,
+            battery_payload[0],
+            SensorDeviceClass.BATTERY,
+            "Battery",
+        )
+        _LOGGER.debug("Successfully read active gatt characters")
+
     async def async_poll(self, ble_device: BLEDevice) -> SensorUpdate:
         """
         Poll the device to retrieve any values we can't get from passive listening.
@@ -338,27 +364,9 @@ class OralBBluetoothDeviceData(BluetoothData):
             BleakClientWithServiceCache, ble_device, ble_device.address
         )
         try:
-            battery_char = client.services.get_characteristic(CHARACTERISTIC_BATTERY)
-            battery_payload = await client.read_gatt_char(battery_char)
-            pressure_char = client.services.get_characteristic(CHARACTERISTIC_PRESSURE)
-            pressure_payload = await client.read_gatt_char(pressure_char)
+            await self._get_payload(client)
         except BleakError as err:
             _LOGGER.warning(f"Reading gatt characters failed with err: {err}")
-        else:
-            tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
-                pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
-            )
-            self.update_sensor(
-                str(OralBSensor.PRESSURE), None, tb_pressure, None, "Pressure"
-            )
-            self.update_sensor(
-                str(OralBSensor.BATTERY_PERCENT),
-                Units.PERCENTAGE,
-                battery_payload[0],
-                SensorDeviceClass.BATTERY,
-                "Battery",
-            )
-            _LOGGER.debug("Successfully read active gatt characters")
         finally:
             await client.disconnect()
             _LOGGER.debug("Disconnected from active bluetooth client")
