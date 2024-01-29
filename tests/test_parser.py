@@ -121,6 +121,15 @@ ORALB_IO_SERIES_9 = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
+ORALB_IO_SERIES_10 = BluetoothServiceInfo(
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x03r\x00\x00\x06\x00\x00\x01"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
 ORALB_4000_SERIES = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
