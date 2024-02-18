@@ -14,7 +14,7 @@ from sensor_state_data import (
     Units,
 )
 
-from oralb_ble.parser import OralBBluetoothDeviceData
+from oralb_ble.parser import SMART_SERIES_MODES, OralBBluetoothDeviceData
 
 # 2022-10-24 18:10:10.048 DEBUG (MainThread) [homeassistant.components.bluetooth.manager] 00:E0:43:87:4B:03: 78:DB:2F:C2:48:BE AdvertisementData(manufacturer_data={220: b'\x02\x01\x08\x02 \x00\x00\x01\x01\x00\x04'}, rssi=-64) connectable: True match: set() rssi: -64
 # 2022-10-24 18:10:12.604 DEBUG (MainThread) [homeassistant.components.bluetooth.manager] 00:E0:43:87:4B:03: 78:DB:2F:C2:48:BE AdvertisementData(manufacturer_data={220: b'\x02\x01\x08\x03\x00\x00\x00\x01\x01\x00\x04'}, rssi=-56) connectable: True match: set() rssi: -56
@@ -2759,6 +2759,7 @@ def test_genius_8000_high_pressure():
     parser = OralBBluetoothDeviceData()
     service_info = GENIUS_8000_HIGH_PRESSURE
     result = parser.update(service_info)
+    assert parser.brush_modes == SMART_SERIES_MODES
     assert result == SensorUpdate(
         title="Smart Series 8000 48BE",
         devices={
