@@ -270,13 +270,13 @@ class OralBBluetoothDeviceData(BluetoothData):
 
         model = BYTES_TO_MODEL.get(device_bytes, Models.SmartSeries7000)
         model_info = DEVICE_TYPES[model]
-        modes = model_info.modes
+        self.brush_modes = model_info.modes
         self.set_device_type(model_info.device_type)
         name = f"{model_info.device_type} {short_address(address)}"
         self.set_device_name(name)
         self.set_title(name)
         tb_state = STATES.get(state, f"unknown state {state}")
-        tb_mode = modes.get(mode, f"unknown mode {mode}")
+        tb_mode = self.brush_modes.get(mode, f"unknown mode {mode}")
         tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
         tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
 
