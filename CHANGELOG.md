@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.18.0 (2024-02-21)
+
+### Feature
+
+* Add brush modes to the parser ([#48](https://github.com/Bluetooth-Devices/oralb-ble/issues/48)) ([`2a55f37`](https://github.com/Bluetooth-Devices/oralb-ble/commit/2a55f375331d5e6b40050fa4230827486b4e2539))
+
 ## v0.17.6 (2023-03-21)
 ### Fix
 * Add retries to polling functionality ([#43](https://github.com/Bluetooth-Devices/oralb-ble/issues/43)) ([`90ab0fa`](https://github.com/Bluetooth-Devices/oralb-ble/commit/90ab0fa99c072bc668897b094c8b6892ebcc2284))
