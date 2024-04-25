@@ -78,12 +78,12 @@ class ModelDescription:
 
 SMART_SERIES_MODES = {
     0: "off",
-    1: "daily clean",
+    1: "daily_clean",
     2: "sensitive",
     3: "massage",
     4: "whitening",
-    5: "deep clean",
-    6: "tongue cleaning",
+    5: "deep_clean",
+    6: "tongue_cleaning",
     7: "turbo",
     255: "unknown",
 }
@@ -93,13 +93,13 @@ SMART_SERIES_6000_MODES = SMART_SERIES_MODES | {2: "off"}
 
 
 IO_SERIES_MODES = {
-    0: "daily clean",
+    0: "daily_clean",
     1: "sensitive",
-    2: "gum care",
+    2: "gum_care",
     3: "whiten",
     4: "intense",
-    5: "super sensitive",
-    6: "tongue cleaning",
+    5: "super_sensitive",
+    6: "tongue_cleaning",
     8: "settings",
     9: "off",
 }
@@ -158,11 +158,11 @@ STATES = {
     3: "running",
     4: "charging",
     5: "setup",
-    6: "flight menu",
-    8: "selection menu",
+    6: "flight_menu",
+    8: "selection_menu",
     9: "off",
-    113: "final test",
-    114: "pcb test",
+    113: "final_test",
+    114: "pcb_test",
     115: "sleeping",
     116: "transport",
 }
@@ -173,21 +173,21 @@ PRESSURE = {
     32: "normal",
     48: "normal",
     50: "normal",
-    56: "power button pressed",
+    56: "power_button_pressed",
     80: "normal",
     82: "normal",
-    86: "button pressed",
-    90: "power button pressed",
+    86: "button_pressed",
+    90: "power_button_pressed",
     114: "normal",
-    118: "button pressed",
-    122: "power button pressed",
+    118: "button_pressed",
+    122: "power_button_pressed",
     144: "high",
     146: "high",
-    150: "button pressed",
-    154: "power button pressed",
+    150: "button_pressed",
+    154: "power_button_pressed",
     178: "high",
-    182: "button pressed",
-    186: "power button pressed",
+    182: "button_pressed",
+    186: "power_button_pressed",
     192: "high",
     240: "high",
     242: "high",
@@ -212,19 +212,19 @@ BYTES_TO_MODEL = {
 }
 
 SECTOR_MAP = {
-    1: "sector 1",
-    9: "sector 1",
-    2: "sector 2",
-    10: "sector 2",
-    3: "sector 3",
-    11: "sector 3",
-    19: "sector 3",
-    27: "sector 3",
-    4: "sector 4",
-    7: "sector 4",
-    15: "sector 4",
-    31: "sector 4",
-    39: "sector 4",
+    1: "sector_1",
+    9: "sector_1",
+    2: "sector_2",
+    10: "sector_2",
+    3: "sector_3",
+    11: "sector_3",
+    19: "sector_3",
+    27: "sector_3",
+    4: "sector_4",
+    7: "sector_4",
+    15: "sector_4",
+    31: "sector_4",
+    39: "sector_4",
     41: "success",
     42: "success",
     43: "success",
@@ -275,16 +275,16 @@ class OralBBluetoothDeviceData(BluetoothData):
         name = f"{model_info.device_type} {short_address(address)}"
         self.set_device_name(name)
         self.set_title(name)
-        tb_state = STATES.get(state, f"unknown state {state}")
-        tb_mode = self.brush_modes.get(mode, f"unknown mode {mode}")
-        tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
-        tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
+        tb_state = STATES.get(state)
+        tb_mode = self.brush_modes.get(mode)
+        tb_pressure = PRESSURE.get(pressure)
+        tb_sector = SECTOR_MAP.get(sector)
 
         self.update_sensor(str(OralBSensor.TIME), None, brush_time, None, "Time")
         if brush_time == 0 and tb_state != "running":
             # When starting up, sector is not accurate.
             self.update_sensor(
-                str(OralBSensor.SECTOR), None, "no sector", None, "Sector"
+                str(OralBSensor.SECTOR), None, "no_sector", None, "Sector"
             )
         else:
             self.update_sensor(str(OralBSensor.SECTOR), None, tb_sector, None, "Sector")
