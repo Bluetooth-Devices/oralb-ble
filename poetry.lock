@@ -207,19 +207,19 @@ pyobjc-framework-libdispatch = {version = ">=8.5.1,<9.0.0", markers = "platform_
 
 [[package]]
 name = "bleak-retry-connector"
-version = "2.13.0"
+version = "2.13.1"
 description = "A connector for Bleak Clients that handles transient connection failures"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "bleak_retry_connector-2.13.0-py3-none-any.whl", hash = "sha256:5c8f3fd560eaba1e10659d30a938a51ad94da8f2c9bcf3aeb9ecf9a2149fa8c3"},
-    {file = "bleak_retry_connector-2.13.0.tar.gz", hash = "sha256:980c373e24d51a8390a4e25afd4f124b9d0ba52cc72c6cc6297a8817dcbcfdf6"},
+    {file = "bleak_retry_connector-2.13.1-py3-none-any.whl", hash = "sha256:9fdab97d7f1cc1b1948412af2cc6f7721e843fb9d2f9b02b7cc26eb52c7ee486"},
+    {file = "bleak_retry_connector-2.13.1.tar.gz", hash = "sha256:af344bd81d0f7d33a0994e30fe9e28dfdc3cb970095cc1ba547a3b6ae2ee4543"},
 ]
 
 [package.dependencies]
 async-timeout = ">=4.0.1"
 bleak = ">=0.19.0"
-bluetooth-adapters = ">=0.12.0"
+bluetooth-adapters = {version = ">=0.15.2", markers = "platform_system == \"Linux\""}
 dbus-fast = {version = ">=1.14.0", markers = "platform_system == \"Linux\""}
 
 [package.extras]
