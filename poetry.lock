@@ -284,13 +284,13 @@ docs = ["Sphinx (>=5.0,<6.0)", "myst-parser (>=0.18,<0.19)", "sphinx-rtd-theme (
 
 [[package]]
 name = "bluetooth-data-tools"
-version = "0.1.2"
+version = "0.3.1"
 description = "Tools for converting bluetooth data and packets"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "bluetooth-data-tools-0.1.2.tar.gz", hash = "sha256:58eb956e05d3a92b805af6374d10bf32f0b606c24bf47bb34578edc92aa71aa1"},
-    {file = "bluetooth_data_tools-0.1.2-py3-none-any.whl", hash = "sha256:72cfd910d6231bb2c43c24e0013265a0fee63c99af9755fed8ed0d7f12d21f61"},
+    {file = "bluetooth_data_tools-0.3.1-py3-none-any.whl", hash = "sha256:b7ebacecec2d30d69dd83077f7dce5da2eb713f040ddb7d5573a2c60078c313b"},
+    {file = "bluetooth_data_tools-0.3.1.tar.gz", hash = "sha256:247e896ec963bf2204c0e77bc5ec09dafaa4e065afffe38553b9d4d526b71617"},
 ]
 
 [package.extras]
