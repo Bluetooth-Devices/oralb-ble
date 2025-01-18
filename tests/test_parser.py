@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 from unittest import mock
 
 import pytest
-from bleak import BLEDevice
 from bluetooth_sensor_state_data import BluetoothServiceInfo, SensorUpdate
 from sensor_state_data import (
     BinarySensorDescription,
@@ -15,6 +16,8 @@ from sensor_state_data import (
 )
 
 from oralb_ble.parser import SMART_SERIES_MODES, OralBBluetoothDeviceData
+
+from . import generate_ble_device
 
 # 2022-10-24 18:10:10.048 DEBUG (MainThread) [homeassistant.components.bluetooth.manager] 00:E0:43:87:4B:03: 78:DB:2F:C2:48:BE AdvertisementData(manufacturer_data={220: b'\x02\x01\x08\x02 \x00\x00\x01\x01\x00\x04'}, rssi=-64) connectable: True match: set() rssi: -64
 # 2022-10-24 18:10:12.604 DEBUG (MainThread) [homeassistant.components.bluetooth.manager] 00:E0:43:87:4B:03: 78:DB:2F:C2:48:BE AdvertisementData(manufacturer_data={220: b'\x02\x01\x08\x03\x00\x00\x00\x01\x01\x00\x04'}, rssi=-56) connectable: True match: set() rssi: -56
@@ -2990,7 +2993,7 @@ def test_io_series_8():
 @pytest.mark.asyncio
 async def test_async_poll(mock_establish_connection):
     parser = OralBBluetoothDeviceData()
-    device = BLEDevice(address="abc", name="test_device")
+    device = generate_ble_device(address="abc", name="test_device")
     mock_establish_connection.return_value.read_gatt_char.side_effect = [
         bytearray(b";\x00\x00\x00"),
         bytearray(b"\x01\x89\x7f\xbe\x04`\x7f\xbe\x047"),
