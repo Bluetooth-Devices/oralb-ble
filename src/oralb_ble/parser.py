@@ -200,6 +200,7 @@ ORALB_MANUFACTURER = 0x00DC
 
 
 BYTES_TO_MODEL = {
+    b"\x086": Models.IOSeries67,
     b"\x062": Models.IOSeries67,
     b"\x074": Models.IOSeries4,
     b"\x03V": Models.SmartSeries4000,
