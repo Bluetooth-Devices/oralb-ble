@@ -44,7 +44,7 @@ docs = [
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.4"
-pytest-cov = "^6.3"
+pytest-cov = "^7.0"
 
 [tool.poetry.group.dev.dependencies]
 mock = ">=5.0.0"
