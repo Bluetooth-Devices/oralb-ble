@@ -55,20 +55,16 @@ class OralBBinarySensor(StrEnum):
 
 class Models(Enum):
 
-    Pro6000 = auto()
-    TriumphV2 = auto()
+    D36 = auto()
+    D21 = auto()
+    D601 = auto()
+    D700 = auto()
+    D701 = auto()
+    D706 = auto()
     IOSeries4 = auto()
     IOSeries5 = auto()
-    IOSeries67 = auto()
-    IOSeries8 = auto()
-    IOSeries9 = auto()
-    IOSeries89 = auto()
-    SmartSeries4000 = auto()
-    SmartSeries6000 = auto()
-    SmartSeries7000 = auto()
-    SmartSeries8000 = auto()
-    SmartSeries9000 = auto()
-    GeniusX = auto()
+    IOSeries = auto()
+    Unknown = auto()
 
 
 @dataclass
@@ -91,9 +87,6 @@ SMART_SERIES_MODES = {
 }
 
 
-SMART_SERIES_6000_MODES = SMART_SERIES_MODES | {2: "off"}
-
-
 IO_SERIES_MODES = {
     0: "daily clean",
     1: "sensitive",
@@ -108,53 +101,16 @@ IO_SERIES_MODES = {
 
 
 DEVICE_TYPES = {
-    Models.Pro6000: ModelDescription("Pro 6000", SMART_SERIES_MODES),
-    Models.TriumphV2: ModelDescription("Triumph V2", SMART_SERIES_MODES),
-    Models.IOSeries4: ModelDescription(
-        device_type="IO Series 4",
-        modes=IO_SERIES_MODES,
-    ),
-    Models.IOSeries5: ModelDescription(
-        device_type="IO Series 5",
-        modes=IO_SERIES_MODES,
-    ),
-    Models.IOSeries67: ModelDescription(
-        device_type="IO Series 6/7",
-        modes=IO_SERIES_MODES,
-    ),
-    Models.IOSeries8: ModelDescription(
-        device_type="IO Series 8",
-        modes=IO_SERIES_MODES,
-    ),
-    Models.IOSeries9: ModelDescription(
-        device_type="IO Series 9",
-        modes=IO_SERIES_MODES,
-    ),
-    Models.IOSeries89: ModelDescription(
-        device_type="IO Series 8/9",
-        modes=IO_SERIES_MODES,
-    ),
-    Models.SmartSeries4000: ModelDescription(
-        device_type="Smart Series 4000",
-        modes=SMART_SERIES_MODES,
-    ),
-    Models.SmartSeries6000: ModelDescription(
-        device_type="Smart Series 6000",
-        modes=SMART_SERIES_6000_MODES,
-    ),
-    Models.SmartSeries7000: ModelDescription(
-        device_type="Smart Series 7000",
-        modes=SMART_SERIES_MODES,
-    ),
-    Models.SmartSeries8000: ModelDescription(
-        device_type="Smart Series 8000",
-        modes=SMART_SERIES_MODES,
-    ),
-    Models.SmartSeries9000: ModelDescription(
-        device_type="Smart Series 9000/10000",
-        modes=SMART_SERIES_MODES,
-    ),
-    Models.GeniusX: ModelDescription(device_type="Genius X", modes=SMART_SERIES_MODES),
+    Models.D36: ModelDescription("Triumph D36", SMART_SERIES_MODES),
+    Models.D21: ModelDescription("Smart Series D21", SMART_SERIES_MODES),
+    Models.D601: ModelDescription("Pro Series D601", SMART_SERIES_MODES),
+    Models.D700: ModelDescription("Smart Series D700", SMART_SERIES_MODES),
+    Models.D701: ModelDescription("Genius Series D701", SMART_SERIES_MODES),
+    Models.D706: ModelDescription("Genius X D706", SMART_SERIES_MODES),
+    Models.IOSeries4: ModelDescription("IO Series 4", IO_SERIES_MODES),
+    Models.IOSeries5: ModelDescription("IO Series 5", IO_SERIES_MODES),
+    Models.IOSeries: ModelDescription("IO Series", IO_SERIES_MODES),
+    Models.Unknown: ModelDescription("Unknown", SMART_SERIES_MODES),
 }
 
 STATES = {
@@ -179,7 +135,9 @@ PRESSURE = {
     32: "normal",
     48: "normal",
     50: "normal",
+    54: "button pressed",
     56: "power button pressed",
+    58: "power button pressed",
     80: "normal",
     82: "normal",
     86: "button pressed",
@@ -204,19 +162,54 @@ ACTIVE_CONNECTION_PRESSURE = {0: "low", 1: "normal", 2: "high"}
 ORALB_MANUFACTURER = 0x00DC
 
 
-BYTES_TO_MODEL = {
-    b"\x086": Models.IOSeries67,
-    b"\x062": Models.IOSeries67,
-    b"\x074": Models.IOSeries4,
-    b"\x075": Models.IOSeries5,
-    b"\x03V": Models.SmartSeries4000,
-    b"\x04'": Models.SmartSeries6000,
-    b'\x03"': Models.SmartSeries8000,
-    b"\x03!": Models.SmartSeries9000,
-    b"\x061": Models.IOSeries89,
-    b"\x02\x02": Models.TriumphV2,
-    b"\x01\x02": Models.Pro6000,
-    b"\x04q": Models.GeniusX,
+# Model type is determined by byte 1 of the manufacturer data.
+# Byte 0 is the protocol version, which determines how to parse the
+# advertisement, but is NOT the model identifier.
+# Reference: https://github.com/MatrixEditor/oralb-io/blob/master/oralb/blesdk/brush.py
+MODEL_ID_TO_MODEL: dict[int, Models] = {
+    # D36 line (Triumph / Professional Care)
+    0: Models.D36,  # D36 X_MODE
+    1: Models.D36,  # D36 6_MODE
+    2: Models.D36,  # D36 5_MODE
+    # D701 line (Genius)
+    32: Models.D701,  # D701 X_MODE
+    33: Models.D701,  # D701 6_MODE
+    34: Models.D701,  # D701 5_MODE
+    # D700 line (Smart/Pro Series)
+    39: Models.D700,  # D700 5_MODE
+    40: Models.D700,  # D700 4_MODE
+    41: Models.D700,  # D700 6_MODE
+    # SONOS line (IO Series)
+    48: Models.IOSeries,  # SONOS X_MODE
+    49: Models.IOSeries,  # SONOS IO
+    50: Models.IOSeries,  # SONOS IO BIG_TI
+    52: Models.IOSeries4,  # SONOS GALAXY IO4
+    53: Models.IOSeries5,  # SONOS GALAXY IO5
+    54: Models.IOSeries,  # SONOS EPLATFORM
+    # D21 line (Smart Series - older generation)
+    64: Models.D21,  # D21 X_MODE
+    65: Models.D21,  # D21 4_MODE
+    66: Models.D21,  # D21 3_MODE
+    67: Models.D21,  # D21 2A_MODE
+    68: Models.D21,  # D21 2B_MODE
+    69: Models.D21,  # D21 3_MODE_WHITENING
+    70: Models.D21,  # D21 1_MODE
+    # D601 line (Pro)
+    80: Models.D601,  # D601 X_MODE
+    81: Models.D601,  # D601 5_MODE
+    82: Models.D601,  # D601 4_MODE
+    83: Models.D601,  # D601 3A_MODE
+    84: Models.D601,  # D601 2A_MODE
+    85: Models.D601,  # D601 2B_MODE
+    86: Models.D601,  # D601 3B_MODE
+    87: Models.D601,  # D601 1_MODE
+    # D706 line (Genius X)
+    112: Models.D706,  # D706 X_MODE
+    113: Models.D706,  # D706 6_MODE
+    114: Models.D706,  # D706 5_MODE
+    117: Models.D706,  # D706 X_MODE_CHINA
+    118: Models.D706,  # D706 6_MODE_CHINA
+    119: Models.D706,  # D706 5_MODE_CHINA
 }
 
 SECTOR_MAP = {
@@ -264,7 +257,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         if msg_length not in (9, 11):
             return
 
-        device_bytes = data[0:2]
+        model_type = data[1]
         state = data[3]
         pressure = data[4]
         brush_time = data[5] * 60 + data[6]
@@ -276,7 +269,7 @@ class OralBBluetoothDeviceData(BluetoothData):
             sector_timer = data[9]
             no_of_sectors = data[10]
 
-        model = BYTES_TO_MODEL.get(device_bytes, Models.SmartSeries7000)
+        model = MODEL_ID_TO_MODEL.get(model_type, Models.Unknown)
         model_info = DEVICE_TYPES[model]
         self.brush_modes = model_info.modes
         self.set_device_type(model_info.device_type)
