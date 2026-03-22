@@ -5,6 +5,7 @@ https://github.com/Ernst79/bleparser/blob/c42ae922e1abed2720c7fac993777e1bd59c0c
 
 MIT License applies.
 """
+
 from __future__ import annotations
 
 from sensor_state_data import (
@@ -21,7 +22,7 @@ from sensor_state_data import (
 
 from .parser import OralBBinarySensor, OralBBluetoothDeviceData, OralBSensor
 
-__version__ = "0.17.6"
+__version__ = "1.0.2"
 
 __all__ = [
     "OralBSensor",
