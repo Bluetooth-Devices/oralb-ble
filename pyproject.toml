@@ -42,11 +42,9 @@ docs = [
     "sphinx-rtd-theme",
 ]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^8.4"
 pytest-cov = "^7.0"
-
-[tool.poetry.group.dev.dependencies]
 mock = ">=5.0.0"
 pytest-asyncio = ">=0.20.0"
 
