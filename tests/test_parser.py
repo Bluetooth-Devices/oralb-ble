@@ -244,6 +244,91 @@ ORALB_IO_SERIES_6_WHITEN = BluetoothServiceInfo(
 )
 
 
+# https://github.com/Bluetooth-Devices/oralb-ble/issues/65
+# User has IO Series 9, byte 1 = 0x32 (50) = SONOS IO BIG_TI
+ORALB_IO_SERIES_9_ISSUE_65 = BluetoothServiceInfo(
+    address="2C:A7:74:50:70:F3",
+    rssi=-85,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x08r\x00\x00\x00\x07\x00\x04"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+# https://github.com/Bluetooth-Devices/oralb-ble/issues/51
+# User has Pro 5000, byte 1 = 0x27 (39) = D700 5_MODE
+ORALB_D700_PRO_5000_ISSUE_51 = BluetoothServiceInfo(
+    address="78:DB:2F:C2:48:BE",
+    rssi=-93,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x04'\r\x032\x00\n\x01\x01!\x04"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+# https://github.com/home-assistant/core/issues/133940
+# User has IO Series 9N, byte 1 = 0x32 (50) = SONOS IO BIG_TI
+ORALB_IO_SERIES_9N_HA_133940 = BluetoothServiceInfo(
+    address="20:0B:16:3F:20:9F",
+    rssi=-100,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x08z\x00\x00\x00\x01\x00\x04"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+# https://github.com/home-assistant/core/issues/133940#issuecomment-2479268850
+# User has IO Series 9, byte 1 = 0x36 (54) = SONOS EPLATFORM
+ORALB_IO_SERIES_9_HA_133940_EPLATFORM = BluetoothServiceInfo(
+    address="88:0F:62:48:5A:14",
+    rssi=-94,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x086R\x082\x00\x00\x05\x00\x01\x00"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+# https://github.com/home-assistant/core/issues/133934
+# User has IO Series 5, byte 1 = 0x35 (53) = SONOS GALAXY IO5
+ORALB_IO_SERIES_5_HA_133934 = BluetoothServiceInfo(
+    address="30:FB:10:4E:AC:5C",
+    rssi=-78,
+    name="GX4EAC5C",
+    manufacturer_data={220: b"\x075\x1e\t6\x00\x05\x05\x01\x00\x04"},
+    service_uuids=[
+        "00001801-0000-1000-8000-00805f9b34fb",
+        "0000fe0d-0000-1000-8000-00805f9b34fb",
+    ],
+    service_data={},
+    source="local",
+)
+# https://github.com/home-assistant/core/issues/87413
+# User has IO Series 9, byte 1 = 0x32 (50) = SONOS IO BIG_TI
+ORALB_IO_SERIES_9_HA_87413 = BluetoothServiceInfo(
+    address="B0:D2:78:1D:67:78",
+    rssi=-68,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x08R\x00\x00\x00\x01\x00\x04"},
+    service_uuids=[
+        "00001800-0000-1000-8000-00805f9b34fb",
+        "00001801-0000-1000-8000-00805f9b34fb",
+    ],
+    service_data={},
+    source="local",
+)
+# https://github.com/home-assistant/core/issues/142787
+# User has TriZone 5000 (Type 3754), byte 1 = 0x41 (65) = D21 4_MODE
+ORALB_D21_TRIZONE_5000_HA_142787 = BluetoothServiceInfo(
+    address="5C:31:3E:FC:05:58",
+    rssi=-52,
+    name="5C:31:3E:FC:05:58",
+    manufacturer_data={220: b"\x01A\x05\x03\x00\x00\x00\x01\x01"},
+    service_uuids=[],
+    service_data={},
+    source="local",
+)
+
+
 def test_can_create():
     OralBBluetoothDeviceData()
 
@@ -3023,3 +3108,52 @@ def test_poll_needed_brushing_recently(mocked_time):
     parser._brushing = False
     parser._last_brush = 0
     assert parser.poll_needed(None, 61)
+
+
+def test_io_series_9_issue_65():
+    """IO Series 9 reported as IO Series 6/7 - oralb-ble#65."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_9_ISSUE_65)
+    assert result.devices[None].model == "IO Series"
+
+
+def test_d700_pro_5000_issue_51():
+    """Pro 5000 reported as Smart Series 6000 - oralb-ble#51."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_D700_PRO_5000_ISSUE_51)
+    assert result.devices[None].model == "Smart Series D700"
+
+
+def test_io_series_9n_ha_133940():
+    """IO Series 9N reported as 6/7 - HA#133940."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_9N_HA_133940)
+    assert result.devices[None].model == "IO Series"
+
+
+def test_io_series_9_eplatform_ha_133940():
+    """IO Series 9 on EPLATFORM reported as 6/7 - HA#133940."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_9_HA_133940_EPLATFORM)
+    assert result.devices[None].model == "IO Series"
+
+
+def test_io_series_5_ha_133934():
+    """IO Series 5 reported as Smart Series 7000 - HA#133934."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_5_HA_133934)
+    assert result.devices[None].model == "IO Series 5"
+
+
+def test_io_series_9_ha_87413():
+    """IO Series 9 reported as 6/7 - HA#87413."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_9_HA_87413)
+    assert result.devices[None].model == "IO Series"
+
+
+def test_d21_trizone_5000_ha_142787():
+    """TriZone 5000 (D21) reported as Unknown - HA#142787."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_D21_TRIZONE_5000_HA_142787)
+    assert result.devices[None].model == "Smart Series D21"
