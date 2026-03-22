@@ -316,6 +316,17 @@ ORALB_IO_SERIES_9_HA_87413 = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
+# https://github.com/Bluetooth-Devices/oralb-ble/issues/45
+# User has IO Series 10, byte 1 = 0x32 (50) = SONOS IO BIG_TI
+ORALB_IO_SERIES_10_ISSUE_45 = BluetoothServiceInfo(
+    address="78:DB:2F:C2:48:BE",
+    rssi=-61,
+    name="Oral-B Toothbrush",
+    manufacturer_data={220: b"\x062k\x03r\x00\x00\x06\x00\x00\x01"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
 # https://github.com/home-assistant/core/issues/142787
 # User has TriZone 5000 (Type 3754), byte 1 = 0x41 (65) = D21 4_MODE
 ORALB_D21_TRIZONE_5000_HA_142787 = BluetoothServiceInfo(
@@ -3149,6 +3160,13 @@ def test_io_series_9_ha_87413():
     """IO Series 9 reported as 6/7 - HA#87413."""
     parser = OralBBluetoothDeviceData()
     result = parser.update(ORALB_IO_SERIES_9_HA_87413)
+    assert result.devices[None].model == "IO Series"
+
+
+def test_io_series_10_issue_45():
+    """IO Series 10 reported as IO Series 6/7 - oralb-ble#45."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_10_ISSUE_45)
     assert result.devices[None].model == "IO Series"
 
 
