@@ -96,7 +96,7 @@ ORALB_IO_SERIES_4 = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-ORALB_9000_SERIES = BluetoothServiceInfo(
+ORALB_D701_GENIUS_9000 = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="9000",
@@ -106,7 +106,7 @@ ORALB_9000_SERIES = BluetoothServiceInfo(
     source="local",
 )
 # https://github.com/home-assistant/core/issues/81967
-ORALB_9000_BLACK_SERIES = BluetoothServiceInfo(
+ORALB_D701_GENIUS_9000_BLACK = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="9000",
@@ -124,7 +124,7 @@ ORALB_IO_SERIES_9 = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-ORALB_4000_SERIES = BluetoothServiceInfo(
+ORALB_D601 = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="4000",
@@ -133,7 +133,7 @@ ORALB_4000_SERIES = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-ORALB_6000_SERIES_DAILY_CLEAN_MODE = BluetoothServiceInfo(
+ORALB_D700 = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="6000",
@@ -142,7 +142,7 @@ ORALB_6000_SERIES_DAILY_CLEAN_MODE = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-ORALB_6000_SERIES_DAILY_CLEAN_MODE_HIGH_PRESSURE = BluetoothServiceInfo(
+ORALB_D700_HIGH_PRESSURE = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="6000",
@@ -151,7 +151,7 @@ ORALB_6000_SERIES_DAILY_CLEAN_MODE_HIGH_PRESSURE = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-ORALB_6000_SERIES_DAILY_CLEAN_MODE_NORMAL_PRESSURE = BluetoothServiceInfo(
+ORALB_D700_NORMAL_PRESSURE = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="6000",
@@ -187,7 +187,7 @@ ORALB_PRO_SERIES_6000 = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-GENIUS_8000 = BluetoothServiceInfo(
+ORALB_D701_GENIUS_8000 = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="GENIUS8000",
@@ -196,7 +196,7 @@ GENIUS_8000 = BluetoothServiceInfo(
     service_data={},
     source="local",
 )
-GENIUS_8000_HIGH_PRESSURE = BluetoothServiceInfo(
+ORALB_D701_GENIUS_8000_HIGH_PRESSURE = BluetoothServiceInfo(
     address="78:DB:2F:C2:48:BE",
     rssi=-63,
     name="GENIUS8000",
@@ -253,11 +253,11 @@ def test_dataset_1():
     service_info = ORALB_DATA_1
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 7000 48BE",
+        title="Triumph D36 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 7000 48BE",
-                model="Smart Series 7000",
+                name="Triumph D36 48BE",
+                model="Triumph D36",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -368,11 +368,11 @@ def test_dataset_2():
     service_info = ORALB_DATA_2
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 7000 48BE",
+        title="Triumph D36 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 7000 48BE",
-                model="Smart Series 7000",
+                name="Triumph D36 48BE",
+                model="Triumph D36",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -483,11 +483,11 @@ def test_dataset_3():
     service_info = ORALB_DATA_3
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 7000 48BE",
+        title="Triumph D36 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 7000 48BE",
-                model="Smart Series 7000",
+                name="Triumph D36 48BE",
+                model="Triumph D36",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -598,11 +598,11 @@ def test_dataset_4():
     service_info = ORALB_DATA_4
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 7000 48BE",
+        title="Triumph D36 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 7000 48BE",
-                model="Smart Series 7000",
+                name="Triumph D36 48BE",
+                model="Triumph D36",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -713,11 +713,11 @@ def test_io_series_6():
     service_info = ORALB_IO_SERIES_6
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 6/7 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 6/7 48BE",
-                model="IO Series 6/7",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -828,11 +828,11 @@ def test_io_series_6_daily_clean_mode():
     service_info = ORALB_IO_SERIES_6_DAILY_CLEAN
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 6/7 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 6/7 48BE",
-                model="IO Series 6/7",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -943,11 +943,11 @@ def test_io_series_6_sensitive_mode():
     service_info = ORALB_IO_SERIES_6_SENSITIVE
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 6/7 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 6/7 48BE",
-                model="IO Series 6/7",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1058,11 +1058,11 @@ def test_io_series_6_gum_care_mode():
     service_info = ORALB_IO_SERIES_6_GUM_CARE
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 6/7 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 6/7 48BE",
-                model="IO Series 6/7",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1173,11 +1173,11 @@ def test_io_series_6_whiten_mode():
     service_info = ORALB_IO_SERIES_6_WHITEN
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 6/7 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 6/7 48BE",
-                model="IO Series 6/7",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1288,11 +1288,11 @@ def test_io_series_7():
     service_info = ORALB_IO_SERIES_7
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 6/7 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 6/7 48BE",
-                model="IO Series 6/7",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1513,16 +1513,16 @@ def test_io_series_4():
     )
 
 
-def test_9000_series():
+def test_d701_genius_9000():
     parser = OralBBluetoothDeviceData()
-    service_info = ORALB_9000_SERIES
+    service_info = ORALB_D701_GENIUS_9000
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 9000/10000 48BE",
+        title="Genius Series D701 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 9000/10000 48BE",
-                model="Smart Series 9000/10000",
+                name="Genius Series D701 48BE",
+                model="Genius Series D701",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1628,16 +1628,16 @@ def test_9000_series():
     )
 
 
-def test_9000_black_series():
+def test_d701_genius_9000_black():
     parser = OralBBluetoothDeviceData()
-    service_info = ORALB_9000_BLACK_SERIES
+    service_info = ORALB_D701_GENIUS_9000_BLACK
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 9000/10000 48BE",
+        title="Genius Series D701 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 9000/10000 48BE",
-                model="Smart Series 9000/10000",
+                name="Genius Series D701 48BE",
+                model="Genius Series D701",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1748,11 +1748,11 @@ def test_io_series_9():
     service_info = ORALB_IO_SERIES_9
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 8/9 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 8/9 48BE",
-                model="IO Series 8/9",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1858,16 +1858,16 @@ def test_io_series_9():
     )
 
 
-def test_smart_series_4000():
+def test_d601():
     parser = OralBBluetoothDeviceData()
-    service_info = ORALB_4000_SERIES
+    service_info = ORALB_D601
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 4000 48BE",
+        title="Pro Series D601 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 4000 48BE",
-                model="Smart Series 4000",
+                name="Pro Series D601 48BE",
+                model="Pro Series D601",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -1978,11 +1978,11 @@ def test_triumph_v2():
     service_info = ORALB_TRIUMPH_V2
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Triumph V2 48BE",
+        title="Triumph D36 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Triumph V2 48BE",
-                model="Triumph V2",
+                name="Triumph D36 48BE",
+                model="Triumph D36",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2093,11 +2093,11 @@ def test_triumph_v2_data_2():
     service_info = ORALB_TRIUMPH_V2_DATA_2
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Triumph V2 48BE",
+        title="Triumph D36 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Triumph V2 48BE",
-                model="Triumph V2",
+                name="Triumph D36 48BE",
+                model="Triumph D36",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2208,11 +2208,11 @@ def test_pro_series_6000():
     service_info = ORALB_PRO_SERIES_6000
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Pro 6000 48BE",
+        title="Triumph D36 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Pro 6000 48BE",
-                model="Pro 6000",
+                name="Triumph D36 48BE",
+                model="Triumph D36",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2298,16 +2298,16 @@ def test_pro_series_6000():
     )
 
 
-def test_smart_series_6000_daily_clean_mode():
+def test_d700():
     parser = OralBBluetoothDeviceData()
-    service_info = ORALB_6000_SERIES_DAILY_CLEAN_MODE
+    service_info = ORALB_D700
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 6000 48BE",
+        title="Smart Series D700 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 6000 48BE",
-                model="Smart Series 6000",
+                name="Smart Series D700 48BE",
+                model="Smart Series D700",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2413,16 +2413,16 @@ def test_smart_series_6000_daily_clean_mode():
     )
 
 
-def test_smart_series_6000_daily_clean_mode_high_pressure():
+def test_d700_high_pressure():
     parser = OralBBluetoothDeviceData()
-    service_info = ORALB_6000_SERIES_DAILY_CLEAN_MODE_HIGH_PRESSURE
+    service_info = ORALB_D700_HIGH_PRESSURE
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 6000 48BE",
+        title="Smart Series D700 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 6000 48BE",
-                model="Smart Series 6000",
+                name="Smart Series D700 48BE",
+                model="Smart Series D700",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2528,16 +2528,16 @@ def test_smart_series_6000_daily_clean_mode_high_pressure():
     )
 
 
-def test_smart_series_6000_daily_clean_mode_normal_pressure():
+def test_d700_normal_pressure():
     parser = OralBBluetoothDeviceData()
-    service_info = ORALB_6000_SERIES_DAILY_CLEAN_MODE_NORMAL_PRESSURE
+    service_info = ORALB_D700_NORMAL_PRESSURE
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 6000 48BE",
+        title="Smart Series D700 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 6000 48BE",
-                model="Smart Series 6000",
+                name="Smart Series D700 48BE",
+                model="Smart Series D700",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2594,7 +2594,7 @@ def test_smart_series_6000_daily_clean_mode_normal_pressure():
             DeviceKey(key="mode", device_id=None): SensorValue(
                 device_key=DeviceKey(key="mode", device_id=None),
                 name="Mode",
-                native_value="off",
+                native_value="sensitive",
             ),
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
@@ -2645,14 +2645,14 @@ def test_smart_series_6000_daily_clean_mode_normal_pressure():
 
 def test_genius_8000():
     parser = OralBBluetoothDeviceData()
-    service_info = GENIUS_8000
+    service_info = ORALB_D701_GENIUS_8000
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="Smart Series 8000 48BE",
+        title="Genius Series D701 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 8000 48BE",
-                model="Smart Series 8000",
+                name="Genius Series D701 48BE",
+                model="Genius Series D701",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2760,15 +2760,15 @@ def test_genius_8000():
 
 def test_genius_8000_high_pressure():
     parser = OralBBluetoothDeviceData()
-    service_info = GENIUS_8000_HIGH_PRESSURE
+    service_info = ORALB_D701_GENIUS_8000_HIGH_PRESSURE
     result = parser.update(service_info)
     assert parser.brush_modes == SMART_SERIES_MODES
     assert result == SensorUpdate(
-        title="Smart Series 8000 48BE",
+        title="Genius Series D701 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="Smart Series 8000 48BE",
-                model="Smart Series 8000",
+                name="Genius Series D701 48BE",
+                model="Genius Series D701",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
@@ -2879,11 +2879,11 @@ def test_io_series_8():
     service_info = ORALB_IO_SERIES_8
     result = parser.update(service_info)
     assert result == SensorUpdate(
-        title="IO Series 8/9 48BE",
+        title="IO Series 48BE",
         devices={
             None: SensorDeviceInfo(
-                name="IO Series 8/9 48BE",
-                model="IO Series 8/9",
+                name="IO Series 48BE",
+                model="IO Series",
                 manufacturer="Oral-B",
                 sw_version=None,
                 hw_version=None,
