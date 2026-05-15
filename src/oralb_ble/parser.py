@@ -311,7 +311,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         )
         self.update_sensor(str(OralBSensor.MODE), None, tb_mode, None, "Mode")
         self.update_binary_sensor(
-            str(OralBBinarySensor.BRUSHING), bool(state == 3), None, "Brushing"
+            str(OralBBinarySensor.BRUSHING), state == 3, None, "Brushing"
         )
         if state == 3:
             self._brushing = True
@@ -369,7 +369,11 @@ class OralBBluetoothDeviceData(BluetoothData):
         try:
             await self._get_payload(client)
         except BleakError as err:
-            _LOGGER.warning(f"Reading gatt characters failed with err: {err}")
+            _LOGGER.warning("Reading gatt characters failed with err: %s", err)
+        except IndexError as err:
+            # An empty gatt read would otherwise raise an unhandled IndexError
+            # when indexing pressure_payload[0] / battery_payload[0].
+            _LOGGER.warning("Empty gatt payload while reading characters: %s", err)
         finally:
             await client.disconnect()
             _LOGGER.debug("Disconnected from active bluetooth client")

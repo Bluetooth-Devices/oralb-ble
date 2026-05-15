@@ -3,6 +3,7 @@ from __future__ import annotations
 from unittest import mock
 
 import pytest
+from bleak.exc import BleakError
 from bluetooth_sensor_state_data import BluetoothServiceInfo, SensorUpdate
 from sensor_state_data import (
     BinarySensorDescription,
@@ -3099,6 +3100,33 @@ async def test_async_poll(mock_establish_connection):
         res.entity_values.get(DeviceKey("battery_percent")).native_value == 59
         and res.entity_values.get(DeviceKey("pressure")).native_value == "normal"
     )
+
+
+@mock.patch("oralb_ble.parser.establish_connection")
+@pytest.mark.asyncio
+async def test_async_poll_empty_gatt_payload(mock_establish_connection):
+    """Empty gatt reads must not crash async_poll with an IndexError."""
+    parser = OralBBluetoothDeviceData()
+    device = generate_ble_device(address="abc", name="test_device")
+    mock_establish_connection.return_value.read_gatt_char.side_effect = [
+        bytearray(b""),
+        bytearray(b""),
+    ]
+    res = await parser.async_poll(device)
+    assert isinstance(res, SensorUpdate)
+
+
+@mock.patch("oralb_ble.parser.establish_connection")
+@pytest.mark.asyncio
+async def test_async_poll_bleak_error(mock_establish_connection):
+    """A BleakError raised while reading gatt characters is swallowed."""
+    parser = OralBBluetoothDeviceData()
+    device = generate_ble_device(address="abc", name="test_device")
+    mock_establish_connection.return_value.read_gatt_char.side_effect = BleakError(
+        "disconnected"
+    )
+    res = await parser.async_poll(device)
+    assert isinstance(res, SensorUpdate)
 
 
 def test_poll_needed_no_time():
