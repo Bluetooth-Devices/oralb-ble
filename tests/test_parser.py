@@ -3111,8 +3111,21 @@ async def test_async_poll_empty_gatt_payload(mock_establish_connection):
         bytearray(b""),
         bytearray(b""),
     ]
-    # Should swallow the IndexError raised by indexing an empty bytearray
-    # and still return a SensorUpdate.
+    res = await parser.async_poll(device)
+    assert isinstance(res, SensorUpdate)
+
+
+@mock.patch("oralb_ble.parser.establish_connection")
+@pytest.mark.asyncio
+async def test_async_poll_bleak_error(mock_establish_connection):
+    """A BleakError raised while reading gatt characters is swallowed."""
+    from bleak.exc import BleakError
+
+    parser = OralBBluetoothDeviceData()
+    device = generate_ble_device(address="abc", name="test_device")
+    mock_establish_connection.return_value.read_gatt_char.side_effect = BleakError(
+        "disconnected"
+    )
     res = await parser.async_poll(device)
     assert isinstance(res, SensorUpdate)
 
