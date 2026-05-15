@@ -3,6 +3,7 @@ from __future__ import annotations
 from unittest import mock
 
 import pytest
+from bleak.exc import BleakError
 from bluetooth_sensor_state_data import BluetoothServiceInfo, SensorUpdate
 from sensor_state_data import (
     BinarySensorDescription,
@@ -3119,8 +3120,6 @@ async def test_async_poll_empty_gatt_payload(mock_establish_connection):
 @pytest.mark.asyncio
 async def test_async_poll_bleak_error(mock_establish_connection):
     """A BleakError raised while reading gatt characters is swallowed."""
-    from bleak.exc import BleakError
-
     parser = OralBBluetoothDeviceData()
     device = generate_ble_device(address="abc", name="test_device")
     mock_establish_connection.return_value.read_gatt_char.side_effect = BleakError(
