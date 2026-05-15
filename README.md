@@ -38,6 +38,62 @@ Install this via pip (or your favourite package manager):
 
 `pip install oralb-ble`
 
+## Usage
+
+`oralb-ble` is a **passive parser** for Oral-B toothbrush BLE advertisements.
+It does not connect to the device — it decodes the manufacturer data that the
+brush broadcasts while in use.
+
+Feed each advertisement you receive into `OralBBluetoothDeviceData.update()`
+and read the resulting `SensorUpdate`:
+
+```python
+from home_assistant_bluetooth import BluetoothServiceInfo
+from oralb_ble import OralBBluetoothDeviceData
+
+# A BLE advertisement captured from an Oral-B IO Series 6.
+service_info = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062k\x02r\x00\x00\x01\x01\x00\x04"},
+    service_uuids=[],
+    service_data={},
+    source="local",
+)
+
+parser = OralBBluetoothDeviceData()
+update = parser.update(service_info)
+
+print(update.title)
+# 'IO Series 48BE'
+
+for key, value in update.entity_values.items():
+    print(f"{key.key}: {value.native_value}")
+# time: 0
+# sector: no sector
+# number_of_sectors: 4
+# sector_timer: 0
+# toothbrush_state: idle
+# pressure: normal
+# mode: sensitive
+# signal_strength: -63
+
+for key, value in update.binary_entity_values.items():
+    print(f"{key.key}: {value.native_value}")
+# brushing: False
+```
+
+The parser is stateful per device: keep the same `OralBBluetoothDeviceData`
+instance across advertisements from the same toothbrush so that derived
+fields (`sector_timer`, `toothbrush_state`) stay accurate.
+
+For real-world advertisement collection see Home Assistant's
+[bluetooth integration][ha-bluetooth] — that is the primary consumer of this
+library.
+
+[ha-bluetooth]: https://www.home-assistant.io/integrations/bluetooth/
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
