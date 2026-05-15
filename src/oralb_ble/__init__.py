@@ -20,11 +20,14 @@ from sensor_state_data import (
     Units,
 )
 
+from .const import CHARACTERISTIC_LED_COLOR, LED_COLORS
 from .parser import OralBBinarySensor, OralBBluetoothDeviceData, OralBSensor
 
 __version__ = "1.1.0"
 
 __all__ = [
+    "CHARACTERISTIC_LED_COLOR",
+    "LED_COLORS",
     "OralBSensor",
     "OralBBinarySensor",
     "OralBBluetoothDeviceData",
