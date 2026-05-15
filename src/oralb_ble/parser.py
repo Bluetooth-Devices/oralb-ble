@@ -282,8 +282,10 @@ class OralBBluetoothDeviceData(BluetoothData):
         tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
 
         self.update_sensor(str(OralBSensor.TIME), None, brush_time, None, "Time")
-        if brush_time == 0 and tb_state != "running":
-            # When starting up, sector is not accurate.
+        if tb_state != "running":
+            # Sector is only meaningful while actively brushing. When the brush
+            # is idle/off/sleeping/etc., the firmware keeps reporting the last
+            # sector, which would otherwise persist forever in the sensor.
             self.update_sensor(
                 str(OralBSensor.SECTOR), None, "no sector", None, "Sector"
             )
