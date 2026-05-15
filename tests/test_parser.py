@@ -635,7 +635,7 @@ def test_dataset_3():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="sector_timer", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector_timer", device_id=None),
@@ -765,7 +765,7 @@ def test_dataset_4():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
@@ -1455,7 +1455,7 @@ def test_io_series_7():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1695,7 +1695,7 @@ def test_d701_genius_9000():
             DeviceKey(key="sector", device_id=None): SensorValue(
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
-                native_value="sector " "1",
+                native_value="no " "sector",
             ),
             DeviceKey(key="pressure", device_id=None): SensorValue(
                 device_key=DeviceKey(key="pressure", device_id=None),
@@ -3175,3 +3175,31 @@ def test_d21_trizone_5000_ha_142787():
     parser = OralBBluetoothDeviceData()
     result = parser.update(ORALB_D21_TRIZONE_5000_HA_142787)
     assert result.devices[None].model == "Smart Series D21"
+
+
+def test_sector_resets_when_not_running_issue_63():
+    """Sector must report 'no sector' whenever the brush is not actively running.
+
+    Regression test for oralb-ble#63: after the user finishes brushing the
+    sensor was stuck on the last sector forever because the parser only
+    reset to 'no sector' when brush_time was also zero.
+    """
+    parser = OralBBluetoothDeviceData()
+    # ORALB_DATA_3: state=idle, brush_time=1, sector code=1
+    result = parser.update(ORALB_DATA_3)
+    sector_key = DeviceKey(key="sector", device_id=None)
+    assert result.entity_values[sector_key].native_value == "no sector"
+    state_key = DeviceKey(key="toothbrush_state", device_id=None)
+    assert result.entity_values[state_key].native_value == "idle"
+
+    # ORALB_IO_SERIES_5_HA_133934: state=off, brush_time=5, sector code=1
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_5_HA_133934)
+    assert result.entity_values[sector_key].native_value == "no sector"
+    assert result.entity_values[state_key].native_value == "off"
+
+    # ORALB_DATA_2: state=running -> sector is reported normally.
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_DATA_2)
+    assert result.entity_values[sector_key].native_value == "sector 1"
+    assert result.entity_values[state_key].native_value == "running"
