@@ -129,6 +129,20 @@ STATES = {
     116: "transport",
 }
 
+# Pressure byte from the passive manufacturer-data advertisement.
+# The byte encodes two independent fields:
+#   * low nibble (byte & 0x0F): button-event state
+#       0 or 2 -> no button pressed
+#       6      -> "button pressed"
+#       8 or 10 -> "power button pressed"
+#   * upper nibble (byte >> 4): pressure-level threshold
+#       <  9  -> "normal" pressure
+#       >= 9  -> "high"   pressure
+# When a button event is encoded in the low nibble, the resulting label
+# reports the button event instead of the pressure level (i.e. the
+# button-event field takes precedence over the level field in the
+# flattened string). For the bit-pattern validation, see
+# tests/test_pressure_encoding.py.
 PRESSURE = {
     0: "normal",
     16: "normal",
