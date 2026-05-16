@@ -3256,11 +3256,8 @@ def test_unexpected_payload_length_is_dropped_with_debug_log(caplog, payload_len
         result = parser.update(service_info)
 
     # No toothbrush_state sensor — parser bailed before populating fields.
-    assert not any(
-        key.key == "toothbrush_state" for key in result.entity_values
-    )
+    assert not any(key.key == "toothbrush_state" for key in result.entity_values)
     assert any(
-        "unexpected length" in record.message
-        and str(payload_length) in record.message
+        "unexpected length" in record.message and str(payload_length) in record.message
         for record in caplog.records
     )
