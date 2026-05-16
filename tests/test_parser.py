@@ -3231,3 +3231,36 @@ def test_sector_resets_when_not_running_issue_63():
     result = parser.update(ORALB_DATA_2)
     assert result.entity_values[sector_key].native_value == "sector 1"
     assert result.entity_values[state_key].native_value == "running"
+
+
+@pytest.mark.parametrize("payload_length", [1, 8, 10, 12, 20])
+def test_unexpected_payload_length_is_dropped_with_debug_log(caplog, payload_length):
+    """Payloads outside the supported (9, 11) lengths drop and emit a debug log.
+
+    Before this change the parser returned with no record, leaving operators
+    blind to malformed or unknown-variant advertisements. The DEBUG record
+    now identifies the unexpected length so new firmware quirks can be
+    spotted in logs.
+    """
+    parser = OralBBluetoothDeviceData()
+    service_info = BluetoothServiceInfo(
+        name="78:DB:2F:C2:48:BE",
+        address="78:DB:2F:C2:48:BE",
+        rssi=-63,
+        manufacturer_data={220: bytes(payload_length)},
+        service_uuids=[],
+        service_data={},
+        source="local",
+    )
+    with caplog.at_level("DEBUG", logger="oralb_ble.parser"):
+        result = parser.update(service_info)
+
+    # No toothbrush_state sensor — parser bailed before populating fields.
+    assert not any(
+        key.key == "toothbrush_state" for key in result.entity_values
+    )
+    assert any(
+        "unexpected length" in record.message
+        and str(payload_length) in record.message
+        for record in caplog.records
+    )
