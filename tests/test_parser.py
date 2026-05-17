@@ -3255,7 +3255,8 @@ def test_start_update_ignores_advertisement_without_oralb_manufacturer():
     assert result.binary_entity_values == {}
 
 
-def test_poll_needed_not_brushing_within_interval_returns_false():
+@mock.patch("oralb_ble.parser.time")
+def test_poll_needed_not_brushing_within_interval_returns_false(mocked_time):
     """When idle and the last poll was recent, no repoll is needed.
 
     NOT_BRUSHING_UPDATE_INTERVAL_SECONDS is 86400; anything below that
@@ -3264,6 +3265,11 @@ def test_poll_needed_not_brushing_within_interval_returns_false():
     parser = OralBBluetoothDeviceData()
     parser._brushing = False
     parser._last_brush = 0.0
+    # Push monotonic past TIMEOUT_RECENTLY_BRUSHING so the long idle branch
+    # is chosen. On a freshly-booted CI runner monotonic can start small
+    # enough that ``time.monotonic() - 0.0`` falls inside the
+    # recently-brushing window and selects the short interval.
+    mocked_time.monotonic.return_value = 10_000
     assert parser.poll_needed(None, 3600) is False
 
 
