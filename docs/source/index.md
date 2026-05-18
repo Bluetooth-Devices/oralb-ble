@@ -9,6 +9,13 @@ usage
 ```
 
 ```{toctree}
+:caption: Developer Reference
+:maxdepth: 2
+
+wire-format
+```
+
+```{toctree}
 :caption: Project Info
 :maxdepth: 2
 
