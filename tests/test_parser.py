@@ -3233,7 +3233,7 @@ def test_sector_resets_when_not_running_issue_63():
     assert result.entity_values[state_key].native_value == "running"
 
 
-def test_start_update_ignores_advertisement_without_oralb_manufacturer():
+def test_start_update_ignores_advertisement_without_oralb_manufacturer() -> None:
     """Advertisements from non-Oral-B devices must early-return cleanly.
 
     Bluetooth scanners often pass every nearby advertisement through the
@@ -3256,7 +3256,9 @@ def test_start_update_ignores_advertisement_without_oralb_manufacturer():
 
 
 @mock.patch("oralb_ble.parser.time")
-def test_poll_needed_not_brushing_within_interval_returns_false(mocked_time):
+def test_poll_needed_not_brushing_within_interval_returns_false(
+    mocked_time: mock.MagicMock,
+) -> None:
     """When idle and the last poll was recent, no repoll is needed.
 
     NOT_BRUSHING_UPDATE_INTERVAL_SECONDS is 86400; anything below that
@@ -3274,7 +3276,9 @@ def test_poll_needed_not_brushing_within_interval_returns_false(mocked_time):
 
 
 @mock.patch("oralb_ble.parser.time")
-def test_poll_needed_not_brushing_after_long_idle_returns_true(mocked_time):
+def test_poll_needed_not_brushing_after_long_idle_returns_true(
+    mocked_time: mock.MagicMock,
+) -> None:
     """After the long idle interval elapses the brush must be polled again.
 
     Covers the branch where ``time.monotonic() - _last_brush`` exceeds
