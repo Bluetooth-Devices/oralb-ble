@@ -22,10 +22,10 @@ Status legend:
 
 ## Wired up
 
-| UUID short | Constant                  | Direction | Payload                                                                                                                                    |
-| ---------- | ------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `a0f0ff05` | `CHARACTERISTIC_BATTERY`  | Read      | Single byte, battery percentage (`0`–`100`). Surfaced as the `battery_percent` sensor.                                                     |
-| `a0f0ff0b` | `CHARACTERISTIC_PRESSURE` | Read      | Single byte decoded via `ACTIVE_CONNECTION_PRESSURE` (`0`=low, `1`=normal, `2`=high). Surfaced as the `pressure` sensor when GATT-polled.  |
+| UUID short | Constant                  | Direction | Payload                                                                                                                                   |
+| ---------- | ------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `a0f0ff05` | `CHARACTERISTIC_BATTERY`  | Read      | Single byte, battery percentage (`0`–`100`). Surfaced as the `battery_percent` sensor.                                                    |
+| `a0f0ff0b` | `CHARACTERISTIC_PRESSURE` | Read      | Single byte decoded via `ACTIVE_CONNECTION_PRESSURE` (`0`=low, `1`=normal, `2`=high). Surfaced as the `pressure` sensor when GATT-polled. |
 | `a0f0ff02` | `CHARACTERISTIC_MODEL`    | Read      | Model identifier. The advertisement payload already exposes the same value in byte 1, so the parser keeps relying on the advertisement.   |
 
 The "wired up" set is intentionally minimal: the BLE advertisement
@@ -41,22 +41,22 @@ been confirmed by upstream reverse-engineering (see references at the
 bottom of this page). The parser does not read or write them yet — a
 future feature could.
 
-| UUID short | Constant                       | Direction       | Notes                                                                                                                                    |
-| ---------- | ------------------------------ | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `a0f0ff01` | `CHARACTERISTIC_TOOTHBRUSH_ID` | Read            | Hardware identifier. Useful for distinguishing two brushes of the same model that share a BLE address surfaced via `short_address`.      |
-| `a0f0ff03` | `CHARACTERISTIC_USER_ID`       | Read / Write    | Active user slot (`1`–`4` on multi-user brushes).                                                                                        |
-| `a0f0ff04` | `CHARACTERISTIC_STATUS`        | Read / Notify   | Mirrors the toothbrush state byte from the advertisement. Notifications would let a client react without polling.                        |
-| `a0f0ff06` | `CHARACTERISTIC_BUTTON`        | Read / Notify   | Live button-press telemetry. Maps to the "button pressed" / "power button pressed" labels in `PRESSURE`.                                 |
-| `a0f0ff07` | `CHARACTERISTIC_MODE`          | Read            | Current cleaning mode. Decoded via `SMART_SERIES_MODES` or `IO_SERIES_MODES` depending on the model line.                                |
-| `a0f0ff08` | `CHARACTERISTIC_BRUSHING_TIME` | Read            | Seconds elapsed in the current session. The advertisement already carries this as `data[5] * 60 + data[6]`.                              |
-| `a0f0ff09` | `CHARACTERISTIC_SECTOR`        | Read            | Current sector code, decoded via `SECTOR_MAP`. The advertisement already exposes this as `data[8]`.                                      |
-| `a0f0ff21` | `CHARACTERISTIC_CONTROL`       | Write           | Generic control surface (start/stop session, reset). Exact opcodes are not yet pinned down here.                                         |
-| `a0f0ff22` | `CHARACTERISTIC_CURRENT_TIME`  | Read / Write    | Wall-clock time on the brush, used to time-stamp session history.                                                                        |
-| `a0f0ff25` | `CHARACTERISTIC_AVAILABLE_MODES` | Read          | Bitmask / list of modes the brush actually supports — narrower than the model-wide `SMART_SERIES_MODES` table.                           |
-| `a0f0ff26` | `CHARACTERISTIC_SECTOR_TIMER`  | Read            | Per-sector elapsed seconds. The advertisement exposes this as `data[9]`.                                                                 |
-| `a0f0ff29` | `CHARACTERISTIC_SESSION_INFO`  | Read            | Per-session metadata (start time, duration, mode used). Candidate source for the "well-brushed" sensor proposed in issue #46.            |
-| `a0f0ff0d` | `CHARACTERISTIC_POSITION`      | Read / Notify   | Suspected to carry positional / orientation data from the IMU. Exact encoding is still unconfirmed — see the comment in `const.py`.      |
-| `a0f0ff2b` | `CHARACTERISTIC_UNKNOWN_9` ※   | Write           | LED ring colour on IO-Series brushes. Issue #36 captured six 4-byte payloads (white/blue/turquoise/pink/yellow/orange).                  |
+| UUID short | Constant                         | Direction     | Notes                                                                                                                               |
+| ---------- | -------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `a0f0ff01` | `CHARACTERISTIC_TOOTHBRUSH_ID`   | Read          | Hardware identifier. Useful for distinguishing two brushes of the same model that share a BLE address surfaced via `short_address`. |
+| `a0f0ff03` | `CHARACTERISTIC_USER_ID`         | Read / Write  | Active user slot (`1`–`4` on multi-user brushes).                                                                                   |
+| `a0f0ff04` | `CHARACTERISTIC_STATUS`          | Read / Notify | Mirrors the toothbrush state byte from the advertisement. Notifications would let a client react without polling.                   |
+| `a0f0ff06` | `CHARACTERISTIC_BUTTON`          | Read / Notify | Live button-press telemetry. Maps to the "button pressed" / "power button pressed" labels in `PRESSURE`.                            |
+| `a0f0ff07` | `CHARACTERISTIC_MODE`            | Read          | Current cleaning mode. Decoded via `SMART_SERIES_MODES` or `IO_SERIES_MODES` depending on the model line.                           |
+| `a0f0ff08` | `CHARACTERISTIC_BRUSHING_TIME`   | Read          | Seconds elapsed in the current session. The advertisement already carries this as `data[5] * 60 + data[6]`.                         |
+| `a0f0ff09` | `CHARACTERISTIC_SECTOR`          | Read          | Current sector code, decoded via `SECTOR_MAP`. The advertisement already exposes this as `data[8]`.                                 |
+| `a0f0ff21` | `CHARACTERISTIC_CONTROL`         | Write         | Generic control surface (start/stop session, reset). Exact opcodes are not yet pinned down here.                                    |
+| `a0f0ff22` | `CHARACTERISTIC_CURRENT_TIME`    | Read / Write  | Wall-clock time on the brush, used to time-stamp session history.                                                                   |
+| `a0f0ff25` | `CHARACTERISTIC_AVAILABLE_MODES` | Read          | Bitmask / list of modes the brush actually supports — narrower than the model-wide `SMART_SERIES_MODES` table.                      |
+| `a0f0ff26` | `CHARACTERISTIC_SECTOR_TIMER`    | Read          | Per-sector elapsed seconds. The advertisement exposes this as `data[9]`.                                                            |
+| `a0f0ff29` | `CHARACTERISTIC_SESSION_INFO`    | Read          | Per-session metadata (start time, duration, mode used). Candidate source for the "well-brushed" sensor proposed in issue #46.       |
+| `a0f0ff0d` | `CHARACTERISTIC_POSITION`        | Read / Notify | Suspected to carry positional / orientation data from the IMU. Exact encoding is still unconfirmed — see the comment in `const.py`. |
+| `a0f0ff2b` | `CHARACTERISTIC_UNKNOWN_9` ※     | Write         | LED ring colour on IO-Series brushes. Issue #36 captured six 4-byte payloads (white/blue/turquoise/pink/yellow/orange).             |
 
 ※ Issue [#36](https://github.com/Bluetooth-Devices/oralb-ble/issues/36)
 proposes renaming `CHARACTERISTIC_UNKNOWN_9` to
@@ -75,19 +75,19 @@ you reverse-engineer one, the workflow is:
 3. Rename the constant in `const.py` and add a regression test against
    the captured bytes (see `tests/test_const.py` for the shape).
 
-| UUID short | Constant                     | Notes                                                              |
-| ---------- | ---------------------------- | ------------------------------------------------------------------ |
-| `a0f0ff81` | `CHARACTERISTIC_UNKNOWN_4`   |                                                                    |
-| `a0f0ff82` | `CHARACTERISTIC_UNKNOWN_5`   |                                                                    |
-| `a0f0ff83` | `CHARACTERISTIC_UNKNOWN_3`   |                                                                    |
-| `a0f0ff84` | `CHARACTERISTIC_UNKNOWN_1`   |                                                                    |
-| `a0f0ff85` | `CHARACTERISTIC_UNKNOWN_2`   |                                                                    |
-| `a0f0ff0a` | `CHARACTERISTIC_UNKNOWN_7`   | Adjacent to `0x0b` (pressure) — possibly a related telemetry char. |
-| `a0f0ff0c` | _commented out_              | Reads fail on the brushes tested so far — not exposed by all firmwares. |
-| `a0f0ff23` | `CHARACTERISTIC_UNKNOWN_10`  | Adjacent to `0x22` (current time) — likely related.                |
-| `a0f0ff2a` | `CHARACTERISTIC_UNKNOWN_12`  |                                                                    |
-| `a0f0ff2c` | `CHARACTERISTIC_UNKNOWN_8`   |                                                                    |
-| `a0f0ff2d` | `CHARACTERISTIC_UNKNOWN_11`  |                                                                    |
+| UUID short | Constant                    | Notes                                                                   |
+| ---------- | --------------------------- | ----------------------------------------------------------------------- |
+| `a0f0ff81` | `CHARACTERISTIC_UNKNOWN_4`  |                                                                         |
+| `a0f0ff82` | `CHARACTERISTIC_UNKNOWN_5`  |                                                                         |
+| `a0f0ff83` | `CHARACTERISTIC_UNKNOWN_3`  |                                                                         |
+| `a0f0ff84` | `CHARACTERISTIC_UNKNOWN_1`  |                                                                         |
+| `a0f0ff85` | `CHARACTERISTIC_UNKNOWN_2`  |                                                                         |
+| `a0f0ff0a` | `CHARACTERISTIC_UNKNOWN_7`  | Adjacent to `0x0b` (pressure) — possibly a related telemetry char.      |
+| `a0f0ff0c` | _commented out_             | Reads fail on the brushes tested so far — not exposed by all firmwares. |
+| `a0f0ff23` | `CHARACTERISTIC_UNKNOWN_10` | Adjacent to `0x22` (current time) — likely related.                     |
+| `a0f0ff2a` | `CHARACTERISTIC_UNKNOWN_12` |                                                                         |
+| `a0f0ff2c` | `CHARACTERISTIC_UNKNOWN_8`  |                                                                         |
+| `a0f0ff2d` | `CHARACTERISTIC_UNKNOWN_11` |                                                                         |
 
 The grouping of UUIDs is not random: the `0x01–0x09` block carries
 session-state values (identifier, user, state, battery, button, mode,
