@@ -3231,3 +3231,63 @@ def test_sector_resets_when_not_running_issue_63():
     result = parser.update(ORALB_DATA_2)
     assert result.entity_values[sector_key].native_value == "sector 1"
     assert result.entity_values[state_key].native_value == "running"
+
+
+def test_start_update_ignores_advertisement_without_oralb_manufacturer() -> None:
+    """Advertisements from non-Oral-B devices must early-return cleanly.
+
+    Bluetooth scanners often pass every nearby advertisement through the
+    parser. When the Oral-B manufacturer ID (0x00DC / 220) is absent the
+    parser must skip without populating any sensors or raising.
+    """
+    parser = OralBBluetoothDeviceData()
+    foreign_advertisement = BluetoothServiceInfo(
+        name="Some Other Device",
+        address="AA:BB:CC:DD:EE:FF",
+        rssi=-50,
+        manufacturer_data={0x004C: b"\x10\x05\x03\x18\xfe"},  # Apple, not Oral-B
+        service_uuids=[],
+        service_data={},
+        source="local",
+    )
+    result = parser.update(foreign_advertisement)
+    assert result.entity_values == {}
+    assert result.binary_entity_values == {}
+
+
+@mock.patch("oralb_ble.parser.time")
+def test_poll_needed_not_brushing_within_interval_returns_false(
+    mocked_time: mock.MagicMock,
+) -> None:
+    """When idle and the last poll was recent, no repoll is needed.
+
+    NOT_BRUSHING_UPDATE_INTERVAL_SECONDS is 86400; anything below that
+    while idle must keep the radio quiet to spare the device's battery.
+    """
+    parser = OralBBluetoothDeviceData()
+    parser._brushing = False
+    parser._last_brush = 0.0
+    # Push monotonic past TIMEOUT_RECENTLY_BRUSHING so the long idle branch
+    # is chosen. On a freshly-booted CI runner monotonic can start small
+    # enough that ``time.monotonic() - 0.0`` falls inside the
+    # recently-brushing window and selects the short interval.
+    mocked_time.monotonic.return_value = 10_000
+    assert parser.poll_needed(None, 3600) is False
+
+
+@mock.patch("oralb_ble.parser.time")
+def test_poll_needed_not_brushing_after_long_idle_returns_true(
+    mocked_time: mock.MagicMock,
+) -> None:
+    """After the long idle interval elapses the brush must be polled again.
+
+    Covers the branch where ``time.monotonic() - _last_brush`` exceeds
+    TIMEOUT_RECENTLY_BRUSHING (so the long NOT_BRUSHING interval applies)
+    and ``last_poll`` is above that long interval.
+    """
+    parser = OralBBluetoothDeviceData()
+    parser._brushing = False
+    parser._last_brush = 0.0
+    # Push monotonic past TIMEOUT_RECENTLY_BRUSHING so the long interval wins.
+    mocked_time.monotonic.return_value = 10_000
+    assert parser.poll_needed(None, 86401) is True
