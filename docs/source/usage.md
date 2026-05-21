@@ -69,7 +69,7 @@ toothbrush. State the parser tracks internally:
 
 - `_brushing` — whether the last advertisement reported state `running`.
 - `_last_brush` — `time.monotonic()` of the most recent `running`
-  advertisement, used by `poll_needed` (see *Deciding when to poll*
+  advertisement, used by `poll_needed` (see _Deciding when to poll_
   below).
 
 ## Sensors exposed
@@ -84,9 +84,9 @@ Every advertisement update writes the values below. Names are the
 | `time`              | int  | ad bytes        | Elapsed brushing time in seconds (`data[5] * 60 + data[6]`). Resets to `0` on a fresh session; the brush keeps reporting it after stop.          |
 | `sector`            | str  | ad bytes        | Decoded via `SECTOR_MAP` (`"sector 1"`–`"sector 4"`, `"success"`, or `"unknown sector code N"`). Overridden to `"no sector"` whenever idle.      |
 | `number_of_sectors` | int  | ad bytes        | Configured sector count (commonly `4` or `6`). Only present on length-11 payloads.                                                               |
-| `sector_timer`      | int  | ad bytes        | Seconds elapsed in the current sector. Resets when the brush moves to the next sector. Only present on length-11 payloads.                      |
+| `sector_timer`      | int  | ad bytes        | Seconds elapsed in the current sector. Resets when the brush moves to the next sector. Only present on length-11 payloads.                       |
 | `toothbrush_state`  | str  | ad bytes        | Decoded via `STATES` — `idle`, `running`, `charging`, `setup`, `sleeping`, `transport`, `final test`, etc. `running` drives the `brushing` flag. |
-| `pressure`          | str  | ad bytes / GATT | `normal`, `high`, `button pressed`, or `power button pressed` from the advertisement; or `low`/`normal`/`high` if `async_poll()` ran last.      |
+| `pressure`          | str  | ad bytes / GATT | `normal`, `high`, `button pressed`, or `power button pressed` from the advertisement; or `low`/`normal`/`high` if `async_poll()` ran last.       |
 | `mode`              | str  | ad bytes        | Decoded via the per-model mode dict (`SMART_SERIES_MODES` for D-line, `IO_SERIES_MODES` for the IO Series).                                      |
 | `battery_percent`   | int  | GATT            | Integer 0–100. Populated only after a successful `async_poll()`. Device class: `battery`. Unit: `%`.                                             |
 | `brushing` (binary) | bool | ad bytes        | `True` exactly when `toothbrush_state == "running"`. Drives the `_brushing` / `_last_brush` book-keeping the poll scheduler reads.               |
@@ -104,8 +104,8 @@ A few footguns worth knowing:
 - **`pressure` is double-sourced.** Advertisements report
   `normal / high / button pressed / power button pressed`. The GATT
   read reports `low / normal / high`. Both write to the same sensor,
-  so the most recent successful read wins. See the *Pressure byte
-  bit-encoding* section of [Wire format](wire-format.md) for the bit
+  so the most recent successful read wins. See the _Pressure byte
+  bit-encoding_ section of [Wire format](wire-format.md) for the bit
   layout used in the advertisement variant.
 
 ## Brushing-session lifecycle
@@ -148,10 +148,10 @@ starts.
 `async_poll(ble_device)` opens a connection and reads two
 characteristics:
 
-| Constant                  | UUID                                   | Decoded as                                       |
-| ------------------------- | -------------------------------------- | ------------------------------------------------ |
-| `CHARACTERISTIC_BATTERY`  | `a0f0ff05-5047-4d53-8208-4f72616c2d42` | Single byte → `battery_percent` (0–100).         |
-| `CHARACTERISTIC_PRESSURE` | `a0f0ff0b-5047-4d53-8208-4f72616c2d42` | Single byte → `pressure` (`low/normal/high`).    |
+| Constant                  | UUID                                   | Decoded as                                    |
+| ------------------------- | -------------------------------------- | --------------------------------------------- |
+| `CHARACTERISTIC_BATTERY`  | `a0f0ff05-5047-4d53-8208-4f72616c2d42` | Single byte → `battery_percent` (0–100).      |
+| `CHARACTERISTIC_PRESSURE` | `a0f0ff0b-5047-4d53-8208-4f72616c2d42` | Single byte → `pressure` (`low/normal/high`). |
 
 ```python
 import asyncio
@@ -211,8 +211,8 @@ full coverage today:
   document specific misclassifications that have since been folded
   into the map).
 
-When a user reports an unrecognised brush, follow the *Adding a new
-model* workflow in [Wire format](wire-format.md) to add a fixture and
+When a user reports an unrecognised brush, follow the _Adding a new
+model_ workflow in [Wire format](wire-format.md) to add a fixture and
 an entry to `MODEL_ID_TO_MODEL`.
 
 ## Home Assistant integration
