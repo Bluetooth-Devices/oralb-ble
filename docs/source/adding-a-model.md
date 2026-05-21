@@ -43,10 +43,10 @@ present.
 Index the captured payload as raw bytes (zero-based). The two bytes
 that matter for adding a new model are:
 
-| Byte | Field            | Notes                                                                 |
-| ---: | ---------------- | --------------------------------------------------------------------- |
-|    0 | Protocol version | Determines the per-byte layout. The parser already supports 1–7.      |
-|    1 | Model identifier | What you look up in `MODEL_ID_TO_MODEL`.                              |
+| Byte | Field            | Notes                                                            |
+| ---: | ---------------- | ---------------------------------------------------------------- |
+|    0 | Protocol version | Determines the per-byte layout. The parser already supports 1–7. |
+|    1 | Model identifier | What you look up in `MODEL_ID_TO_MODEL`.                         |
 
 If byte 0 is in the range `1–7` and the overall payload length is
 **9 or 11 bytes**, the existing parser will handle the frame end-to-end
