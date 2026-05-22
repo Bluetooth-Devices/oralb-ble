@@ -111,13 +111,13 @@ multi-region modes can produce values outside the table.
 
 The mapping today (excerpted from `src/oralb_ble/parser.py`):
 
-| Codes                | Meaning    |
-| -------------------- | ---------- |
-| `1`, `9`             | `sector 1` |
-| `2`, `10`            | `sector 2` |
-| `3`, `11`, `19`, `27`| `sector 3` |
-| `4`, `7`, `15`, `31`, `39` | `sector 4` |
-| `41`, `42`, `43`, `47`, `55` | `success` |
+| Codes                        | Meaning    |
+| ---------------------------- | ---------- |
+| `1`, `9`                     | `sector 1` |
+| `2`, `10`                    | `sector 2` |
+| `3`, `11`, `19`, `27`        | `sector 3` |
+| `4`, `7`, `15`, `31`, `39`   | `sector 4` |
+| `41`, `42`, `43`, `47`, `55` | `success`  |
 
 If a brush reliably reports an unmapped code, capture the byte 8
 value during the session along with `number_of_sectors`
