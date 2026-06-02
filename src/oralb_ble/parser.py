@@ -212,26 +212,32 @@ MODEL_ID_TO_MODEL: dict[int, Models] = {
     119: Models.D706,  # D706 5_MODE_CHINA
 }
 
-SECTOR_MAP = {
-    1: "sector 1",
-    9: "sector 1",
-    2: "sector 2",
-    10: "sector 2",
-    3: "sector 3",
-    11: "sector 3",
-    19: "sector 3",
-    27: "sector 3",
-    4: "sector 4",
-    7: "sector 4",
-    15: "sector 4",
-    31: "sector 4",
-    39: "sector 4",
-    41: "success",
-    42: "success",
-    43: "success",
-    47: "success",
-    55: "success",
-}
+
+def _decode_sector(sector: int, no_of_sectors: int | None) -> str:
+    """Decode the sector code (manufacturer data byte 8).
+
+    The low three bits hold the quadrant index: ``1``-``6`` for a concrete
+    quadrant, ``7`` is a "last quadrant" sentinel and ``0`` means no quadrant.
+    The upper bits are a display flag (which feedback face the handle shows)
+    and do not change the quadrant, so they are masked off.
+
+    Because ``7`` only marks the *last* quadrant, its real number depends on
+    how many sectors the brush is configured for (byte 10). Firmware that does
+    not report a sector count (``no_of_sectors`` 0 or absent) falls back to the
+    historical four-sector assumption.
+
+    This replaces the old hand-built lookup table, which only covered 4-sector
+    brushes: it returned ``"unknown sector code 5"`` for sector 5 and wrongly
+    reused ``"sector 4"`` for the last-quadrant sentinel on 6-sector brushes
+    (e.g. IO Series 10).
+    """
+    quadrant = sector & 0x07
+    if quadrant == 0:
+        return "no sector"
+    if quadrant == 7:
+        count = (no_of_sectors or 0) & 0x07
+        return f"sector {count or 4}"
+    return f"sector {quadrant}"
 
 
 class OralBBluetoothDeviceData(BluetoothData):
@@ -279,7 +285,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         tb_state = STATES.get(state, f"unknown state {state}")
         tb_mode = self.brush_modes.get(mode, f"unknown mode {mode}")
         tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
-        tb_sector = SECTOR_MAP.get(sector, f"unknown sector code {sector}")
+        tb_sector = _decode_sector(sector, no_of_sectors)
 
         self.update_sensor(str(OralBSensor.TIME), None, brush_time, None, "Time")
         if tb_state != "running":
