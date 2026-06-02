@@ -230,6 +230,14 @@ def _decode_sector(sector: int, no_of_sectors: int | None) -> str:
     brushes: it returned ``"unknown sector code 5"`` for sector 5 and wrongly
     reused ``"sector 4"`` for the last-quadrant sentinel on 6-sector brushes
     (e.g. IO Series 10).
+
+    The old table also mapped a few bytes (41, 42, 43, 47, 55) to ``"success"``.
+    Those carry the end-of-session feedback face in the upper bits and only
+    occur in non-running frames, which #151 already reports as ``"no sector"``
+    regardless of the byte -- so ``"success"`` was already unreachable through
+    the sensor and is intentionally not reproduced here. A finished session is
+    better detected from the ``running`` state ending together with the elapsed
+    brushing time than from a transient sector value.
     """
     quadrant = sector & 0x07
     if quadrant == 0:
