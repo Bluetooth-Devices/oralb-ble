@@ -13,6 +13,7 @@ usage
 :maxdepth: 2
 
 wire-format
+models
 ```
 
 ```{toctree}
