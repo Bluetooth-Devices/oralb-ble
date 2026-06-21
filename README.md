@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/Bluetooth-Devices/oralb-ble/actions?query=workflow%3ACI">
-    <img src="https://img.shields.io/github/workflow/status/Bluetooth-Devices/oralb-ble/CI/main?label=CI&logo=github&style=flat-square" alt="CI Status" >
+    <img src="https://img.shields.io/github/actions/workflow/status/Bluetooth-Devices/oralb-ble/ci.yml?branch=main&label=CI&logo=github&style=flat-square" alt="CI Status" >
   </a>
   <a href="https://oralb-ble.readthedocs.io">
     <img src="https://img.shields.io/readthedocs/oralb-ble.svg?logo=read-the-docs&logoColor=fff&style=flat-square" alt="Documentation Status">
