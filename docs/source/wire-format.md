@@ -25,19 +25,19 @@ opening a GATT connection and reading the relevant characteristic.
 The parser indexes the payload as raw bytes. The table below uses
 zero-based byte offsets.
 
-| Byte | Field              | Notes                                                                                                             |
-| ---: | ------------------ | ----------------------------------------------------------------------------------------------------------------- |
-|    0 | Protocol version   | `1` (D36 / Pro 6000), `2` (Triumph v2 / early D36), `3` (D601 / D701), `4` (D700), `6` (IO Series), `7` (IO 4).   |
-|    1 | Model identifier   | Looked up in `MODEL_ID_TO_MODEL`. Unknown IDs fall back to `Models.Unknown` (uses `SMART_SERIES_MODES`).          |
-|    2 | Reserved           | Not interpreted by this parser. Believed to be firmware/hardware revision.                                        |
-|    3 | Toothbrush state   | Decoded via `STATES`. `3` is the only value that means "actively brushing" — drives the `brushing` binary sensor. |
-|    4 | Pressure           | Decoded via `PRESSURE`. See [pressure bit-encoding](#pressure-byte-bit-encoding) below.                           |
-|    5 | Brush-time minutes | High byte of the elapsed brushing time. Combined with byte 6 as `data[5] * 60 + data[6]` seconds.                 |
-|    6 | Brush-time seconds | Low component of the elapsed brushing time, in seconds within the current minute.                                 |
-|    7 | Mode               | Decoded via the per-model `modes` dict (`SMART_SERIES_MODES` or `IO_SERIES_MODES`).                               |
-|    8 | Sector code        | Decoded via `SECTOR_MAP`. Reported as `"no sector"` whenever the state is not `running`.                          |
-|    9 | Sector timer       | Seconds elapsed in the current sector. Present only on length-11 payloads.                                        |
-|   10 | Number of sectors  | How many sectors the brush is configured for (commonly `4` or `6`). Present only on length-11 payloads.           |
+| Byte | Field              | Notes                                                                                                                                              |
+| ---: | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+|    0 | Protocol version   | `1` (D36 / Pro 6000), `2` (Triumph v2 / early D36), `3` (D601 / D701), `4` (D700), `6` (IO Series), `7` (IO 4).                                    |
+|    1 | Model identifier   | Looked up in `MODEL_ID_TO_MODEL`. Unknown IDs fall back to `Models.Unknown` (uses `SMART_SERIES_MODES`).                                           |
+|    2 | Reserved           | Not interpreted by this parser. Believed to be firmware/hardware revision.                                                                         |
+|    3 | Toothbrush state   | Decoded via `STATES`. `3` is the only value that means "actively brushing" — drives the `brushing` binary sensor.                                  |
+|    4 | Pressure           | Decoded via `PRESSURE`. See [pressure bit-encoding](#pressure-byte-bit-encoding) below.                                                            |
+|    5 | Brush-time minutes | High byte of the elapsed brushing time. Combined with byte 6 as `data[5] * 60 + data[6]` seconds.                                                  |
+|    6 | Brush-time seconds | Low component of the elapsed brushing time, in seconds within the current minute.                                                                  |
+|    7 | Mode               | Decoded via the per-model `modes` dict (`SMART_SERIES_MODES` or `IO_SERIES_MODES`).                                                                |
+|    8 | Sector code        | Decoded via `_decode_sector`. See [sector bit-encoding](#sector-byte-bit-encoding). Reported as `"no sector"` whenever the state is not `running`. |
+|    9 | Sector timer       | Seconds elapsed in the current sector. Present only on length-11 payloads.                                                                         |
+|   10 | Number of sectors  | How many sectors the brush is configured for (commonly `4` or `6`). Present only on length-11 payloads.                                            |
 
 ### Pressure byte bit-encoding
 
@@ -55,6 +55,24 @@ The `PRESSURE` lookup table is not a flat list of magic numbers — it is a
 When both a pressure level and a button event are set, the button-event
 label wins in the flattened string the parser emits (this is by design —
 the active-button label is the more actionable signal for the user).
+
+### Sector byte bit-encoding
+
+Like the pressure byte, byte 8 packs two independent fields:
+
+- **Low three bits** (`sector & 0x07`) encode the quadrant index:
+  - `0` — no quadrant
+  - `1`–`6` — that quadrant
+  - `7` — a "last quadrant" sentinel; its real number is the brush's sector
+    count (byte 10). Firmware that does not report a count (`0` or a length-9
+    payload) falls back to the historical four-sector assumption.
+- **Upper bits** (`sector >> 3`) are a display flag indicating which feedback
+  face the handle shows. They do not change the quadrant and are masked off.
+
+This replaces the previous hand-built `SECTOR_MAP`, which only covered
+4-sector brushes: it returned `"unknown sector code 5"` for sector 5 and
+reused `"sector 4"` for the last-quadrant sentinel, so 6-sector brushes
+(IO Series 10) mis-reported sectors 5 and 6.
 
 ### Reading an example
 
