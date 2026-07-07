@@ -3291,3 +3291,91 @@ def test_poll_needed_not_brushing_after_long_idle_returns_true(
     # Push monotonic past TIMEOUT_RECENTLY_BRUSHING so the long interval wins.
     mocked_time.monotonic.return_value = 10_000
     assert parser.poll_needed(None, 86401) is True
+
+
+# ---------------------------------------------------------------------------
+# Sector decoding for 6-sector brushes (IO Series 10)
+#
+# The advertisement bytes below are from a real full-session capture of an
+# IO Series 10 (6 sectors, number_of_sectors == 6) contributed by @smartmatic
+# (mtheli/toothbrush-card#3). Only the raw manufacturer-data bytes are used;
+# the device address is replaced with the placeholder used elsewhere here.
+#
+# The old hand-built SECTOR_MAP could not decode these:
+#   * byte 0x05 -> "unknown sector code 5"          (sector 5 is missing)
+#   * byte 0x07 -> "sector 4"                        (it is the last-quadrant
+#                                                     sentinel == sector 6 here)
+#   * byte 0x0c -> "unknown sector code 12"          (sector 4 with a display
+#                                                     flag set; not in the map)
+# ---------------------------------------------------------------------------
+ORALB_IO_SERIES_10_SECTOR_5 = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062n\x03R\x01\x14\x00\x05\x00\x06"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+ORALB_IO_SERIES_10_SECTOR_6 = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062n\x03R\x01(\x00\x07\x00\x06"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+ORALB_IO_SERIES_10_SECTOR_4_FLAGGED = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062n\x03R\x01\x00\x00\x0c\x00\x06"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+# IO Series firmware that does not report a sector count (number_of_sectors == 0)
+# while actively brushing the last quadrant. Real capture, byte 0x07, N == 0.
+ORALB_IO_SERIES_NO_COUNT_RUNNING = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x0612\x03r\x02\x03\x00\x07\x00\x00"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+_SECTOR_KEY = DeviceKey(key="sector", device_id=None)
+_NUMBER_OF_SECTORS_KEY = DeviceKey(key="number_of_sectors", device_id=None)
+
+
+def _sector_value(service_info: BluetoothServiceInfo) -> str:
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(service_info)
+    return result.entity_values[_SECTOR_KEY].native_value
+
+
+def test_io_series_10_sector_5() -> None:
+    """Sector 5 was previously reported as 'unknown sector code 5'."""
+    assert _sector_value(ORALB_IO_SERIES_10_SECTOR_5) == "sector 5"
+
+
+def test_io_series_10_sector_6() -> None:
+    """The last-quadrant sentinel (0x07) is sector 6 on a 6-sector brush."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_10_SECTOR_6)
+    assert result.entity_values[_SECTOR_KEY].native_value == "sector 6"
+    assert result.entity_values[_NUMBER_OF_SECTORS_KEY].native_value == 6
+
+
+def test_io_series_10_sector_4_with_display_flag() -> None:
+    """Upper display-flag bits must not change the decoded quadrant."""
+    assert _sector_value(ORALB_IO_SERIES_10_SECTOR_4_FLAGGED) == "sector 4"
+
+
+def test_io_series_last_quadrant_without_sector_count() -> None:
+    """Firmware that omits the sector count falls back to four sectors."""
+    assert _sector_value(ORALB_IO_SERIES_NO_COUNT_RUNNING) == "sector 4"
