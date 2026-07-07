@@ -3358,12 +3358,12 @@ def _sector_value(service_info: BluetoothServiceInfo) -> str:
     return result.entity_values[_SECTOR_KEY].native_value
 
 
-def test_io_series_10_sector_5():
+def test_io_series_10_sector_5() -> None:
     """Sector 5 was previously reported as 'unknown sector code 5'."""
     assert _sector_value(ORALB_IO_SERIES_10_SECTOR_5) == "sector 5"
 
 
-def test_io_series_10_sector_6():
+def test_io_series_10_sector_6() -> None:
     """The last-quadrant sentinel (0x07) is sector 6 on a 6-sector brush."""
     parser = OralBBluetoothDeviceData()
     result = parser.update(ORALB_IO_SERIES_10_SECTOR_6)
@@ -3371,11 +3371,11 @@ def test_io_series_10_sector_6():
     assert result.entity_values[_NUMBER_OF_SECTORS_KEY].native_value == 6
 
 
-def test_io_series_10_sector_4_with_display_flag():
+def test_io_series_10_sector_4_with_display_flag() -> None:
     """Upper display-flag bits must not change the decoded quadrant."""
     assert _sector_value(ORALB_IO_SERIES_10_SECTOR_4_FLAGGED) == "sector 4"
 
 
-def test_io_series_last_quadrant_without_sector_count():
+def test_io_series_last_quadrant_without_sector_count() -> None:
     """Firmware that omits the sector count falls back to four sectors."""
     assert _sector_value(ORALB_IO_SERIES_NO_COUNT_RUNNING) == "sector 4"
