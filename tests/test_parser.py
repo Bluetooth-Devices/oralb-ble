@@ -16,6 +16,7 @@ from sensor_state_data import (
     Units,
 )
 
+from oralb_ble.const import CHARACTERISTIC_PRESSURE
 from oralb_ble.parser import SMART_SERIES_MODES, OralBBluetoothDeviceData
 
 from . import generate_ble_device
@@ -3125,6 +3126,61 @@ async def test_async_poll_bleak_error(mock_establish_connection):
     mock_establish_connection.return_value.read_gatt_char.side_effect = BleakError(
         "disconnected"
     )
+    res = await parser.async_poll(device)
+    assert isinstance(res, SensorUpdate)
+
+
+@mock.patch("oralb_ble.parser.establish_connection")
+@pytest.mark.asyncio
+async def test_async_poll_characteristic_none(mock_establish_connection):
+    """A characteristic that resolves to None must not crash async_poll.
+
+    On a transient/unresolved service cache, get_characteristic() returns
+    None. Passing None to read_gatt_char() makes Bleak raise a ValueError
+    while building the UUID. async_poll must swallow this gracefully.
+    """
+    parser = OralBBluetoothDeviceData()
+    device = generate_ble_device(address="abc", name="test_device")
+    client = mock_establish_connection.return_value
+    # get_characteristic is synchronous in Bleak; a stale cache returns None.
+    client.services.get_characteristic = mock.Mock(return_value=None)
+
+    def _read(char):
+        # Mimic Bleak: a None specifier blows up building the UUID.
+        if char is None:
+            raise ValueError(
+                "invalid literal for int() with base 16: "
+                "'0000None00001000800000805f9b34fb'"
+            )
+        return bytearray(b";\x00\x00\x00")
+
+    client.read_gatt_char.side_effect = _read
+    res = await parser.async_poll(device)
+    assert isinstance(res, SensorUpdate)
+
+
+@mock.patch("oralb_ble.parser.establish_connection")
+@pytest.mark.asyncio
+async def test_async_poll_pressure_characteristic_none(mock_establish_connection):
+    """A None pressure characteristic must also be handled gracefully."""
+    parser = OralBBluetoothDeviceData()
+    device = generate_ble_device(address="abc", name="test_device")
+    client = mock_establish_connection.return_value
+
+    battery_char = mock.Mock()
+
+    def _get_char(specifier):
+        # Battery resolves, pressure comes back None (stale cache).
+        return None if specifier == CHARACTERISTIC_PRESSURE else battery_char
+
+    client.services.get_characteristic = mock.Mock(side_effect=_get_char)
+
+    def _read(char):
+        if char is None:
+            raise ValueError("invalid literal for int()")
+        return bytearray(b";\x00\x00\x00")
+
+    client.read_gatt_char.side_effect = _read
     res = await parser.async_poll(device)
     assert isinstance(res, SensorUpdate)
 

@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from enum import Enum, auto
 
 from bleak import BleakError, BLEDevice
+from bleak.exc import BleakCharacteristicNotFoundError
 from bleak_retry_connector import (
     BleakClientWithServiceCache,
     establish_connection,
@@ -337,8 +338,16 @@ class OralBBluetoothDeviceData(BluetoothData):
     async def _get_payload(self, client: BleakClientWithServiceCache) -> None:
         """Get the payload from the brush using its gatt_characteristics."""
         battery_char = client.services.get_characteristic(CHARACTERISTIC_BATTERY)
+        if battery_char is None:
+            # A transient/unresolved service cache yields None here. Passing
+            # None to read_gatt_char makes Bleak raise a bare ValueError while
+            # building the UUID; raise a BleakError instead so the retry
+            # wrapper can retry and async_poll can handle it gracefully.
+            raise BleakCharacteristicNotFoundError(CHARACTERISTIC_BATTERY)
         battery_payload = await client.read_gatt_char(battery_char)
         pressure_char = client.services.get_characteristic(CHARACTERISTIC_PRESSURE)
+        if pressure_char is None:
+            raise BleakCharacteristicNotFoundError(CHARACTERISTIC_PRESSURE)
         pressure_payload = await client.read_gatt_char(pressure_char)
         tb_pressure = ACTIVE_CONNECTION_PRESSURE.get(
             pressure_payload[0], f"unknown pressure {pressure_payload[0]}"
