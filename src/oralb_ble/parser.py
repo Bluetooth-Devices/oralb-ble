@@ -217,27 +217,10 @@ def _decode_sector(sector: int, no_of_sectors: int | None) -> str:
     """Decode the sector code (manufacturer data byte 8).
 
     The low three bits hold the quadrant index: ``1``-``6`` for a concrete
-    quadrant, ``7`` is a "last quadrant" sentinel and ``0`` means no quadrant.
-    The upper bits are a display flag (which feedback face the handle shows)
-    and do not change the quadrant, so they are masked off.
-
-    Because ``7`` only marks the *last* quadrant, its real number depends on
-    how many sectors the brush is configured for (byte 10). Firmware that does
-    not report a sector count (``no_of_sectors`` 0 or absent) falls back to the
-    historical four-sector assumption.
-
-    This replaces the old hand-built lookup table, which only covered 4-sector
-    brushes: it returned ``"unknown sector code 5"`` for sector 5 and wrongly
-    reused ``"sector 4"`` for the last-quadrant sentinel on 6-sector brushes
-    (e.g. IO Series 10).
-
-    The old table also mapped a few bytes (41, 42, 43, 47, 55) to ``"success"``.
-    Those carry the end-of-session feedback face in the upper bits and only
-    occur in non-running frames, which #151 already reports as ``"no sector"``
-    regardless of the byte -- so ``"success"`` was already unreachable through
-    the sensor and is intentionally not reproduced here. A finished session is
-    better detected from the ``running`` state ending together with the elapsed
-    brushing time than from a transient sector value.
+    quadrant, ``0`` means no quadrant, and ``7`` is a "last quadrant"
+    sentinel whose real number is the sector count (byte 10), falling back
+    to 4 when the count is absent. The upper bits are a display flag and
+    are masked off.
     """
     quadrant = sector & 0x07
     if quadrant == 0:
