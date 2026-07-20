@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "oralb-ble"
-version = "1.1.1"
+version = "1.1.2"
 description = "Bluetooth library for Oral B devices"
 authors = ["J. Nick Koston <bluetooth@koston.org>"]
 license = "MIT"
