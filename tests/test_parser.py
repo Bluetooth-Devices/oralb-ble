@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from unittest import mock
 
 import pytest
@@ -17,7 +18,12 @@ from sensor_state_data import (
 )
 
 from oralb_ble.const import CHARACTERISTIC_PRESSURE
-from oralb_ble.parser import SMART_SERIES_MODES, OralBBluetoothDeviceData
+from oralb_ble.parser import (
+    PRESSURE,
+    SMART_SERIES_MODES,
+    OralBBluetoothDeviceData,
+    _decode_pressure,
+)
 
 from . import generate_ble_device
 
@@ -3435,3 +3441,61 @@ def test_io_series_10_sector_4_with_display_flag() -> None:
 def test_io_series_last_quadrant_without_sector_count() -> None:
     """Firmware that omits the sector count falls back to four sectors."""
     assert _sector_value(ORALB_IO_SERIES_NO_COUNT_RUNNING) == "sector 4"
+
+
+# iO Series 8 advertisement with pressure/status byte 112 (0x70) — previously
+# surfaced as "unknown pressure 112". Same frame layout as the other iO
+# fixtures; only byte 4 differs.
+ORALB_IO_SERIES_PRESSURE_112 = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x0612\x03p\x02\x03\x00\x02\x00\x06"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+# The same frame with byte 4 = 120 (0x78, power-button bit set) — previously
+# "unknown pressure 120".
+ORALB_IO_SERIES_PRESSURE_120 = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x0612\x03x\x02\x03\x00\x02\x00\x06"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+_PRESSURE_KEY = DeviceKey(key="pressure", device_id=None)
+
+
+def test_decode_pressure_reproduces_known_table() -> None:
+    """The bit-field decoder matches every previously mapped value."""
+    for value, expected in PRESSURE.items():
+        assert _decode_pressure(value) == expected
+
+
+def test_pressure_112_decodes_as_normal() -> None:
+    """112 has no button/pressure flag bits set and is plain 'normal'."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_PRESSURE_112)
+    assert result.entity_values[_PRESSURE_KEY].native_value == "normal"
+
+
+def test_pressure_120_decodes_as_power_button() -> None:
+    """120 carries the power-button flag (bit 3)."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_PRESSURE_120)
+    assert result.entity_values[_PRESSURE_KEY].native_value == "power button pressed"
+
+
+def test_decode_pressure_unmapped_byte_still_decodes(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """A byte outside the documented table decodes and is logged at debug."""
+    # 116 (0x74) is not in PRESSURE but has the button bit set.
+    with caplog.at_level(logging.DEBUG, logger="oralb_ble.parser"):
+        assert _decode_pressure(116) == "button pressed"
+    assert "Unmapped pressure/status byte: 116" in caplog.text
