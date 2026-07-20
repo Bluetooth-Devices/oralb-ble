@@ -16,6 +16,13 @@ wire-format
 ```
 
 ```{toctree}
+:caption: Support
+:maxdepth: 2
+
+troubleshooting
+```
+
+```{toctree}
 :caption: Project Info
 :maxdepth: 2
 
