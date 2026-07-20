@@ -130,10 +130,12 @@ STATES = {
     116: "transport",
 }
 
-# Known pressure/status byte values and their meaning. The parser decodes the
-# byte with _decode_pressure below; this table documents the observed value
+# Known pressure/status byte values and their meaning. This table no longer
+# drives decoding -- _decode_pressure below is the authority -- so adding an
+# entry here does NOT change parser behaviour. It documents the observed value
 # space (Home Assistant imports it to build the sensor's enum options) and
-# doubles as the regression oracle in the tests.
+# doubles as the regression oracle in the tests; extend it when a new byte is
+# observed (see the debug log in _decode_pressure) to keep both in sync.
 PRESSURE = {
     0: "normal",
     16: "normal",
@@ -147,8 +149,10 @@ PRESSURE = {
     82: "normal",
     86: "button pressed",
     90: "power button pressed",
+    112: "normal",
     114: "normal",
     118: "button pressed",
+    120: "power button pressed",
     122: "power button pressed",
     144: "high",
     146: "high",
@@ -173,6 +177,12 @@ def _decode_pressure(pressure: int) -> str:
     also covering values missing from it (e.g. 112 and 120 seen on the
     iO Series 8).
     """
+    if pressure not in PRESSURE:
+        # Every byte still maps to one of the four known strings, but a value
+        # outside the documented set may carry a not-yet-understood flag in
+        # bits 0-1/4-6. Surface it so the observed space can keep growing
+        # without regressing the user-facing state.
+        _LOGGER.debug("Unmapped pressure/status byte: %s", pressure)
     if pressure & 0x08:
         return "power button pressed"
     if pressure & 0x04:
