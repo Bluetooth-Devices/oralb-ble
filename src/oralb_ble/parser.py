@@ -287,6 +287,11 @@ class OralBBluetoothDeviceData(BluetoothData):
         _LOGGER.debug("Parsing Oral-B sensor: %s", data)
         msg_length = len(data)
         if msg_length not in (9, 11):
+            _LOGGER.debug(
+                "Ignoring Oral-B payload of unexpected length %d: %s",
+                msg_length,
+                data.hex(),
+            )
             return
 
         model_type = data[1]
