@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from unittest import mock
 
 import pytest
@@ -3488,3 +3489,13 @@ def test_pressure_120_decodes_as_power_button() -> None:
     parser = OralBBluetoothDeviceData()
     result = parser.update(ORALB_IO_SERIES_PRESSURE_120)
     assert result.entity_values[_PRESSURE_KEY].native_value == "power button pressed"
+
+
+def test_decode_pressure_unmapped_byte_still_decodes(
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """A byte outside the documented table decodes and is logged at debug."""
+    # 116 (0x74) is not in PRESSURE but has the button bit set.
+    with caplog.at_level(logging.DEBUG, logger="oralb_ble.parser"):
+        assert _decode_pressure(116) == "button pressed"
+    assert "Unmapped pressure/status byte: 116" in caplog.text
