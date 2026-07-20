@@ -130,6 +130,10 @@ STATES = {
     116: "transport",
 }
 
+# Known pressure/status byte values and their meaning. The parser decodes the
+# byte with _decode_pressure below; this table documents the observed value
+# space (Home Assistant imports it to build the sensor's enum options) and
+# doubles as the regression oracle in the tests.
 PRESSURE = {
     0: "normal",
     16: "normal",
@@ -157,6 +161,26 @@ PRESSURE = {
     240: "high",
     242: "high",
 }
+
+
+def _decode_pressure(pressure: int) -> str:
+    """Decode the pressure/status code (manufacturer data byte 4).
+
+    The byte is a bit field: bit 3 flags a power-button press, bit 2 a
+    (mode-)button press and bit 7 high pressure; the remaining bits are
+    display flags. Button presses take precedence over the pressure flag.
+    Reproduces every entry of the ``PRESSURE`` table byte-for-byte while
+    also covering values missing from it (e.g. 112 and 120 seen on the
+    iO Series 8).
+    """
+    if pressure & 0x08:
+        return "power button pressed"
+    if pressure & 0x04:
+        return "button pressed"
+    if pressure & 0x80:
+        return "high"
+    return "normal"
+
 
 ACTIVE_CONNECTION_PRESSURE = {0: "low", 1: "normal", 2: "high"}
 
@@ -276,7 +300,7 @@ class OralBBluetoothDeviceData(BluetoothData):
         self.set_title(name)
         tb_state = STATES.get(state, f"unknown state {state}")
         tb_mode = self.brush_modes.get(mode, f"unknown mode {mode}")
-        tb_pressure = PRESSURE.get(pressure, f"unknown pressure {pressure}")
+        tb_pressure = _decode_pressure(pressure)
         tb_sector = _decode_sector(sector, no_of_sectors)
 
         self.update_sensor(str(OralBSensor.TIME), None, brush_time, None, "Time")
