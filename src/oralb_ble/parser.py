@@ -98,6 +98,7 @@ IO_SERIES_MODES = {
     6: "tongue cleaning",
     8: "settings",
     9: "off",
+    11: "smart adapt",
 }
 
 
@@ -124,6 +125,7 @@ STATES = {
     6: "flight menu",
     8: "selection menu",
     9: "off",
+    10: "post brushing statistics",
     113: "final test",
     114: "pcb test",
     115: "sleeping",

@@ -3499,3 +3499,45 @@ def test_decode_pressure_unmapped_byte_still_decodes(
     with caplog.at_level(logging.DEBUG, logger="oralb_ble.parser"):
         assert _decode_pressure(116) == "button pressed"
     assert "Unmapped pressure/status byte: 116" in caplog.text
+
+
+# iO advertisement with device-state byte 10 -- the post-brushing summary the
+# handle shows after a session (home-assistant/core#169661, #174882).
+ORALB_IO_SERIES_POST_BRUSHING = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x0612\x0ar\x00\x00\x03\x01\x00\x06"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+# iO9 advertisement while brushing in the Smart Adapt mode (mode byte == 11),
+# previously surfaced as unknown_mode_11 (home-assistant/core#174882).
+ORALB_IO_SERIES_SMART_ADAPT = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x0612\x03r\x00\x05\x0b\x01\x00\x06"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+_STATE_KEY = DeviceKey(key="toothbrush_state", device_id=None)
+_MODE_KEY = DeviceKey(key="mode", device_id=None)
+
+
+def test_state_10_is_post_brushing_statistics() -> None:
+    """State 10 is the post-brushing summary screen, not an unknown state."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_POST_BRUSHING)
+    assert result.entity_values[_STATE_KEY].native_value == "post brushing statistics"
+
+
+def test_mode_11_is_smart_adapt() -> None:
+    """Mode 11 on the iO series is the Smart Adapt mode."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_SMART_ADAPT)
+    assert result.entity_values[_MODE_KEY].native_value == "smart adapt"
