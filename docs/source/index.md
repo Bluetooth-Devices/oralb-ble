@@ -16,6 +16,13 @@ wire-format
 ```
 
 ```{toctree}
+:caption: Contributor Guide
+:maxdepth: 2
+
+adding-a-model
+```
+
+```{toctree}
 :caption: Project Info
 :maxdepth: 2
 
