@@ -22,6 +22,7 @@ from oralb_ble.parser import (
     PRESSURE,
     SMART_SERIES_MODES,
     OralBBluetoothDeviceData,
+    _decode_display_face,
     _decode_pressure,
 )
 
@@ -393,6 +394,11 @@ def test_dataset_1():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -434,6 +440,11 @@ def test_dataset_1():
                 device_key=DeviceKey(key="sector_timer", device_id=None),
                 name="Sector " "Timer",
                 native_value=0,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -488,6 +499,11 @@ def test_dataset_2():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -529,6 +545,11 @@ def test_dataset_2():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="sector " "1",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -613,6 +634,11 @@ def test_dataset_3():
                 device_class=SensorDeviceClass.SIGNAL_STRENGTH,
                 native_unit_of_measurement=Units.SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -654,6 +680,11 @@ def test_dataset_3():
                 device_key=DeviceKey(key="signal_strength", device_id=None),
                 name="Signal " "Strength",
                 native_value=-63,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -718,6 +749,11 @@ def test_dataset_4():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -759,6 +795,11 @@ def test_dataset_4():
                 device_key=DeviceKey(key="mode", device_id=None),
                 name="Mode",
                 native_value="daily " "clean",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -848,6 +889,11 @@ def test_io_series_6():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -889,6 +935,11 @@ def test_io_series_6():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="no " "sector",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -963,6 +1014,11 @@ def test_io_series_6_daily_clean_mode():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1004,6 +1060,11 @@ def test_io_series_6_daily_clean_mode():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="no " "sector",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1078,6 +1139,11 @@ def test_io_series_6_sensitive_mode():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1119,6 +1185,11 @@ def test_io_series_6_sensitive_mode():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="no " "sector",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1193,6 +1264,11 @@ def test_io_series_6_gum_care_mode():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1234,6 +1310,11 @@ def test_io_series_6_gum_care_mode():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="no " "sector",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1308,6 +1389,11 @@ def test_io_series_6_whiten_mode():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1349,6 +1435,11 @@ def test_io_series_6_whiten_mode():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="no " "sector",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1423,6 +1514,11 @@ def test_io_series_7():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1464,6 +1560,11 @@ def test_io_series_7():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="no " "sector",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1528,6 +1629,11 @@ def test_io_series_4():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1569,6 +1675,11 @@ def test_io_series_4():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="sector " "1",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1643,6 +1754,11 @@ def test_d701_genius_9000():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1684,6 +1800,11 @@ def test_d701_genius_9000():
                 device_key=DeviceKey(key="mode", device_id=None),
                 name="Mode",
                 native_value="daily " "clean",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1783,6 +1904,11 @@ def test_d701_genius_9000_black():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1824,6 +1950,11 @@ def test_d701_genius_9000_black():
                 device_key=DeviceKey(key="sector", device_id=None),
                 name="Sector",
                 native_value="no " "sector",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -1878,6 +2009,11 @@ def test_io_series_9():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -1919,6 +2055,11 @@ def test_io_series_9():
                 device_key=DeviceKey(key="time", device_id=None),
                 name="Time",
                 native_value=0,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2008,6 +2149,11 @@ def test_d601():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2049,6 +2195,11 @@ def test_d601():
                 device_key=DeviceKey(key="sector_timer", device_id=None),
                 name="Sector " "Timer",
                 native_value=0,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2128,6 +2279,11 @@ def test_triumph_v2():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2169,6 +2325,11 @@ def test_triumph_v2():
                 device_key=DeviceKey(key="time", device_id=None),
                 name="Time",
                 native_value=0,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="standard",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2243,6 +2404,11 @@ def test_triumph_v2_data_2():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2284,6 +2450,11 @@ def test_triumph_v2_data_2():
                 device_key=DeviceKey(key="time", device_id=None),
                 name="Time",
                 native_value=1,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2333,6 +2504,11 @@ def test_pro_series_6000():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2364,6 +2540,11 @@ def test_pro_series_6000():
                 device_key=DeviceKey(key="time", device_id=None),
                 name="Time",
                 native_value=8,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2438,6 +2619,11 @@ def test_d700():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2479,6 +2665,11 @@ def test_d700():
                 device_key=DeviceKey(key="sector_timer", device_id=None),
                 name="Sector " "Timer",
                 native_value=20,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2543,6 +2734,11 @@ def test_d700_high_pressure():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2584,6 +2780,11 @@ def test_d700_high_pressure():
                 device_key=DeviceKey(key="pressure", device_id=None),
                 name="Pressure",
                 native_value="normal",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2668,6 +2869,11 @@ def test_d700_normal_pressure():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2709,6 +2915,11 @@ def test_d700_normal_pressure():
                 device_key=DeviceKey(key="sector_timer", device_id=None),
                 name="Sector " "Timer",
                 native_value=90,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2783,6 +2994,11 @@ def test_genius_8000():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2824,6 +3040,11 @@ def test_genius_8000():
                 device_key=DeviceKey(key="time", device_id=None),
                 name="Time",
                 native_value=0,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="standard",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -2884,6 +3105,11 @@ def test_genius_8000_high_pressure():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -2925,6 +3151,11 @@ def test_genius_8000_high_pressure():
                 device_key=DeviceKey(key="pressure", device_id=None),
                 name="Pressure",
                 native_value="high",
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -3029,6 +3260,11 @@ def test_io_series_8():
                 device_class=None,
                 native_unit_of_measurement=None,
             ),
+            DeviceKey(key="display_face", device_id=None): SensorDescription(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                device_class=None,
+                native_unit_of_measurement=None,
+            ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorDescription(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
                 device_class=None,
@@ -3070,6 +3306,11 @@ def test_io_series_8():
                 device_key=DeviceKey(key="number_of_sectors", device_id=None),
                 name="Number " "of " "sectors",
                 native_value=0,
+            ),
+            DeviceKey(key="display_face", device_id=None): SensorValue(
+                device_key=DeviceKey(key="display_face", device_id=None),
+                name="Display Face",
+                native_value="off",
             ),
             DeviceKey(key="toothbrush_state", device_id=None): SensorValue(
                 device_key=DeviceKey(key="toothbrush_state", device_id=None),
@@ -3541,3 +3782,106 @@ def test_mode_11_is_smart_adapt() -> None:
     parser = OralBBluetoothDeviceData()
     result = parser.update(ORALB_IO_SERIES_SMART_ADAPT)
     assert result.entity_values[_MODE_KEY].native_value == "smart adapt"
+
+
+# Display-face frames captured from two iO handles in August 2026. Bits 3-5
+# of byte 8 carry the face the handle shows on its display; the low bits
+# stay the quadrant. The face appears at a pause and at the end of a
+# session and reads 0 while running normally.
+
+# Running mid-session, quadrant 1, no face shown.
+ORALB_IO_SERIES_FACE_OFF = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062k\x03r\x00\x06\x00\x01\x00\x04"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+# Paused at 1:10 — the handle settles on a face (3) while the state has
+# left "running". Byte 8 = 0x1b: face 3, quadrant 3.
+ORALB_IO_SERIES_FACE_3_PAUSED = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062k\x02r\x01\x0a\x00\x1b\x00\x04"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+# Running again after a pause with the face still latched. Byte 8 = 0x27:
+# face 4 riding on the last-quadrant sentinel 7.
+ORALB_IO_SERIES_FACE_4_SENTINEL = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x062k\x03r\x01\x2b\x00\x27\x00\x04"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+# Session end on a handle that reports no sector count (byte 10 = 0).
+# Byte 8 = 0x37: face 6 plus the sentinel — the historical sector table's
+# byte 55 ("success").
+ORALB_IO_SERIES_FACE_6_DONE = BluetoothServiceInfo(
+    name="Oral-B Toothbrush",
+    address="78:DB:2F:C2:48:BE",
+    rssi=-63,
+    manufacturer_data={220: b"\x0612\x02r\x02\x14\x00\x37\x00\x00"},
+    service_uuids=["0000fe0d-0000-1000-8000-00805f9b34fb"],
+    service_data={},
+    source="local",
+)
+
+_DISPLAY_FACE_KEY = DeviceKey(key="display_face", device_id=None)
+
+
+def _display_face_value(service_info: BluetoothServiceInfo) -> str:
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(service_info)
+    return result.entity_values[_DISPLAY_FACE_KEY].native_value
+
+
+def test_decode_display_face_table() -> None:
+    """Every 3-bit face value decodes to its FF0A-style name."""
+    for face, expected in enumerate(
+        ["off", "standard"] + [f"special_{n}" for n in range(2, 8)]
+    ):
+        assert _decode_display_face(face << 3) == expected
+        # The quadrant bits must not leak into the face.
+        assert _decode_display_face(face << 3 | 0x05) == expected
+
+
+def test_display_face_off_while_running() -> None:
+    """A normal running frame carries no face."""
+    assert _display_face_value(ORALB_IO_SERIES_FACE_OFF) == "off"
+
+
+def test_display_face_reported_when_not_running() -> None:
+    """The face survives the state gate that blanks the sector.
+
+    At a pause the sector sensor intentionally resets to "no sector", but
+    the face shown on the display at that very moment must still come
+    through — that is when the handle displays it.
+    """
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_FACE_3_PAUSED)
+    assert result.entity_values[_DISPLAY_FACE_KEY].native_value == "special_3"
+    assert result.entity_values[_SECTOR_KEY].native_value == "no sector"
+
+
+def test_display_face_rides_on_last_quadrant_sentinel() -> None:
+    """Face bits and the sector sentinel decode independently."""
+    parser = OralBBluetoothDeviceData()
+    result = parser.update(ORALB_IO_SERIES_FACE_4_SENTINEL)
+    assert result.entity_values[_DISPLAY_FACE_KEY].native_value == "special_4"
+    assert result.entity_values[_SECTOR_KEY].native_value == "sector 4"
+
+
+def test_display_face_at_session_end() -> None:
+    """Byte 55 — the historical "success" — is face 6 on the sentinel."""
+    assert _display_face_value(ORALB_IO_SERIES_FACE_6_DONE) == "special_6"
