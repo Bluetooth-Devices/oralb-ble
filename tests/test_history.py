@@ -267,3 +267,34 @@ async def test_async_read_io_history_keep_alive(
         if call.args[1] == bytes([0x31, 0x1E])
     ]
     assert len(keep_alives) > 1
+
+
+@mock.patch("oralb_ble.history.establish_connection")
+@pytest.mark.asyncio
+async def test_async_read_io_history_short_clock_payload(
+    mock_establish_connection: mock.MagicMock,
+) -> None:
+    client = _mock_client([make_record(300)], clock=b"\x01\x02")
+    mock_establish_connection.return_value = client
+
+    sessions = await async_read_io_history(mock.Mock(address="x"))
+
+    assert sessions[0].start is None
+
+
+@mock.patch("oralb_ble.history.establish_connection")
+@pytest.mark.asyncio
+async def test_async_read_io_history_reads_every_slot(
+    mock_establish_connection: mock.MagicMock,
+) -> None:
+    from oralb_ble.history import MAX_SESSION_INDEX
+
+    slots = MAX_SESSION_INDEX + 1
+    records = [make_record(100_000 - i, session_id=i % 256) for i in range(slots)]
+    client = _mock_client(records)
+    mock_establish_connection.return_value = client
+
+    sessions = await async_read_io_history(mock.Mock(address="x"), max_sessions=1000)
+
+    assert len(sessions) == slots
+    client.disconnect.assert_awaited_once()
