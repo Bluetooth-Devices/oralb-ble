@@ -31,6 +31,10 @@ extensions = [
     "myst_parser",
 ]
 
+# Generate implicit anchors for headings up to h3 so that intra-page links
+# like `[text](file.md#some-heading)` resolve. MyST defaults to 0 (off).
+myst_heading_anchors = 3
+
 # The suffix of source filenames.
 source_suffix = [".rst", ".md"]
 
