@@ -88,6 +88,24 @@ The parser is stateful per device: keep the same `OralBBluetoothDeviceData`
 instance across advertisements from the same toothbrush so that derived
 fields (`sector_timer`, `toothbrush_state`) stay accurate.
 
+### Reading the brushing history (iO, opt in)
+
+iO brushes also store their recent brushing sessions. Reading them needs an
+active GATT connection, so it is a separate, opt in call that connects while
+the brush is awake (for example right after brushing) and returns the
+sessions newest first:
+
+```python
+from oralb_ble import async_read_io_history
+
+sessions = await async_read_io_history(ble_device, max_sessions=10)
+for session in sessions:
+    print(session.start, session.brushing_time, session.high_pressure_time)
+```
+
+Pass `newer_than=<device_time of the last session you stored>` to read only
+new sessions. The brush clock is only read, never set.
+
 For real-world advertisement collection see Home Assistant's
 [bluetooth integration][ha-bluetooth] — that is the primary consumer of this
 library.

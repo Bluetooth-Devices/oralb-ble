@@ -20,11 +20,21 @@ from sensor_state_data import (
     Units,
 )
 
+from .history import (
+    BrushingSession,
+    async_read_io_history,
+    device_time_to_datetime,
+    parse_io_session_record,
+)
 from .parser import OralBBinarySensor, OralBBluetoothDeviceData, OralBSensor
 
 __version__ = "1.1.3"
 
 __all__ = [
+    "BrushingSession",
+    "async_read_io_history",
+    "device_time_to_datetime",
+    "parse_io_session_record",
     "OralBSensor",
     "OralBBinarySensor",
     "OralBBluetoothDeviceData",
