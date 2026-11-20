@@ -28,6 +28,23 @@ CHARACTERISTIC_AVAILABLE_MODES = "a0f0ff25-5047-4d53-8208-4f72616c2d42"
 # This seems to be giving positional data, but I have not quite nailed it down.
 CHARACTERISTIC_POSITION = "a0f0ff0d-5047-4d53-8208-4f72616c2d42"
 
+# LED ring colour on IO-Series brushes. Writable GATT char that controls the
+# colour of the LED ring around the handle. See issue #36 for the reverse
+# engineering work that mapped the writable payloads below.
+CHARACTERISTIC_LED_COLOR = "a0f0ff2b-5047-4d53-8208-4f72616c2d42"
+
+# Known 4-byte payloads accepted by CHARACTERISTIC_LED_COLOR. The fourth byte
+# is always 0x00 in the captured writes; the leading three bytes appear to be
+# a device-specific encoding rather than a straight RGB triple.
+LED_COLORS: dict[str, bytes] = {
+    "white": b"\x44\xcf\x63\x00",
+    "blue": b"\x0f\x5b\xcc\x00",
+    "turquoise": b"\x00\xff\x3d\x00",
+    "pink": b"\xb2\x09\x1a\x00",
+    "yellow": b"\x80\xff\x00\x00",
+    "orange": b"\xfc\x70\x00\x00",
+}
+
 
 # Unknown
 CHARACTERISTIC_UNKNOWN_1 = "a0f0ff84-5047-4d53-8208-4f72616c2d42"
@@ -38,7 +55,6 @@ CHARACTERISTIC_UNKNOWN_5 = "a0f0ff82-5047-4d53-8208-4f72616c2d42"
 # CHARACTERISTIC_UNKNOWN_6 = "a0f0ff0c-5047-4d53-8208-4f72616c2d42" # Failure when trying to grab
 CHARACTERISTIC_UNKNOWN_7 = "a0f0ff0a-5047-4d53-8208-4f72616c2d42"
 CHARACTERISTIC_UNKNOWN_8 = "a0f0ff2c-5047-4d53-8208-4f72616c2d42"
-CHARACTERISTIC_UNKNOWN_9 = "a0f0ff2b-5047-4d53-8208-4f72616c2d42"
 CHARACTERISTIC_UNKNOWN_10 = "a0f0ff23-5047-4d53-8208-4f72616c2d42"
 CHARACTERISTIC_UNKNOWN_11 = "a0f0ff2d-5047-4d53-8208-4f72616c2d42"
 CHARACTERISTIC_UNKNOWN_12 = "a0f0ff2a-5047-4d53-8208-4f72616c2d42"
