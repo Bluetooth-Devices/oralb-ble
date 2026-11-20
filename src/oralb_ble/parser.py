@@ -43,6 +43,7 @@ class OralBSensor(StrEnum):
     SECTOR = "sector"
     NUMBER_OF_SECTORS = "number_of_sectors"
     SECTOR_TIMER = "sector_timer"
+    DISPLAY_FACE = "display_face"
     TOOTHBRUSH_STATE = "toothbrush_state"
     PRESSURE = "pressure"
     MODE = "mode"
@@ -256,8 +257,8 @@ def _decode_sector(sector: int, no_of_sectors: int | None) -> str:
     The low three bits hold the quadrant index: ``1``-``6`` for a concrete
     quadrant, ``0`` means no quadrant, and ``7`` is a "last quadrant"
     sentinel whose real number is the sector count (byte 10), falling back
-    to 4 when the count is absent. The upper bits are a display flag and
-    are masked off.
+    to 4 when the count is absent. Bits 3-5 carry the display face (see
+    ``_decode_display_face``) and are masked off here.
     """
     quadrant = sector & 0x07
     if quadrant == 0:
@@ -266,6 +267,28 @@ def _decode_sector(sector: int, no_of_sectors: int | None) -> str:
         count = (no_of_sectors or 0) & 0x07
         return f"sector {count or 4}"
     return f"sector {quadrant}"
+
+
+def _decode_display_face(sector: int) -> str:
+    """Decode the display face (bits 3-5 of manufacturer data byte 8).
+
+    The upper bits of the sector byte mirror the verdict face the handle
+    shows on its display at a pause and at the end of a session: ``0`` is
+    no face, ``1`` is the handle's standard face and ``2``-``7`` are the
+    special faces. The value names follow the ``smiley`` GATT
+    characteristic (FF0A), which reports the same enum; the drawing
+    behind each value lives in the handle firmware and differs between
+    generations, so no meaning is baked into the names.
+
+    This decomposition also explains the historical sector table's byte
+    ``55`` ("success"): face 6 plus the last-quadrant sentinel 7.
+    """
+    face = (sector >> 3) & 0x07
+    if face == 0:
+        return "off"
+    if face == 1:
+        return "standard"
+    return f"special_{face}"
 
 
 class OralBBluetoothDeviceData(BluetoothData):
@@ -337,6 +360,16 @@ class OralBBluetoothDeviceData(BluetoothData):
             self.update_sensor(
                 str(OralBSensor.SECTOR_TIMER), None, sector_timer, None, "Sector Timer"
             )
+        # Unlike the sector, the face is reported in every state: it appears
+        # at a pause and at the end of a session, exactly when the brush is
+        # no longer running, and reads "off" in between.
+        self.update_sensor(
+            str(OralBSensor.DISPLAY_FACE),
+            None,
+            _decode_display_face(sector),
+            None,
+            "Display Face",
+        )
         self.update_sensor(
             str(OralBSensor.TOOTHBRUSH_STATE), None, tb_state, None, "Toothbrush State"
         )
